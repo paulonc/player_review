@@ -14,9 +14,9 @@ O **Player Review** é um sistema de avaliação de jogos que permite aos usuár
 - Avaliação de jogos com notas e resenhas
 - Edição e remoção de avaliações pelo próprio usuário
 - Cadastro e gerenciamento de jogos
-- Cadastro e gerencimento de desenvolvedoras de jogos
+- Cadastro e gerencimento de empresas de jogos
 - Ranking dos melhores jogos
-- Ranking das melhores desenvolvedoras
+- Ranking das melhores empresas
 
 ## Modelagem de Dados
 
@@ -24,16 +24,16 @@ O sistema utiliza um banco de dados PostgreSQL estruturado da seguinte forma:
 
 ### 🎮 **Tabela: Jogos (`games`)**
 
-| Campo          | Tipo         | Descrição                   |
-| -------------- | ------------ | --------------------------- |
-| `id`           | UUID (PK)    | Identificador único do jogo |
-| `title`        | VARCHAR(255) | Nome do jogo                |
-| `description`  | TEXT         | Descrição do jogo           |
-| `developer_id` | UUID (FK)    | Desenvolvedora responsável  |
-| `release_date` | DATE         | Data de lançamento          |
-| `created_at`   | TIMESTAMP    | Data de criação do registro |
+| Campo          | Tipo         | Descrição                     |
+| -------------- | ------------ | ----------------------------- |
+| `id`           | UUID (PK)    | Identificador único do jogo   |
+| `title`        | VARCHAR(255) | Nome do jogo                  |
+| `description`  | TEXT         | Descrição do jogo             |
+| `company_id`   | UUID (FK)    | Empresa responsável pelo jogo |
+| `release_date` | DATE         | Data de lançamento            |
+| `created_at`   | TIMESTAMP    | Data de criação do registro   |
 
-### 🏢 **Tabela: Desenvolvedoras (`developers`)**
+### 🏢 **Tabela: Empresas (`companies`)**
 
 | Campo        | Tipo         | Descrição                        |
 | ------------ | ------------ | -------------------------------- |
@@ -92,6 +92,4 @@ Sinta-se à vontade para contribuir com melhorias e novas funcionalidades. Para 
 ## Contribuidores
 
 | [<img src="https://avatars.githubusercontent.com/u/94625698?v=4" width=115><br><sub>Paulo Victor</sub>](https://github.com/paulonc) | [<img src="https://avatars.githubusercontent.com/u/70920004?v=4" width=115><br><sub>Alfredo Andrade</sub>](https://github.com/AlfredoAndrade14) |
-| --- | --- |
-
-
+| ----------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
