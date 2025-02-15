@@ -18,11 +18,11 @@ class CompanyRepository {
 
   async update(
     id: string,
-    developerData: Partial<Omit<Company, "id" | "createdAt">>
+    companyData: Partial<Omit<Company, "id" | "createdAt">>
   ): Promise<Company | null> {
     return await prisma.company.update({
       where: { id },
-      data: developerData,
+      data: companyData,
     });
   }
 

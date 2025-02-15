@@ -18,9 +18,9 @@ class CompanyService {
 
   async updateCompany(
     id: string,
-    developerData: Partial<Omit<Company, "id" | "createdAt">>
+    companyData: Partial<Omit<Company, "id" | "createdAt">>
   ): Promise<Company | null> {
-    return await CompanyRepository.update(id, developerData);
+    return await CompanyRepository.update(id, companyData);
   }
 
   async deleteCompany(id: string): Promise<void> {

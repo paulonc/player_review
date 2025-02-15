@@ -22,10 +22,10 @@ class CompanyController {
     }
   }
 
-  async getAllCompanys(req: Request, res: Response): Promise<Response> {
+  async getAllCompanies(req: Request, res: Response): Promise<Response> {
     try {
-      const developers = await CompanyService.getAllCompanys();
-      return res.status(200).json(developers);
+      const companies  = await CompanyService.getAllCompanys();
+      return res.status(200).json(companies);
     } catch (error) {
       return res.status(500).json({ error: "Internal server error" });
     }
