@@ -22,7 +22,7 @@ class UserController {
     }
   }
 
-  async getAllUsers(req: Request, res: Response) {
+  async getAllUsers(req: Request, res: Response): Promise<Response> {
     try {
       const users = await UserService.getAllUsers();
       return res.status(200).json(users);
