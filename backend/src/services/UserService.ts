@@ -10,6 +10,11 @@ class UserService {
     const hashedPassword = await bcrypt.hash(user.password, 10);
     return await UserRepository.create({ ...user, password: hashedPassword });
   }
+
+  async getUserById(id: string): Promise<User | null> {
+    return await UserRepository.findById(id);
+  }
+  
 }
 
 export default new UserService();
