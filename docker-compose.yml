@@ -9,10 +9,13 @@ services:
     depends_on:
       - db
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@localhost:5432/player_review?schema=public
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/player_review?schema=public
+    networks:
+      - player_review_network
 
   db:
     image: postgres:15
+    container_name: db
     restart: always
     environment:
       POSTGRES_USER: postgres
@@ -20,3 +23,9 @@ services:
       POSTGRES_DB: player_review
     ports:
       - "5432:5432"
+    networks:
+      - player_review_network
+
+networks:
+  player_review_network:
+    driver: bridge
