@@ -1,3 +1,4 @@
+import { where } from "sequelize";
 import prisma from "../config/prisma";
 import { User } from "../models/User";
 
@@ -34,6 +35,14 @@ class UserRepository {
       },
     });
   }
+
+  async update(id: string, userData: Partial<Omit<User, "id" | "password" |"createdAt">>): Promise<User> {
+    return await prisma.user.update({
+      where: { id },
+      data: userData,
+    });
+  }
+
 }
 
 export default new UserRepository();

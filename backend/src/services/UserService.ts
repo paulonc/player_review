@@ -18,6 +18,10 @@ class UserService {
   async getAllUsers(): Promise<Omit<User, "password">[]> {
     return await UserRepository.findAll();
   }
+
+  async update(id: string, userData: Partial<Omit<User, "id" | "password" |"createdAt">>): Promise<Omit<User, "password"> | null> {
+    return await UserRepository.update(id, userData);
+  }
 }
 
 export default new UserService();

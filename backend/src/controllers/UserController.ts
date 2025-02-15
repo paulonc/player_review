@@ -30,7 +30,23 @@ class UserController {
       return res.status(500).json({ error: "Internal server error" });
     }
   }
-  
+
+  async updateUser(req: Request, res: Response): Promise<Response> {
+    const { id } = req.params;
+    const { username, email } = req.body;
+    try {
+      const updatedUser = await UserService.update(id, {
+        username,
+        email,
+      });
+      if (!updatedUser) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      return res.status(200).json(updatedUser);
+    } catch (error) {
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  }
 }
 
 export default new UserController();
