@@ -91,17 +91,7 @@ Sinta-se à vontade para contribuir com melhorias e novas funcionalidades. Para 
 
 ## Contribuidores
 
-<div style="display: flex; gap:30px; align-items: center;">
-  <div style="text-align: center;">
-    <a href="https://github.com/paulonc">
-      <img src="https://avatars.githubusercontent.com/u/94625698?v=4" width="120" style="border-radius: 50%;"><br>
-      <sub>Paulo Victor</sub>
-    </a>
-  </div>
-  <div style="text-align: center;">
-    <a href="https://github.com/AlfredoAndrade14">
-      <img src="https://avatars.githubusercontent.com/u/70920004?v=4" width="120" style="border-radius: 50%;"><br>
-      <sub>Alfredo Andrade</sub>
-    </a>
-  </div>
-</div>
+| [<img src="https://avatars.githubusercontent.com/u/94625698?v=4" width=115><br><sub>Paulo Victor</sub>](https://github.com/paulonc) | [<img src="https://avatars.githubusercontent.com/u/70920004?v=4" width=115><br><sub>Alfredo Andrade</sub>](https://github.com/AlfredoAndrade14) |
+| --- | --- |
+
+
