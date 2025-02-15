@@ -22,6 +22,10 @@ class UserService {
   async update(id: string, userData: Partial<Omit<User, "id" | "password" |"createdAt">>): Promise<Omit<User, "password"> | null> {
     return await UserRepository.update(id, userData);
   }
+
+  async deleteUser(id: string): Promise<void> {
+    await UserRepository.delete(id);
+  }
 }
 
 export default new UserService();

@@ -36,13 +36,21 @@ class UserRepository {
     });
   }
 
-  async update(id: string, userData: Partial<Omit<User, "id" | "password" |"createdAt">>): Promise<User> {
+  async update(
+    id: string,
+    userData: Partial<Omit<User, "id" | "password" | "createdAt">>
+  ): Promise<User> {
     return await prisma.user.update({
       where: { id },
       data: userData,
     });
   }
 
+  async delete(id: string): Promise<void> {
+    await prisma.user.delete({
+      where: { id },
+    });
+  }
 }
 
 export default new UserRepository();
