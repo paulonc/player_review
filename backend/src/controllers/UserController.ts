@@ -7,7 +7,7 @@ class UserController {
       const user = await UserService.register(req.body);
       return res.status(201).json(user);
     } catch (error: any) {
-      return res.status(400).json({ error: error.message });
+      return res.status(400).json({ error: "Internal server error" });
     }
   }
 
