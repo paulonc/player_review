@@ -1,8 +1,12 @@
 import GameRepository from "../repositories/GameRepository";
+import CompanyService from "./CompanyService";
 import { Game } from "../models/Game";
 
 class GameService {
   async createGame(game: Omit<Game, "id" | "created_at">): Promise<Game> {
+    const { companyId } = game;
+    const company = await CompanyService.getCompanyById(companyId);
+    if (!company) throw new Error("Company not found");
     return await GameRepository.create(game);
   }
 
@@ -14,7 +18,10 @@ class GameService {
     return await GameRepository.findAll();
   }
 
-  async updateGame(id: string, gameData: Partial<Omit<Game, "id" | "created_at">>): Promise<Game | null> {
+  async updateGame(
+    id: string,
+    gameData: Partial<Omit<Game, "id" | "created_at">>
+  ): Promise<Game | null> {
     return await GameRepository.update(id, gameData);
   }
 

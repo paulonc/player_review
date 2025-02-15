@@ -5,11 +5,6 @@ import CompanyService from "../services/CompanyService";
 class GameController {
   async create(req: Request, res: Response): Promise<Response> {
     try {
-      const { companyId } = req.body;
-
-      const company = await CompanyService.getCompanyById(companyId);
-      if (!company) return res.status(404).json({ error: "Company not found" });
-
       const game = await GameService.createGame(req.body);
       return res.status(201).json(game);
     } catch (error) {
