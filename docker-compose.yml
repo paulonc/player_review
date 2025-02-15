@@ -9,10 +9,7 @@ services:
     depends_on:
       - db
     environment:
-      - DB_HOST=db
-      - DB_USER=postgres
-      - DB_PASSWORD=postgres
-      - DB_NAME=player_review
+      - DATABASE_URL="postgresql://postgres:postgres@localhost:5432/player_review"
 
   db:
     image: postgres:15
