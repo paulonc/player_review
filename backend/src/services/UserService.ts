@@ -11,10 +11,13 @@ class UserService {
     return await UserRepository.create({ ...user, password: hashedPassword });
   }
 
-  async getUserById(id: string): Promise<User | null> {
+  async getUserById(id: string): Promise<Omit<User, "password"> | null> {
     return await UserRepository.findById(id);
   }
-  
+
+  async getAllUsers(): Promise<Omit<User, "password">[]> {
+    return await UserRepository.findAll();
+  }
 }
 
 export default new UserService();

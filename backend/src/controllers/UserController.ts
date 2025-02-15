@@ -21,6 +21,15 @@ class UserController {
       return res.status(500).json({ error: "Internal server error" });
     }
   }
+
+  async getAllUsers(req: Request, res: Response) {
+    try {
+      const users = await UserService.getAllUsers();
+      return res.status(200).json(users);
+    } catch (error) {
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  }
   
 }
 

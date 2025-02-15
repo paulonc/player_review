@@ -10,10 +10,30 @@ class UserRepository {
     return await prisma.user.findUnique({ where: { email } });
   }
 
-  async findById(id: string): Promise<User | null> {
-    return await prisma.user.findUnique({ where: { id } });
+  async findById(id: string): Promise<Omit<User, "password"> | null> {
+    return await prisma.user.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        role: true,
+        createdAt: true,
+      },
+    });
   }
-  
+
+  async findAll(): Promise<Omit<User, "password">[]> {
+    return await prisma.user.findMany({
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        role: true,
+        createdAt: true,
+      },
+    });
+  }
 }
 
 export default new UserRepository();
