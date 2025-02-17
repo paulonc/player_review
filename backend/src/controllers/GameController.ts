@@ -50,6 +50,25 @@ class GameController {
       return res.status(500).json({ error: "Internal server error" });
     }
   }
+
+  async updateReleaseDate(req: Request, res: Response): Promise<Response> {
+    try {
+      const { id } = req.params;
+      const { releaseDate } = req.body;
+
+      if (!releaseDate || isNaN(new Date(releaseDate).getTime())) {
+        return res.status(400).json({ error: "Valid release date is required" });
+      }
+
+      const updatedGame = await GameService.updateReleaseDate(id, new Date(releaseDate));
+      if (!updatedGame) {
+        return res.status(404).json({ error: `Game with id ${id} not found` });
+      }
+      return res.status(200).json(updatedGame);
+    } catch (error) {
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  }
 }
 
 export default new GameController();

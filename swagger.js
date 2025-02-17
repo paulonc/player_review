@@ -300,6 +300,54 @@
             }
           }
         },
+        "patch": {
+          "summary": "Update game release date by ID",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "releaseDate": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  },
+                  "required": ["releaseDate"]
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Release date updated successfully",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Game"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Valid release date is required"
+            },
+            "404": {
+              "description": "Game with id not found"
+            }
+          }
+        },
         "delete": {
           "summary": "Delete game by ID",
           "parameters": [

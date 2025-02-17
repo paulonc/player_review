@@ -28,6 +28,10 @@ class GameService {
   async deleteGame(id: string): Promise<void> {
     await GameRepository.delete(id);
   }
+
+  async updateReleaseDate(id: string, releaseDate: Date): Promise<Game | null> {
+    return await GameRepository.update(id, { releaseDate });
+  }
 }
 
 export default new GameService();
