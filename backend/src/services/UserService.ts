@@ -65,24 +65,13 @@ class UserService {
     await UserRepository.delete(id);
   }
 
-  async changePassword(
-    id: string,
-    oldPassword: string,
-    newPassword: string
-  ): Promise<void> {
-    const { oldPassword: oldPwd, newPassword: newPwd } =
-      changePasswordSchema.parse({
-        oldPassword,
-        newPassword,
-      });
+  async updatePassword(id: string, newPassword: string): Promise<boolean> {
     const user = await UserRepository.findById(id);
-    if (!user) throw new Error("User not found");
+    if (!user) return false;
 
-    const isMatch = await bcrypt.compare(oldPwd, user.password);
-    if (!isMatch) throw new Error("Incorrect current password");
-
-    const hashedNewPassword = await bcrypt.hash(newPwd, 10);
-    await UserRepository.updatePassword(id, hashedNewPassword);
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    await UserRepository.changePassword(id, hashedPassword);
+    return true;
   }
 }
 

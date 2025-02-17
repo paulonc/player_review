@@ -9,6 +9,7 @@ router.get("/:id", UserController.getUser);
 router.put("/:id", UserController.updateUser);
 router.patch("/:id/password", UserController.changePassword);
 router.delete("/:id", UserController.deleteUser);
+router.patch("/:id", UserController.updatePassword);
 
 
 export default router;
