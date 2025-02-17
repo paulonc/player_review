@@ -15,7 +15,7 @@ class CompanyController {
     try {
       const company = await CompanyService.getCompanyById(req.params.id);
       if (!company)
-        return res.status(404).json({ error: "Company not found" });
+        return res.status(404).json({ error: `Company with id ${req.params.id} not found` });
       return res.status(200).json(company);
     } catch (error) {
       return res.status(500).json({ error: "Internal server error" });
@@ -38,7 +38,7 @@ class CompanyController {
         req.body
       );
       if (!updatedCompany)
-        return res.status(404).json({ error: "Company not found" });
+        return res.status(404).json({ error: `Company with id ${req.params.id} not found` });
       return res.status(200).json(updatedCompany);
     } catch (error) {
       return res.status(500).json({ error: "Internal server error" });

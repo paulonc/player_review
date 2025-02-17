@@ -15,7 +15,7 @@ class UserController {
     try {
       const user = await UserService.getUserById(req.params.id);
 
-      if (!user) return res.status(404).json({ error: "User not found" });
+      if (!user) return res.status(404).json({ error: `User with id ${req.params.id} not found` });
       return res.status(200).json(user);
     } catch (error: Error | any) {
       return res.status(500).json({ error: "Internal server error" });
@@ -40,7 +40,7 @@ class UserController {
         email,
       });
       if (!updatedUser) {
-        return res.status(404).json({ message: "User not found" });
+        return res.status(404).json({ message: `User with id ${id} not found` });
       }
       return res.status(200).json(updatedUser);
     } catch (error) {

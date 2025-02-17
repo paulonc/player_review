@@ -15,7 +15,7 @@ class GameController {
   async getGame(req: Request, res: Response): Promise<Response> {
     try {
       const game = await GameService.getGameById(req.params.id);
-      if (!game) return res.status(404).json({ error: "Game not found" });
+      if (!game) return res.status(404).json({ error: `Game with id ${req.params.id} not found` });
       return res.status(200).json(game);
     } catch (error) {
       return res.status(500).json({ error: "Internal server error" });
@@ -35,7 +35,7 @@ class GameController {
     try {
       const updatedGame = await GameService.updateGame(req.params.id, req.body);
       if (!updatedGame)
-        return res.status(404).json({ error: "Game not found" });
+        return res.status(404).json({ error: `Game with id ${req.params.id} not found` });
       return res.status(200).json(updatedGame);
     } catch (error) {
       return res.status(500).json({ error: "Internal server error" });
