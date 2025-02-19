@@ -7,7 +7,8 @@ class UserController {
       const user = await UserService.register(req.body);
       return res.status(201).json(user);
     } catch (error: any) {
-      return res.status(400).json({ error: "Internal server error" });
+      console.log(error);
+      return res.status(500).json({ error: "Internal server error" });
     }
   }
 
@@ -70,7 +71,7 @@ class UserController {
       await UserService.deleteUser(id);
       return res.status(204).send();
     } catch (error) {
-      return res.status(400).json({ error: "Internal server error" });
+      return res.status(500).json({ error: "Internal server error" });
     }
   }
 
