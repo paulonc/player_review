@@ -9,7 +9,7 @@ services:
     depends_on:
       - db
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/player_review?schema=public
+      - DATABASE_URL=postgresql://postgres:postgres@localhost:5432/player_review?schema=public
     networks:
       - player_review_network
 
