@@ -1,4 +1,6 @@
-COMPOSE=docker compose
+COMPOSE = docker compose
+
+.PHONY:
 
 run:
 	$(COMPOSE) up -d --build
@@ -6,5 +8,14 @@ run:
 stop:
 	$(COMPOSE) down
 
+restart: stop run
+
+logs:
+	$(COMPOSE) logs -f
+
 deps:
-	cd backend && npm install
+	cd backend && npm ci
+
+migrate:
+	cd backend && npx prisma migrate dev
+
