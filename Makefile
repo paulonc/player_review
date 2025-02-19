@@ -1,9 +1,11 @@
 COMPOSE = docker compose
+BACKEND_DIR = backend
 
-.PHONY:
+.PHONY: run stop restart logs deps migrate
 
 run:
 	$(COMPOSE) up -d --build
+	$(MAKE) migrate
 
 stop:
 	$(COMPOSE) down
@@ -14,8 +16,7 @@ logs:
 	$(COMPOSE) logs -f
 
 deps:
-	cd backend && npm ci
+	cd $(BACKEND_DIR) && npm ci
 
 migrate:
-	cd backend && npx prisma migrate dev
-
+	cd $(BACKEND_DIR) && npx prisma migrate dev
