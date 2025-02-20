@@ -7,6 +7,7 @@ router.post("/register", UserController.register);
 router.get("/:id", UserController.getUser);
 router.get("/", UserController.getAllUsers);
 router.put("/:id", UserController.updateUser);
+router.patch("/:id/password", UserController.changePassword);
 router.delete("/:id", UserController.deleteUser);
 
 
