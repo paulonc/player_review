@@ -13,8 +13,7 @@ const userSchema = z.object({
 const changePasswordSchema = z.object({
   oldPassword: z.string().min(1, "The current password is required."),
   newPassword: z.string().min(6, "Password must be at least 6 characters"),
-
-})
+});
 class UserService {
   async register(user: Omit<User, "id" | "createdAt">): Promise<User> {
     const parsedUser = userSchema.parse(user);
@@ -71,13 +70,18 @@ class UserService {
     oldPassword: string,
     newPassword: string
   ): Promise<void> {
+    const { oldPassword: oldPwd, newPassword: newPwd } =
+      changePasswordSchema.parse({
+        oldPassword,
+        newPassword,
+      });
     const user = await UserRepository.findById(id);
     if (!user) throw new Error("User not found");
 
-    const isMatch = await bcrypt.compare(oldPassword, user.password);
+    const isMatch = await bcrypt.compare(oldPwd, user.password);
     if (!isMatch) throw new Error("Incorrect current password");
 
-    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+    const hashedNewPassword = await bcrypt.hash(newPwd, 10);
     await UserRepository.updatePassword(id, hashedNewPassword);
   }
 }
