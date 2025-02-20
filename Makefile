@@ -5,7 +5,6 @@ BACKEND_DIR = backend
 
 run:
 	$(COMPOSE) up -d --build
-	$(MAKE) migrate
 
 stop:
 	$(COMPOSE) down
