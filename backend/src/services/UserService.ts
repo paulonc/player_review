@@ -1,4 +1,4 @@
-import * as bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import UserRepository from "../repositories/UserRepository";
 import { User } from "../models/User";
 
