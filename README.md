@@ -8,6 +8,7 @@ O **Player Review** é um sistema de avaliação de jogos que permite aos usuár
 
 - **Backend**: TypeScript, Express, PostgreSQL
 - **Frontend**: React
+- **API Documentation**: Swagger
 
 ## Funcionalidades
 

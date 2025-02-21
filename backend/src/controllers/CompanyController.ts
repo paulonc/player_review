@@ -2,6 +2,14 @@ import { Request, Response } from "express";
 import CompanyService from "../services/CompanyService";
 
 class CompanyController {
+  async updateCompanyName(req: Request, res: Response): Promise<Response> {
+    try {
+      const updatedCompany = await CompanyService.updateCompanyName(req.params.id, req.body.name);
+      return res.status(200).json(updatedCompany);
+    } catch (error) {
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  }
   async create(req: Request, res: Response): Promise<Response> {
     try {
       const company = await CompanyService.createCompany(req.body);

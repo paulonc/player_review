@@ -2,6 +2,10 @@ import CompanyRepository from "../repositories/CompanyRepository";
 import { Company } from "../models/Company";
 
 class CompanyService {
+  async updateCompanyName(id: string, name: any): Promise<Company | null> {
+    return await CompanyRepository.update(id, { name });
+  }
+
   async createCompany(
     company: Omit<Company, "id" | "createdAt">
   ): Promise<Company> {
