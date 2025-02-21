@@ -49,18 +49,6 @@ class UserController {
     }
   }
 
-  async changePassword(req: Request, res: Response): Promise<Response> {
-    try {
-      const { id } = req.params;
-      const { oldPassword, newPassword } = req.body;
-      
-      await UserService.changePassword(id, oldPassword, newPassword);
-      return res.status(200).json({ message: "Password updated successfully" });
-    } catch (error: any) {
-      return res.status(500).json({ error: "Internal server error" });
-    }
-  }
-
   async deleteUser(req: Request, res: Response): Promise<Response> {
     const { id } = req.params;
     try {

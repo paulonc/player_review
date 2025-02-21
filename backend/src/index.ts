@@ -14,4 +14,7 @@ app.use("/companies", companyRoutes)
 setupSwagger(app);
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+    console.log(`Swagger UI is available at http://localhost:${PORT}/api-docs`);
+});

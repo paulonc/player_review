@@ -26,13 +26,36 @@ router.get("/", UserController.getAllUsers);
 
 /**
  * @swagger
+ * /users/{id}:
+ *   get:
+ *     summary: Get a user by ID
+ *     description: Returns a user by their unique identifier.
+ *     tags:
+ *       - Users
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The unique identifier of the user.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved user.
+ *       404:
+ *         description: User not found.
+ */
+router.get("/:id", UserController.getUser);
+
+/**
+ * @swagger
  * /users:
  *   post:
  *     summary: Create a new user
  *     description: Adds a new user to the system.
  *     tags:
  *       - Users
-*     requestBody:
+ *     requestBody:
  *       required: true
  *       content:
  *         application/json:
@@ -44,7 +67,7 @@ router.get("/", UserController.getAllUsers);
  *               - password
  *               - role
  *             properties:
- *               name:
+ *               username:
  *                 type: string
  *                 example: "John Doe"
  *               email:
@@ -53,33 +76,116 @@ router.get("/", UserController.getAllUsers);
  *               password:
  *                 type: string
  *                 example: "123456"
- *               type:
+ *               role:
  *                 type: string
- *                 example: "admin"
+ *                 enum: ["USER", "ADMIN"]
+ *                 example: "ADMIN"
  *     responses:
  *       201:
  *         description: User created successfully.
+ *       500:
+ *         description: Internal server error.
  */
 router.post("/", UserController.register);
 
 /**
  * @swagger
  * /users/{id}:
- *   get:
- *     summary: Get a user by ID
- *     description: Returns a user by their unique identifier.
+ *   put:
+ *     summary: Update a user by ID
+ *     description: Updates a user's information by their unique identifier.
  *     tags:
  *       - Users
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The unique identifier of the user.
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               role:
+ *                 type: string
+ *                 enum: ["USER", "ADMIN"]
  *     responses:
  *       200:
- *         description: Successfully retrieved user.
+ *         description: User updated successfully.
+ *       404:
+ *         description: User not found.
+ *       500:
+ *         description: Internal server error.
  */
-router.get("/:id", UserController.getUser);
-
 router.put("/:id", UserController.updateUser);
-router.patch("/:id/password", UserController.changePassword);
-router.delete("/:id", UserController.deleteUser);
+
+/**
+ * @swagger
+ * /users/{id}:
+ *   patch:
+ *     summary: Update a user's password by ID
+ *     description: Updates a user's password by their unique identifier.
+ *     tags:
+ *       - Users
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The unique identifier of the user.
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               newPassword:
+ *                 type: string
+ *                 example: "newpassword123"
+ *     responses:
+ *       200:
+ *         description: Password updated successfully.
+ *       404:
+ *         description: User not found.
+ *       500:
+ *         description: Internal server error.
+ */ 
 router.patch("/:id", UserController.updatePassword);
+
+/**
+ * @swagger
+ * /users/{id}:
+ *   delete:
+ *     summary: Delete a user by ID
+ *     description: Deletes a user by their unique identifier.
+ *     tags:
+ *       - Users
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The unique identifier of the user.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: User deleted successfully.
+ *       404:
+ *         description: User not found.
+ *       500:
+ *         description: Internal server error.
+ */
+router.delete("/:id", UserController.deleteUser);
 
 
 export default router;
