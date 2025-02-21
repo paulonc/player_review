@@ -1,12 +1,21 @@
 import express from "express";
+import userRoutes from "./routes/UserRoutes";
+import gameRoutes from "./routes/GameRoutes"
+import companyRoutes from "./routes/CompanyRoutes"
+import { setupSwagger } from "./config/swagger";
+import logger from "./config/logger";
 
 const app = express();
-const PORT = 3000;
+app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.send("Hello, world!");
-});
+app.use("/users", userRoutes);
+app.use("/games", gameRoutes)
+app.use("/companies", companyRoutes)
 
+setupSwagger(app);
+
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+    logger.info(`Server running on port ${PORT}`);
+    logger.info(`Swagger UI is available at http://localhost:${PORT}/api-docs`);
 });
