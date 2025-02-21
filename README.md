@@ -65,6 +65,14 @@ O sistema utiliza um banco de dados PostgreSQL estruturado da seguinte forma:
 | `role`       | ENUM         | Permissão (`user` ou `admin`)  |
 | `created_at` | TIMESTAMP    | Data de criação do registro    |
 
+### Diagrama de Entidade-Relacionamento
+
+![Diagrama de Entidade-Relacionamento](./backend/docs/db.svg)
+
+### Diagrama de Arquitetura
+
+![Diagrama de Arquitetura](./backend/docs/arq.svg)
+
 ### Clonando o Repositório
 
 ```sh

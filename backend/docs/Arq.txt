@@ -1,0 +1,62 @@
+@startuml
+skinparam packageStyle rectangle
+
+package "Frontend" {
+  [Client]
+}
+
+package "Backend" {
+  package "Routes" {
+    [UserRoutes]
+    [GameRoutes]
+    [CompanyRoutes]
+  }
+
+  package "Controllers" {
+    [UserController]
+    [GameController]
+    [CompanyController]
+  }
+
+  package "Services" {
+    [UserService]
+    [GameService]
+    [CompanyService]
+  }
+
+  package "Repositories" {
+    [UserRepository]
+    [GameRepository]
+    [CompanyRepository]
+  }
+}
+
+package "Database" {
+  [PostgreSQL]
+  [Users]
+  [Games]
+  [Companies]
+  [Reviews]
+}
+
+[Client] --> [UserRoutes]
+[Client] --> [GameRoutes]
+[Client] --> [CompanyRoutes]
+
+[UserRoutes] --> [UserController]
+[GameRoutes] --> [GameController]
+[CompanyRoutes] --> [CompanyController]
+
+[UserController] --> [UserService]
+[GameController] --> [GameService]
+[CompanyController] --> [CompanyService]
+
+[UserService] --> [UserRepository]
+[GameService] --> [GameRepository]
+[CompanyService] --> [CompanyRepository]
+
+[UserRepository] --> [PostgreSQL]
+[GameRepository] --> [PostgreSQL]
+[CompanyRepository] --> [PostgreSQL]
+
+@enduml

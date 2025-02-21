@@ -1,0 +1,45 @@
+@startuml
+
+entity User {
+  * id : UUID
+  --
+  username : VARCHAR(255)
+  email : VARCHAR(255)
+  password : TEXT
+  role : ENUM('USER', 'ADMIN')
+  created_at : TIMESTAMP
+}
+
+entity Review {
+  * id : UUID
+  --
+  userId : UUID
+  gameId : UUID
+  rating : INTEGER
+  review : TEXT
+  created_at : TIMESTAMP
+}
+
+entity Game {
+  * id : UUID
+  --
+  title : VARCHAR(255)
+  description : TEXT
+  release_date : TIMESTAMP
+  created_at : TIMESTAMP
+  companyId : UUID
+}
+
+entity Company {
+  * id : UUID
+  --
+  name : VARCHAR(255)
+  country : VARCHAR(255)
+  created_at : TIMESTAMP
+}
+
+User ||--o{ Review : "has"
+Game ||--o{ Review : "has"
+Company ||--o{ Game : "owns"
+
+@enduml
