@@ -21,6 +21,8 @@ const router = Router();
  *     responses:
  *       200:
  *         description: Successfully retrieved game list.
+ *       500:
+ *          description: Internal server error.
  */
 router.get("/", GameController.getAllGames);
 
@@ -44,6 +46,8 @@ router.get("/", GameController.getAllGames);
  *         description: Successfully retrieved game.
  *       404:
  *         description: Game not found.
+ *       500:
+ *          description: Internal server error.
  */
 router.get("/:id", GameController.getGame);
 

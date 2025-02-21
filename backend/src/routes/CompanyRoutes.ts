@@ -21,6 +21,8 @@ const router = Router();
  *     responses:
  *       200:
  *         description: Successfully retrieved company list.
+ *       500:
+ *          description: Internal server error.
  */
 router.get("/", CompanyController.getAllCompanies);
 
@@ -45,6 +47,8 @@ router.get("/", CompanyController.getAllCompanies);
  *         description: Successfully retrieved company.
  *       404:
  *         description: Company not found.
+ *       500:
+ *          description: Internal server error.
  */
 router.get("/:id", CompanyController.getCompany);
 

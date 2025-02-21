@@ -21,6 +21,8 @@ const router = Router();
  *     responses:
  *       200:
  *         description: Successfully retrieved user list.
+ *       500:
+ *          description: Internal server error.
  */ 
 router.get("/", UserController.getAllUsers);
 
@@ -44,6 +46,8 @@ router.get("/", UserController.getAllUsers);
  *         description: Successfully retrieved user.
  *       404:
  *         description: User not found.
+ *       500:
+ *          description: Internal server error.
  */
 router.get("/:id", UserController.getUser);
 
