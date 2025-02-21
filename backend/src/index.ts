@@ -2,7 +2,8 @@ import express from "express";
 import userRoutes from "./routes/UserRoutes";
 import gameRoutes from "./routes/GameRoutes"
 import companyRoutes from "./routes/CompanyRoutes"
-import { setupSwagger } from "./swagger";
+import { setupSwagger } from "./config/swagger";
+import logger from "./config/logger";
 
 const app = express();
 app.use(express.json());
@@ -15,6 +16,6 @@ setupSwagger(app);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-    console.log(`Swagger UI is available at http://localhost:${PORT}/api-docs`);
+    logger.info(`Server running on port ${PORT}`);
+    logger.info(`Swagger UI is available at http://localhost:${PORT}/api-docs`);
 });
