@@ -19,7 +19,9 @@ class UserController {
 
       if (!user) {
         logger.warn(`User with id ${req.params.id} not found`);
-        return res.status(404).json({ error: `User with id ${req.params.id} not found` });
+        return res
+          .status(404)
+          .json({ error: `User with id ${req.params.id} not found` });
       }
       return res.status(200).json(user);
     } catch (error: Error | any) {
@@ -47,7 +49,9 @@ class UserController {
         email,
       });
       if (!updatedUser) {
-        return res.status(404).json({ message: `User with id ${id} not found` });
+        return res
+          .status(404)
+          .json({ message: `User with id ${id} not found` });
       }
       return res.status(200).json(updatedUser);
     } catch (error) {
@@ -61,7 +65,8 @@ class UserController {
     try {
       const user = await UserService.getUserById(id);
 
-      if (!user) return res.status(404).json({ error: `User with id ${id} not found` });
+      if (!user)
+        return res.status(404).json({ error: `User with id ${id} not found` });
 
       await UserService.deleteUser(id);
       return res.status(204).send();
@@ -73,17 +78,15 @@ class UserController {
 
   async updatePassword(req: Request, res: Response): Promise<Response> {
     const { id } = req.params;
-    const { newPassword } = req.body;
+    const { oldPassword, newPassword } = req.body;
 
     try {
       const user = await UserService.getUserById(id);
 
-      if (!user) return res.status(404).json({ error: `User with id ${id} not found` });
+      if (!user)
+        return res.status(404).json({ error: `User with id ${id} not found` });
 
-      const isPasswordUpdated = await UserService.updatePassword(id, newPassword);
-      if (!isPasswordUpdated) {
-        return res.status(400).json({ error: "Invalid password" });
-      }
+      await UserService.changePassword(id, oldPassword, newPassword);
 
       return res.status(200).json({ message: "Password changed successfully" });
     } catch (error) {

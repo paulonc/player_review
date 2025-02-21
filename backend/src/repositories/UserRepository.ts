@@ -43,7 +43,7 @@ class UserRepository {
     });
   }
 
-  async changePassword(id: string, newPassword: string): Promise<void> {
+  async updatePassword(id: string, newPassword: string): Promise<void> {
     await prisma.user.update({
       where: { id },
       data: { password: newPassword },
