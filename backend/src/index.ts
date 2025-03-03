@@ -19,3 +19,5 @@ app.listen(PORT, () => {
     logger.info(`Server running on port ${PORT}`);
     logger.info(`Swagger UI is available at http://localhost:${PORT}/api-docs`);
 });
+
+export default app;
