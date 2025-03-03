@@ -1,3 +1,8 @@
+import {
+  ValidationError,
+  NotFoundError,
+  ConflictError,
+} from "../errors/AppError";
 import bcrypt from "bcryptjs";
 import UserRepository from "../repositories/UserRepository";
 import { User } from "../models/User";
@@ -19,17 +24,17 @@ class UserService {
     const parsedUser = userSchema.parse(user);
 
     const existingUser = await UserRepository.findByEmail(parsedUser.email);
-    if (existingUser) throw new Error("Email already in use");
+    if (existingUser) throw new ConflictError("Email already in use");
 
     const hashedPassword = await bcrypt.hash(user.password, 10);
     return await UserRepository.create({ ...user, password: hashedPassword });
   }
 
   async getUserById(id: string): Promise<Omit<User, "password"> | null> {
-    if (!id) throw new Error("User ID is required");
+    if (!id) throw new ValidationError("User ID is required");
 
     const user = await UserRepository.findById(id);
-    if (!user) throw new Error("User not found");
+    if (!user) throw new NotFoundError("User not found");
     const { password, ...userWithoutPassword } = user;
     return userWithoutPassword;
   }
@@ -42,25 +47,26 @@ class UserService {
     id: string,
     userData: Partial<Omit<User, "id" | "password" | "createdAt">>
   ): Promise<Omit<User, "password"> | null> {
-    if (!id) throw new Error("User ID is required");
+    if (!id) throw new ValidationError("User ID is required");
+
+    const user = await UserRepository.findById(id);
+    if (!user) throw new NotFoundError("User not found");
 
     if (userData.email) {
       const existingUser = await UserRepository.findByEmail(userData.email);
       if (existingUser && existingUser.id !== id) {
-        throw new Error("Email is already in use by another user");
+        throw new ConflictError("Email is already in use by another user");
       }
     }
     const updatedUser = await UserRepository.update(id, userData);
-    if (!updatedUser) throw new Error("User not found");
-
     return updatedUser;
   }
 
   async deleteUser(id: string): Promise<void> {
-    if (!id) throw new Error("User ID is required");
+    if (!id) throw new ValidationError("User ID is required");
 
     const user = await UserRepository.findById(id);
-    if (!user) throw new Error("User not found");
+    if (!user) throw new NotFoundError("User not found");
 
     await UserRepository.delete(id);
   }
@@ -76,10 +82,10 @@ class UserService {
         newPassword,
       });
     const user = await UserRepository.findById(id);
-    if (!user) throw new Error("User not found");
+    if (!user) throw new NotFoundError("User not found");
 
     const isMatch = await bcrypt.compare(oldPwd, user.password);
-    if (!isMatch) throw new Error("Incorrect current password");
+    if (!isMatch) throw new ValidationError("Incorrect current password");
 
     const hashedNewPassword = await bcrypt.hash(newPwd, 10);
     await UserRepository.updatePassword(id, hashedNewPassword);
