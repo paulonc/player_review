@@ -1,46 +1,55 @@
-import { Request, Response } from "express";
-import UserService from "../services/UserService";
-import logger from "../config/logger";
+import { Request, Response, NextFunction } from 'express';
+import UserService from '../services/UserService';
+import logger from '../config/logger';
 
 class UserController {
-  async register(req: Request, res: Response): Promise<Response> {
+  async register(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response | void> {
     try {
       const user = await UserService.register(req.body);
       return res.status(201).json(user);
-    } catch (error: any) {
-      logger.error("Error registering user", error);
-      return res.status(500).json({ error: "Internal server error" });
+    } catch (error) {
+      logger.error('Error registering user', error);
+      next(error);
     }
   }
 
-  async getUser(req: Request, res: Response): Promise<Response> {
+  async getUser(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response | void> {
     try {
       const user = await UserService.getUserById(req.params.id);
-
-      if (!user) {
-        logger.warn(`User with id ${req.params.id} not found`);
-        return res
-          .status(404)
-          .json({ error: `User with id ${req.params.id} not found` });
-      }
       return res.status(200).json(user);
-    } catch (error: Error | any) {
-      logger.error("Error fetching user", error);
-      return res.status(500).json({ error: "Internal server error" });
+    } catch (error) {
+      logger.error('Error getting user', error);
+      next(error);
     }
   }
 
-  async getAllUsers(req: Request, res: Response): Promise<Response> {
+  async getAllUsers(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response | void> {
     try {
       const users = await UserService.getAllUsers();
       return res.status(200).json(users);
     } catch (error) {
-      logger.error("Error fetching all users", error);
-      return res.status(500).json({ error: "Internal server error" });
+      logger.error('Error getting all users', error);
+      next(error);
     }
   }
 
-  async updateUser(req: Request, res: Response): Promise<Response> {
+  async updateUser(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response | void> {
     const { id } = req.params;
     const { username, email } = req.body;
     try {
@@ -48,50 +57,42 @@ class UserController {
         username,
         email,
       });
-      if (!updatedUser) {
-        return res
-          .status(404)
-          .json({ message: `User with id ${id} not found` });
-      }
       return res.status(200).json(updatedUser);
     } catch (error) {
-      logger.error("Error updating user", error);
-      return res.status(500).json({ error: "Internal server error" });
+      logger.error('Error updating user', error);
+      next(error);
     }
   }
 
-  async deleteUser(req: Request, res: Response): Promise<Response> {
+  async deleteUser(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response | void> {
     const { id } = req.params;
     try {
-      const user = await UserService.getUserById(id);
-
-      if (!user)
-        return res.status(404).json({ error: `User with id ${id} not found` });
-
       await UserService.deleteUser(id);
       return res.status(204).send();
     } catch (error) {
-      logger.error("Error deleting user", error);
-      return res.status(500).json({ error: "Internal server error" });
+      logger.error('Error deleting user', error);
+      next(error);
     }
   }
 
-  async updatePassword(req: Request, res: Response): Promise<Response> {
+  async updatePassword(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response | void> {
     const { id } = req.params;
     const { oldPassword, newPassword } = req.body;
 
     try {
-      const user = await UserService.getUserById(id);
-
-      if (!user)
-        return res.status(404).json({ error: `User with id ${id} not found` });
-
       await UserService.changePassword(id, oldPassword, newPassword);
-
-      return res.status(200).json({ message: "Password changed successfully" });
+      return res.status(200).json({ message: 'Password changed successfully' });
     } catch (error) {
-      logger.error("Error updating password", error);
-      return res.status(500).json({ error: "Internal server error" });
+      logger.error('Error changing password', error);
+      next(error);
     }
   }
 }

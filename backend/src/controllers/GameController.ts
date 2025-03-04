@@ -1,81 +1,93 @@
-import { Request, Response } from "express";
-import GameService from "../services/GameService";
-import logger from "../config/logger";
-
+import { Request, Response, NextFunction } from 'express';
+import GameService from '../services/GameService';
+import logger from '../config/logger';
 class GameController {
-  async create(req: Request, res: Response): Promise<Response> {
+  async create(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response | void> {
     try {
       const game = await GameService.createGame(req.body);
       return res.status(201).json(game);
     } catch (error) {
-      logger.error("Error creating game", error);
-      return res.status(500).json({ error: "Internal server error" });
+      logger.error('Error creating game', error);
+      next(error);
     }
   }
 
-  async getGame(req: Request, res: Response): Promise<Response> {
+  async getGame(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response | void> {
     try {
       const game = await GameService.getGameById(req.params.id);
-      if (!game) {
-        logger.warn(`Game with id ${req.params.id} not found`);
-        return res.status(404).json({ error: `Game with id ${req.params.id} not found` });
-      }
       return res.status(200).json(game);
     } catch (error) {
-      logger.error("Error fetching game", error);
-      return res.status(500).json({ error: "Internal server error" });
+      logger.error('Error getting game', error);
+      next(error);
     }
   }
 
-  async getAllGames(req: Request, res: Response): Promise<Response> {
+  async getAllGames(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response | void> {
     try {
       const games = await GameService.getAllGames();
       return res.status(200).json(games);
     } catch (error) {
-      logger.error("Error fetching all games", error);
-      return res.status(500).json({ error: "Internal server error" });
+      logger.error('Error getting all games', error);
+      next(error);
     }
   }
 
-  async update(req: Request, res: Response): Promise<Response> {
+  async update(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response | void> {
     try {
       const updatedGame = await GameService.updateGame(req.params.id, req.body);
-      if (!updatedGame)
-        return res.status(404).json({ error: `Game with id ${req.params.id} not found` });
       return res.status(200).json(updatedGame);
     } catch (error) {
-      logger.error("Error updating game", error);
-      return res.status(500).json({ error: "Internal server error" });
+      logger.error('Error updating game', error);
+      next(error);
     }
   }
 
-  async delete(req: Request, res: Response): Promise<Response> {
+  async delete(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response | void> {
     try {
       await GameService.deleteGame(req.params.id);
       return res.status(204).send();
     } catch (error) {
-      logger.error("Error deleting game", error);
-      return res.status(500).json({ error: "Internal server error" });
+      logger.error('Error deleting game', error);
+      next(error);
     }
   }
 
-  async updateReleaseDate(req: Request, res: Response): Promise<Response> {
+  async updateReleaseDate(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response | void> {
     try {
       const { id } = req.params;
       const { releaseDate } = req.body;
-
-      if (!releaseDate || isNaN(new Date(releaseDate).getTime())) {
-        return res.status(400).json({ error: "Valid release date is required" });
-      }
-
-      const updatedGame = await GameService.updateReleaseDate(id, new Date(releaseDate));
-      if (!updatedGame) {
-        return res.status(404).json({ error: `Game with id ${id} not found` });
-      }
+      const updatedGame = await GameService.updateReleaseDate(
+        id,
+        new Date(releaseDate),
+      );
       return res.status(200).json(updatedGame);
     } catch (error) {
-      logger.error("Error updating release date", error);
-      return res.status(500).json({ error: "Internal server error" });
+      logger.error('Error updating release date', error);
+      next(error);
     }
   }
 }

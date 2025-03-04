@@ -20,3 +20,7 @@ deps:
 
 migrate:
 	cd $(BACKEND_DIR) && npx prisma migrate dev
+
+test:
+	$(COMPOSE) up -d --build
+	cd $(BACKEND_DIR) && npm test

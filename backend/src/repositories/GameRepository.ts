@@ -1,8 +1,8 @@
-import prisma from "../config/prisma";
-import { Game } from "../models/Game";
+import prisma from '../config/prisma';
+import { Game } from '../models/Game';
 
 class GameRepository {
-  async create(game: Omit<Game, "id" | "created_at">): Promise<Game> {
+  async create(game: Omit<Game, 'id' | 'created_at'>): Promise<Game> {
     return await prisma.game.create({ data: game });
   }
 
@@ -16,7 +16,7 @@ class GameRepository {
 
   async update(
     id: string,
-    gameData: Partial<Omit<Game, "id" | "created_at">>
+    gameData: Partial<Omit<Game, 'id' | 'created_at'>>,
   ): Promise<Game | null> {
     return await prisma.game.update({ where: { id }, data: gameData });
   }

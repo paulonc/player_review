@@ -1,71 +1,94 @@
-import { Request, Response } from "express";
-import CompanyService from "../services/CompanyService";
-import logger from "../config/logger";
-
+import { Request, Response, NextFunction } from 'express';
+import CompanyService from '../services/CompanyService';
+import logger from '../config/logger';
 class CompanyController {
-  async updateCompanyName(req: Request, res: Response): Promise<Response> {
-    try {
-      const updatedCompany = await CompanyService.updateCompanyName(req.params.id, req.body.name);
-      return res.status(200).json(updatedCompany);
-    } catch (error) {
-      logger.error("Error updating company name", error);
-      return res.status(500).json({ error: "Internal server error" });
-    }
-  }
-  async create(req: Request, res: Response): Promise<Response> {
+  async create(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response | void> {
     try {
       const company = await CompanyService.createCompany(req.body);
       return res.status(201).json(company);
     } catch (error) {
-      logger.error("Error creating company", error);
-      return res.status(500).json({ error: "Internal server error" });
+      logger.error('Error creating company', error);
+      next(error);
     }
   }
 
-  async getCompany(req: Request, res: Response): Promise<Response> {
+  async getCompany(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response | void> {
     try {
       const company = await CompanyService.getCompanyById(req.params.id);
-      if (!company)
-        return res.status(404).json({ error: `Company with id ${req.params.id} not found` });
       return res.status(200).json(company);
     } catch (error) {
-      logger.error("Error fetching company", error);
-      return res.status(500).json({ error: "Internal server error" });
+      logger.error('Error getting company', error);
+      next(error);
     }
   }
 
-  async getAllCompanies(req: Request, res: Response): Promise<Response> {
+  async getAllCompanies(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response | void> {
     try {
-      const companies  = await CompanyService.getAllCompanys();
+      const companies = await CompanyService.getAllCompanys();
       return res.status(200).json(companies);
     } catch (error) {
-      logger.error("Error fetching all companies", error);
-      return res.status(500).json({ error: "Internal server error" });
+      logger.error('Error getting all companies', error);
+      next(error);
     }
   }
 
-  async update(req: Request, res: Response): Promise<Response> {
+  async update(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response | void> {
     try {
       const updatedCompany = await CompanyService.updateCompany(
         req.params.id,
-        req.body
+        req.body,
       );
-      if (!updatedCompany)
-        return res.status(404).json({ error: `Company with id ${req.params.id} not found` });
       return res.status(200).json(updatedCompany);
     } catch (error) {
-      logger.error("Error updating company", error);
-      return res.status(500).json({ error: "Internal server error" });
+      logger.error('Error updating company', error);
+      next(error);
     }
   }
 
-  async delete(req: Request, res: Response): Promise<Response> {
+  async updateCompanyName(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response | void> {
+    try {
+      const updatedCompany = await CompanyService.updateCompany(
+        req.params.id,
+        req.body.name,
+      );
+      return res.status(200).json(updatedCompany);
+    } catch (error) {
+      logger.error('Error updating company name', error);
+      next(error);
+    }
+  }
+
+  async delete(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response | void> {
     try {
       await CompanyService.deleteCompany(req.params.id);
       return res.status(204).send();
     } catch (error) {
-      logger.error("Error deleting company", error);
-      return res.status(500).json({ error: "Internal server error" });
+      logger.error('Error deleting company', error);
+      next(error);
     }
   }
 }
