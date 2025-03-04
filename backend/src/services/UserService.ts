@@ -35,7 +35,7 @@ class UserService {
 
     const user = await UserRepository.findById(id);
     if (!user) throw new NotFoundError('User not found');
-    const { password, ...userWithoutPassword } = user;
+    const { password: _password, ...userWithoutPassword } = user;
     return userWithoutPassword;
   }
 

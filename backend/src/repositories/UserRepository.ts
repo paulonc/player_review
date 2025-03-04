@@ -1,4 +1,3 @@
-import { where } from 'sequelize';
 import prisma from '../config/prisma';
 import { User } from '../models/User';
 
