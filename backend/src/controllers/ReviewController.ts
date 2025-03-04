@@ -25,7 +25,7 @@ class ReviewController {
     try {
       const review = await ReviewService.getReviewById(req.params.id);
       return res.status(200).json(review);
-    } catch (error: any) {
+    } catch (error) {
       logger.error('Error fetching review', error);
       next(error);
     }
@@ -39,7 +39,7 @@ class ReviewController {
     try {
       const reviews = await ReviewService.getAllReviews();
       return res.status(200).json(reviews);
-    } catch (error: any) {
+    } catch (error) {
       logger.error('Error fetching reviews', error);
       next(error);
     }
@@ -54,7 +54,7 @@ class ReviewController {
     try {
       const updatedReview = await ReviewService.update(id, req.body);
       return res.status(200).json(updatedReview);
-    } catch (error: any) {
+    } catch (error) {
       logger.error('Error updating review', error);
       next(error);
     }
@@ -69,7 +69,7 @@ class ReviewController {
     try {
       const updatedReview = await ReviewService.update(id, req.body);
       return res.status(200).json(updatedReview);
-    } catch (error: any) {
+    } catch (error) {
       logger.error('Error updating review', error);
       next(error);
     }
@@ -84,7 +84,7 @@ class ReviewController {
     try {
       await ReviewService.delete(id);
       return res.status(204).send();
-    } catch (error: any) {
+    } catch (error) {
       logger.error('Error deleting review', error);
       next(error);
     }
