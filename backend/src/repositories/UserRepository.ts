@@ -1,9 +1,9 @@
-import { where } from "sequelize";
-import prisma from "../config/prisma";
-import { User } from "../models/User";
+import { where } from 'sequelize';
+import prisma from '../config/prisma';
+import { User } from '../models/User';
 
 class UserRepository {
-  async create(user: Omit<User, "id" | "createdAt">): Promise<User> {
+  async create(user: Omit<User, 'id' | 'createdAt'>): Promise<User> {
     return await prisma.user.create({ data: user });
   }
 
@@ -15,7 +15,7 @@ class UserRepository {
     return await prisma.user.findUnique({ where: { id } });
   }
 
-  async findAll(): Promise<Omit<User, "password">[]> {
+  async findAll(): Promise<Omit<User, 'password'>[]> {
     return await prisma.user.findMany({
       select: {
         id: true,
@@ -29,7 +29,7 @@ class UserRepository {
 
   async update(
     id: string,
-    userData: Partial<Omit<User, "id" | "password" | "createdAt">>
+    userData: Partial<Omit<User, 'id' | 'password' | 'createdAt'>>,
   ): Promise<User> {
     return await prisma.user.update({
       where: { id },

@@ -1,5 +1,5 @@
-import { Router } from "express";
-import ReviewController from "../controllers/ReviewController";
+import { Router } from 'express';
+import ReviewController from '../controllers/ReviewController';
 
 const router = Router();
 
@@ -24,7 +24,7 @@ const router = Router();
  *       500:
  *         description: Internal server error.
  */
-router.get("/", ReviewController.getAllReviews);
+router.get('/', ReviewController.getAllReviews);
 
 /**
  * @swagger
@@ -49,7 +49,7 @@ router.get("/", ReviewController.getAllReviews);
  *       500:
  *         description: Internal server error.
  */
-router.get("/:id", ReviewController.getReview);
+router.get('/:id', ReviewController.getReview);
 
 /**
  * @swagger
@@ -88,7 +88,7 @@ router.get("/:id", ReviewController.getReview);
  *       500:
  *         description: Internal server error.
  */
-router.post("/", ReviewController.createReview);
+router.post('/', ReviewController.createReview);
 
 /**
  * @swagger
@@ -124,7 +124,7 @@ router.post("/", ReviewController.createReview);
  *       500:
  *         description: Internal server error.
  */
-router.put("/:id", ReviewController.updateReview);
+router.put('/:id', ReviewController.updateReview);
 
 /**
  * @swagger
@@ -160,8 +160,7 @@ router.put("/:id", ReviewController.updateReview);
  *       500:
  *         description: Internal server error.
  */
-router.patch("/:id", ReviewController.patchReview);
-
+router.patch('/:id', ReviewController.patchReview);
 
 /**
  * @swagger
@@ -184,6 +183,6 @@ router.patch("/:id", ReviewController.patchReview);
  *       500:
  *         description: Internal server error.
  */
-router.delete("/:id", ReviewController.deleteReview);
+router.delete('/:id', ReviewController.deleteReview);
 
 export default router;

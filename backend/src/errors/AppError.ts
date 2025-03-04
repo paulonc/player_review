@@ -9,25 +9,25 @@ class AppError extends Error {
 }
 
 class NotFoundError extends AppError {
-  constructor(message = "Resource not found") {
+  constructor(message = 'Resource not found') {
     super(message, 404);
   }
 }
 
 class ValidationError extends AppError {
-  constructor(message = "Invalid data") {
+  constructor(message = 'Invalid data') {
     super(message, 400);
   }
 }
 
 class UnauthorizedError extends AppError {
-  constructor(message = "Unauthorized") {
+  constructor(message = 'Unauthorized') {
     super(message, 401);
   }
 }
 
 class ConflictError extends AppError {
-  constructor(message = "Conflict error") {
+  constructor(message = 'Conflict error') {
     super(message, 409);
   }
 }

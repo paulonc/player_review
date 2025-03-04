@@ -1,10 +1,8 @@
-import prisma from "../config/prisma";
-import { Company } from "../models/Company";
+import prisma from '../config/prisma';
+import { Company } from '../models/Company';
 
 class CompanyRepository {
-  async create(
-    company: Omit<Company, "id" | "createdAt">
-  ): Promise<Company> {
+  async create(company: Omit<Company, 'id' | 'createdAt'>): Promise<Company> {
     return await prisma.company.create({ data: company });
   }
 
@@ -18,7 +16,7 @@ class CompanyRepository {
 
   async update(
     id: string,
-    companyData: Partial<Omit<Company, "id" | "createdAt">>
+    companyData: Partial<Omit<Company, 'id' | 'createdAt'>>,
   ): Promise<Company | null> {
     return await prisma.company.update({
       where: { id },

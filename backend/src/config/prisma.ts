@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from '@prisma/client';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -17,7 +17,9 @@ prisma.$use(async (params: any, next: any) => {
   const result = await next(params);
   const after = Date.now();
 
-  console.log(`Query ${params.model}.${params.action} took ${after - before}ms`);
+  console.log(
+    `Query ${params.model}.${params.action} took ${after - before}ms`,
+  );
   return result;
 });
 

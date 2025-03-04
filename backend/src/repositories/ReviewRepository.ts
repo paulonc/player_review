@@ -1,8 +1,8 @@
-import prisma from "../config/prisma";
-import { Review } from "../models/Review";
+import prisma from '../config/prisma';
+import { Review } from '../models/Review';
 
 class ReviewRepository {
-  async create(review: Omit<Review, "id" | "createdAt">): Promise<Review> {
+  async create(review: Omit<Review, 'id' | 'createdAt'>): Promise<Review> {
     return await prisma.review.create({ data: review });
   }
 
@@ -16,7 +16,7 @@ class ReviewRepository {
 
   async update(
     id: string,
-    reviewData: Partial<Omit<Review, "id" | "createdAt">>
+    reviewData: Partial<Omit<Review, 'id' | 'createdAt'>>,
   ): Promise<Review> {
     return await prisma.review.update({
       where: { id },

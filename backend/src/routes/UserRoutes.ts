@@ -1,5 +1,5 @@
-import { Router } from "express";
-import UserController from "../controllers/UserController";
+import { Router } from 'express';
+import UserController from '../controllers/UserController';
 
 const router = Router();
 
@@ -23,8 +23,8 @@ const router = Router();
  *         description: Successfully retrieved user list.
  *       500:
  *          description: Internal server error.
- */ 
-router.get("/", UserController.getAllUsers);
+ */
+router.get('/', UserController.getAllUsers);
 
 /**
  * @swagger
@@ -49,7 +49,7 @@ router.get("/", UserController.getAllUsers);
  *       500:
  *          description: Internal server error.
  */
-router.get("/:id", UserController.getUser);
+router.get('/:id', UserController.getUser);
 
 /**
  * @swagger
@@ -90,7 +90,7 @@ router.get("/:id", UserController.getUser);
  *       500:
  *         description: Internal server error.
  */
-router.post("/", UserController.register);
+router.post('/', UserController.register);
 
 /**
  * @swagger
@@ -129,7 +129,7 @@ router.post("/", UserController.register);
  *       500:
  *         description: Internal server error.
  */
-router.put("/:id", UserController.updateUser);
+router.put('/:id', UserController.updateUser);
 
 /**
  * @swagger
@@ -163,8 +163,8 @@ router.put("/:id", UserController.updateUser);
  *         description: User not found.
  *       500:
  *         description: Internal server error.
- */ 
-router.patch("/:id", UserController.updatePassword);
+ */
+router.patch('/:id', UserController.updatePassword);
 
 /**
  * @swagger
@@ -189,7 +189,6 @@ router.patch("/:id", UserController.updatePassword);
  *       500:
  *         description: Internal server error.
  */
-router.delete("/:id", UserController.deleteUser);
-
+router.delete('/:id', UserController.deleteUser);
 
 export default router;

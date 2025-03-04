@@ -1,5 +1,5 @@
-import { Router } from "express";
-import CompanyController from "../controllers/CompanyController";
+import { Router } from 'express';
+import CompanyController from '../controllers/CompanyController';
 
 const router = Router();
 
@@ -24,7 +24,7 @@ const router = Router();
  *       500:
  *          description: Internal server error.
  */
-router.get("/", CompanyController.getAllCompanies);
+router.get('/', CompanyController.getAllCompanies);
 
 /**
  * @swagger
@@ -40,7 +40,7 @@ router.get("/", CompanyController.getAllCompanies);
  *         required: true
  *         description: The unique identifier of the company.
  *         schema:
- *           type: string   
+ *           type: string
  *           example: "123e4567-e89b-12d3-a456-426614174000"
  *     responses:
  *       200:
@@ -50,7 +50,7 @@ router.get("/", CompanyController.getAllCompanies);
  *       500:
  *          description: Internal server error.
  */
-router.get("/:id", CompanyController.getCompany);
+router.get('/:id', CompanyController.getCompany);
 
 /**
  * @swagger
@@ -79,7 +79,7 @@ router.get("/:id", CompanyController.getCompany);
  *       500:
  *         description: Internal server error.
  */
-router.post("/", CompanyController.create);
+router.post('/', CompanyController.create);
 
 /**
  * @swagger
@@ -118,7 +118,7 @@ router.post("/", CompanyController.create);
  *       500:
  *         description: Internal server error.
  */
-router.put("/:id", CompanyController.update);
+router.put('/:id', CompanyController.update);
 
 /**
  * @swagger
@@ -154,7 +154,7 @@ router.put("/:id", CompanyController.update);
  *       500:
  *         description: Internal server error.
  */
-router.patch("/:id", CompanyController.updateCompanyName);
+router.patch('/:id', CompanyController.updateCompanyName);
 
 /**
  * @swagger
@@ -180,6 +180,6 @@ router.patch("/:id", CompanyController.updateCompanyName);
  *       500:
  *         description: Internal server error.
  */
-router.delete("/:id", CompanyController.delete);
+router.delete('/:id', CompanyController.delete);
 
 export default router;
