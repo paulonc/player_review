@@ -1,11 +1,11 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
-import CompanyService from '../src/services/CompanyService';
-import CompanyRepository from '../src/repositories/CompanyRepository';
-import { NotFoundError, ValidationError } from '../src/errors/AppError';
+import CompanyService from '../../src/services/CompanyService';
+import CompanyRepository from '../../src/repositories/CompanyRepository';
+import { NotFoundError, ValidationError } from '../../src/errors/AppError';
 import { ZodError } from 'zod';
 import { describe, it, afterEach } from 'mocha';
-import { Company } from '../src/models/Company';
+import { Company } from '../../src/models/Company';
 
 describe('CompanyService', () => {
   afterEach(() => {

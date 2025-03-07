@@ -6,6 +6,7 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
+    "types": ["node", "mocha", "chai", "sinon", "sinon-chai"],
     "outDir": "./dist"
   },
   "include": ["src/**/*.ts", "eslint.config.mjs"],
