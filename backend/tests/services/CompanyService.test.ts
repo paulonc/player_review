@@ -46,9 +46,17 @@ describe('CompanyService', () => {
   describe('getCompanyById', () => {
     it('should return the company when a valid id is provided', async () => {
       const companyId = '1';
-      const company = { id: companyId, name: 'Empresa Teste', country: 'Brasil', createdAt: new Date() };
+      const company = {
+        id: companyId,
+        name: 'Empresa Teste',
+        country: 'Brasil',
+        createdAt: new Date(),
+      };
 
-      sinon.stub(CompanyRepository, 'findById').withArgs(companyId).resolves(company);
+      sinon
+        .stub(CompanyRepository, 'findById')
+        .withArgs(companyId)
+        .resolves(company);
 
       const result = await CompanyService.getCompanyById(companyId);
       expect(result).to.deep.equal(company);
@@ -66,7 +74,10 @@ describe('CompanyService', () => {
 
     it('should throw a NotFoundError if the company is not found', async () => {
       const companyId = '1';
-      sinon.stub(CompanyRepository, 'findById').withArgs(companyId).resolves(null);
+      sinon
+        .stub(CompanyRepository, 'findById')
+        .withArgs(companyId)
+        .resolves(null);
 
       try {
         await CompanyService.getCompanyById(companyId);
@@ -81,13 +92,23 @@ describe('CompanyService', () => {
   describe('getAllCompanys', () => {
     it('should return a list of companies', async () => {
       const companies = [
-        { id: '1', name: 'Empresa A', country: 'Brasil', createdAt: new Date() },
-        { id: '2', name: 'Empresa B', country: 'Argentina', createdAt: new Date() },
+        {
+          id: '1',
+          name: 'Empresa A',
+          country: 'Brasil',
+          createdAt: new Date(),
+        },
+        {
+          id: '2',
+          name: 'Empresa B',
+          country: 'Argentina',
+          createdAt: new Date(),
+        },
       ];
 
       sinon.stub(CompanyRepository, 'findAll').resolves(companies);
 
-      const result = await CompanyService.getAllCompanys();
+      const result = await CompanyService.getAllCompanies();
       expect(result).to.deep.equal(companies);
     });
   });
@@ -95,12 +116,21 @@ describe('CompanyService', () => {
   describe('updateCompany', () => {
     it('should update and return the company when valid data is provided', async () => {
       const companyId = '1';
-      const existingCompany = { id: companyId, name: 'Empresa Antiga', country: 'Brasil', createdAt: new Date() };
+      const existingCompany = {
+        id: companyId,
+        name: 'Empresa Antiga',
+        country: 'Brasil',
+        createdAt: new Date(),
+      };
       const updateData = { name: 'Empresa Atualizada' };
       const updatedCompany = { ...existingCompany, ...updateData };
 
-      sinon.stub(CompanyRepository, 'findById').withArgs(companyId).resolves(existingCompany);
-      sinon.stub(CompanyRepository, 'update')
+      sinon
+        .stub(CompanyRepository, 'findById')
+        .withArgs(companyId)
+        .resolves(existingCompany);
+      sinon
+        .stub(CompanyRepository, 'update')
         .withArgs(companyId, sinon.match.any)
         .resolves(updatedCompany);
 
@@ -120,7 +150,10 @@ describe('CompanyService', () => {
 
     it('should throw a NotFoundError if the company is not found', async () => {
       const companyId = '1';
-      sinon.stub(CompanyRepository, 'findById').withArgs(companyId).resolves(null);
+      sinon
+        .stub(CompanyRepository, 'findById')
+        .withArgs(companyId)
+        .resolves(null);
 
       try {
         await CompanyService.updateCompany(companyId, { name: 'Teste' });
@@ -133,9 +166,17 @@ describe('CompanyService', () => {
 
     it('should throw a ZodError if the update data is invalid', async () => {
       const companyId = '1';
-      const existingCompany = { id: companyId, name: 'Empresa Antiga', country: 'Brasil', createdAt: new Date() };
+      const existingCompany = {
+        id: companyId,
+        name: 'Empresa Antiga',
+        country: 'Brasil',
+        createdAt: new Date(),
+      };
 
-      sinon.stub(CompanyRepository, 'findById').withArgs(companyId).resolves(existingCompany);
+      sinon
+        .stub(CompanyRepository, 'findById')
+        .withArgs(companyId)
+        .resolves(existingCompany);
 
       try {
         await CompanyService.updateCompany(companyId, { name: '' });
@@ -149,10 +190,21 @@ describe('CompanyService', () => {
   describe('deleteCompany', () => {
     it('should delete the company when a valid id is provided', async () => {
       const companyId = '1';
-      const company = { id: companyId, name: 'Empresa Teste', country: 'Brasil', createdAt: new Date() };
+      const company = {
+        id: companyId,
+        name: 'Empresa Teste',
+        country: 'Brasil',
+        createdAt: new Date(),
+      };
 
-      sinon.stub(CompanyRepository, 'findById').withArgs(companyId).resolves(company);
-      const deleteStub = sinon.stub(CompanyRepository, 'delete').withArgs(companyId).resolves();
+      sinon
+        .stub(CompanyRepository, 'findById')
+        .withArgs(companyId)
+        .resolves(company);
+      const deleteStub = sinon
+        .stub(CompanyRepository, 'delete')
+        .withArgs(companyId)
+        .resolves();
 
       await CompanyService.deleteCompany(companyId);
       expect(deleteStub.calledOnce).to.be.equal(true);
@@ -170,7 +222,10 @@ describe('CompanyService', () => {
 
     it('should throw a NotFoundError if the company is not found', async () => {
       const companyId = '1';
-      sinon.stub(CompanyRepository, 'findById').withArgs(companyId).resolves(null);
+      sinon
+        .stub(CompanyRepository, 'findById')
+        .withArgs(companyId)
+        .resolves(null);
 
       try {
         await CompanyService.deleteCompany(companyId);

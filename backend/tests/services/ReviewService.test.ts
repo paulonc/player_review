@@ -28,13 +28,13 @@ describe('ReviewService', () => {
         gameId,
         rating: 4,
         review: 'Great game!',
-        createdAt: new Date()
+        createdAt: new Date(),
       };
 
       const expectedReview = {
         id: uuidv4(),
         ...reviewData,
-        createdAt: new Date()
+        createdAt: new Date(),
       };
 
       sandbox.stub(UserRepository, 'findById').resolves({
@@ -43,7 +43,7 @@ describe('ReviewService', () => {
         email: 'test@example.com',
         password: 'hashedpassword',
         role: 'USER',
-        createdAt: new Date()
+        createdAt: new Date(),
       });
 
       sandbox.stub(GameRepository, 'findById').resolves({
@@ -52,16 +52,18 @@ describe('ReviewService', () => {
         description: 'A test game description',
         releaseDate: new Date(),
         companyId: uuidv4(),
-        createdAt: new Date()
+        createdAt: new Date(),
       });
 
-      const createStub = sandbox.stub(ReviewRepository, 'create').resolves(expectedReview);
+      const createStub = sandbox
+        .stub(ReviewRepository, 'create')
+        .resolves(expectedReview);
 
       // Act
       const result = await ReviewService.create(reviewData);
 
       // Assert
-      expect(createStub.calledOnce).to.be.true;
+      expect(createStub.calledOnce).to.be.equal(true);
       expect(result).to.deep.equal(expectedReview);
     });
 
@@ -72,7 +74,7 @@ describe('ReviewService', () => {
         gameId: uuidv4(),
         rating: 4,
         review: 'Great game!',
-        createdAt: new Date()
+        createdAt: new Date(),
       };
 
       sandbox.stub(UserRepository, 'findById').resolves(null);
@@ -94,7 +96,7 @@ describe('ReviewService', () => {
         gameId: uuidv4(),
         rating: 4,
         review: 'Great game!',
-        createdAt: new Date()
+        createdAt: new Date(),
       };
 
       sandbox.stub(UserRepository, 'findById').resolves({
@@ -103,9 +105,9 @@ describe('ReviewService', () => {
         email: 'test@example.com',
         password: 'hashedpassword',
         role: 'USER',
-        createdAt: new Date()
+        createdAt: new Date(),
       });
-      
+
       sandbox.stub(GameRepository, 'findById').resolves(null);
 
       // Act & Assert
@@ -123,7 +125,7 @@ describe('ReviewService', () => {
         userId: '',
         gameId: uuidv4(),
         rating: 6, // Rating should be max 5
-        review: 'Invalid review'
+        review: 'Invalid review',
       };
 
       // Act & Assert
@@ -146,7 +148,7 @@ describe('ReviewService', () => {
         gameId: uuidv4(),
         rating: 5,
         review: 'Amazing gameplay and graphics!',
-        createdAt: new Date()
+        createdAt: new Date(),
       };
 
       sandbox.stub(ReviewRepository, 'findById').resolves(expectedReview);
@@ -193,7 +195,7 @@ describe('ReviewService', () => {
           gameId: uuidv4(),
           rating: 5,
           review: 'Amazing gameplay and graphics!',
-          createdAt: new Date()
+          createdAt: new Date(),
         },
         {
           id: uuidv4(),
@@ -201,8 +203,8 @@ describe('ReviewService', () => {
           gameId: uuidv4(),
           rating: 3,
           review: 'Good but not great',
-          createdAt: new Date()
-        }
+          createdAt: new Date(),
+        },
       ];
 
       sandbox.stub(ReviewRepository, 'findAll').resolves(expectedReviews);
@@ -230,7 +232,7 @@ describe('ReviewService', () => {
         gameId: uuidv4(),
         rating: 4,
         review: 'Updated review content',
-        createdAt: new Date()
+        createdAt: new Date(),
       };
 
       sandbox.stub(ReviewRepository, 'update').resolves(updatedReview);
@@ -266,7 +268,7 @@ describe('ReviewService', () => {
       await ReviewService.delete(reviewId);
 
       // Assert
-      expect(deleteStub.calledOnceWith(reviewId)).to.be.true;
+      expect(deleteStub.calledOnceWith(reviewId)).to.be.equal(true);
     });
 
     it('should throw ValidationError when id is not provided', async () => {
@@ -279,4 +281,4 @@ describe('ReviewService', () => {
       }
     });
   });
-}); 
+});

@@ -27,30 +27,32 @@ describe('GameService', () => {
         description: 'A test game description',
         releaseDate: new Date(),
         companyId: companyId,
-        createdAt: date
+        createdAt: date,
       };
 
       const expectedGame = {
         id: uuidv4(),
         ...gameData,
         releaseDate: new Date(),
-        createdAt: date
+        createdAt: date,
       };
 
       sandbox.stub(CompanyService, 'getCompanyById').resolves({
         id: companyId,
         name: 'Test Company',
         country: 'United States',
-        createdAt: new Date()
+        createdAt: new Date(),
       });
-      
-      const createStub = sandbox.stub(GameRepository, 'create').resolves(expectedGame);
+
+      const createStub = sandbox
+        .stub(GameRepository, 'create')
+        .resolves(expectedGame);
 
       // Act
       const result = await GameService.createGame(gameData);
 
       // Assert
-      expect(createStub.calledOnce).to.be.true;
+      expect(createStub.calledOnce).to.be.equal(true);
       expect(result).to.deep.equal(expectedGame);
     });
 
@@ -62,7 +64,7 @@ describe('GameService', () => {
         description: 'A test game description',
         releaseDate: new Date(),
         companyId: uuidv4(),
-        createdAt: date
+        createdAt: date,
       };
 
       sandbox.stub(CompanyService, 'getCompanyById').resolves(null);
@@ -83,7 +85,7 @@ describe('GameService', () => {
         description: 'A test game description',
         releaseDate: new Date('invalid-date'),
         companyId: 'invalid-uuid',
-        createdAt: new Date()
+        createdAt: new Date(),
       };
 
       // Act & Assert
@@ -106,7 +108,7 @@ describe('GameService', () => {
         description: 'A test game description',
         releaseDate: new Date(),
         companyId: uuidv4(),
-        createdAt: new Date()
+        createdAt: new Date(),
       };
 
       sandbox.stub(GameRepository, 'findById').resolves(expectedGame);
@@ -153,7 +155,7 @@ describe('GameService', () => {
           description: 'Description 1',
           releaseDate: new Date(),
           companyId: uuidv4(),
-          createdAt: new Date()
+          createdAt: new Date(),
         },
         {
           id: uuidv4(),
@@ -161,8 +163,8 @@ describe('GameService', () => {
           description: 'Description 2',
           releaseDate: new Date(),
           companyId: uuidv4(),
-          createdAt: new Date()
-        }
+          createdAt: new Date(),
+        },
       ];
 
       sandbox.stub(GameRepository, 'findAll').resolves(expectedGames);
@@ -181,7 +183,7 @@ describe('GameService', () => {
       const gameId = uuidv4();
       const updateData = {
         title: 'Updated Game Title',
-        description: 'Updated description'
+        description: 'Updated description',
       };
 
       const existingGame = {
@@ -190,12 +192,12 @@ describe('GameService', () => {
         description: 'Original description',
         releaseDate: new Date(),
         companyId: uuidv4(),
-        createdAt: new Date()
+        createdAt: new Date(),
       };
 
       const updatedGame = {
         ...existingGame,
-        ...updateData
+        ...updateData,
       };
 
       sandbox.stub(GameRepository, 'findById').resolves(existingGame);
@@ -248,7 +250,7 @@ describe('GameService', () => {
         description: 'A test game description',
         releaseDate: new Date(),
         companyId: uuidv4(),
-        createdAt: new Date()
+        createdAt: new Date(),
       };
 
       sandbox.stub(GameRepository, 'findById').resolves(existingGame);
@@ -258,7 +260,7 @@ describe('GameService', () => {
       await GameService.deleteGame(gameId);
 
       // Assert
-      expect(deleteStub.calledOnceWith(gameId)).to.be.true;
+      expect(deleteStub.calledOnceWith(gameId)).to.be.equal(true);
     });
 
     it('should throw NotFoundError when game does not exist', async () => {
@@ -292,26 +294,29 @@ describe('GameService', () => {
       const date = new Date();
       const gameId = uuidv4();
       const newReleaseDate = new Date('2023-12-25');
-      
+
       const existingGame = {
         id: gameId,
         title: 'Test Game',
         description: 'A test game description',
         releaseDate: new Date(),
         companyId: uuidv4(),
-        createdAt: date
+        createdAt: date,
       };
 
       const updatedGame = {
         ...existingGame,
-        releaseDate: newReleaseDate
+        releaseDate: newReleaseDate,
       };
 
       sandbox.stub(GameRepository, 'findById').resolves(existingGame);
       sandbox.stub(GameRepository, 'update').resolves(updatedGame);
 
       // Act
-      const result = await GameService.updateReleaseDate(gameId, newReleaseDate);
+      const result = await GameService.updateReleaseDate(
+        gameId,
+        newReleaseDate,
+      );
 
       // Assert
       expect(result).to.deep.equal(updatedGame);
@@ -321,7 +326,7 @@ describe('GameService', () => {
       // Arrange
       const gameId = uuidv4();
       const newReleaseDate = new Date();
-      
+
       sandbox.stub(GameRepository, 'findById').resolves(null);
 
       // Act & Assert
@@ -350,14 +355,14 @@ describe('GameService', () => {
       // Arrange
       const gameId = uuidv4();
       const invalidDate = new Date('invalid-date'); // This creates an Invalid Date object
-      
+
       const existingGame = {
         id: gameId,
         title: 'Test Game',
         description: 'A test game description',
         releaseDate: new Date(),
         companyId: uuidv4(),
-        createdAt: new Date()
+        createdAt: new Date(),
       };
 
       sandbox.stub(GameRepository, 'findById').resolves(existingGame);
@@ -371,4 +376,4 @@ describe('GameService', () => {
       }
     });
   });
-}); 
+});

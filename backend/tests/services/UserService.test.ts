@@ -4,7 +4,11 @@ import { v4 as uuidv4 } from 'uuid';
 import bcrypt from 'bcryptjs';
 import UserService from '../../src/services/UserService';
 import UserRepository from '../../src/repositories/UserRepository';
-import { NotFoundError, ValidationError, ConflictError } from '../../src/errors/AppError';
+import {
+  NotFoundError,
+  ValidationError,
+  ConflictError,
+} from '../../src/errors/AppError';
 
 describe('UserService', () => {
   let sandbox: sinon.SinonSandbox;
@@ -24,7 +28,7 @@ describe('UserService', () => {
         username: 'testuser',
         email: 'test@example.com',
         password: 'password123',
-        role: 'USER' as const
+        role: 'USER' as const,
       };
 
       const hashedPassword = 'hashedpassword123';
@@ -34,18 +38,20 @@ describe('UserService', () => {
         email: 'test@example.com',
         password: hashedPassword,
         role: 'USER' as const,
-        createdAt: new Date()
+        createdAt: new Date(),
       };
 
       sandbox.stub(UserRepository, 'findByEmail').resolves(null);
       sandbox.stub(bcrypt, 'hash').resolves(hashedPassword);
-      const createStub = sandbox.stub(UserRepository, 'create').resolves(expectedUser);
+      const createStub = sandbox
+        .stub(UserRepository, 'create')
+        .resolves(expectedUser);
 
       // Act
       const result = await UserService.register(userData);
 
       // Assert
-      expect(createStub.calledOnce).to.be.true;
+      expect(createStub.calledOnce).to.be.equal(true);
       expect(result).to.deep.equal(expectedUser);
     });
 
@@ -55,7 +61,7 @@ describe('UserService', () => {
         username: 'testuser',
         email: 'existing@example.com',
         password: 'password123',
-        role: 'USER' as const
+        role: 'USER' as const,
       };
 
       const existingUser = {
@@ -64,7 +70,7 @@ describe('UserService', () => {
         email: 'existing@example.com',
         password: 'hashedpassword',
         role: 'USER' as const,
-        createdAt: new Date()
+        createdAt: new Date(),
       };
 
       sandbox.stub(UserRepository, 'findByEmail').resolves(existingUser);
@@ -84,7 +90,7 @@ describe('UserService', () => {
         username: 'te', // too short
         email: 'invalid-email',
         password: '12345', // too short
-        role: 'USER' as const
+        role: 'USER' as const,
       };
 
       // Act & Assert
@@ -107,7 +113,7 @@ describe('UserService', () => {
         email: 'test@example.com',
         password: 'hashedpassword',
         role: 'USER' as const,
-        createdAt: new Date()
+        createdAt: new Date(),
       };
 
       const userWithoutPassword = {
@@ -115,7 +121,7 @@ describe('UserService', () => {
         username: 'testuser',
         email: 'test@example.com',
         role: 'USER' as const,
-        createdAt: new Date()
+        createdAt: new Date(),
       };
 
       sandbox.stub(UserRepository, 'findById').resolves(user);
@@ -162,15 +168,15 @@ describe('UserService', () => {
           username: 'user1',
           email: 'user1@example.com',
           role: 'USER' as const,
-          createdAt: new Date()
+          createdAt: new Date(),
         },
         {
           id: uuidv4(),
           username: 'user2',
           email: 'user2@example.com',
           role: 'ADMIN' as const,
-          createdAt: new Date()
-        }
+          createdAt: new Date(),
+        },
       ];
 
       sandbox.stub(UserRepository, 'findAll').resolves(usersWithoutPasswords);
@@ -180,7 +186,7 @@ describe('UserService', () => {
 
       // Assert
       expect(result).to.deep.equal(usersWithoutPasswords);
-      result.forEach(user => {
+      result.forEach((user) => {
         expect(user).to.not.have.property('password');
       });
     });
@@ -192,7 +198,7 @@ describe('UserService', () => {
       const userId = uuidv4();
       const updateData = {
         username: 'updatedusername',
-        email: 'updated@example.com'
+        email: 'updated@example.com',
       };
 
       const existingUser = {
@@ -201,12 +207,12 @@ describe('UserService', () => {
         email: 'original@example.com',
         password: 'hashedpassword',
         role: 'USER' as const,
-        createdAt: new Date()
+        createdAt: new Date(),
       };
 
       const updatedUser = {
         ...existingUser,
-        ...updateData
+        ...updateData,
       };
 
       sandbox.stub(UserRepository, 'findById').resolves(existingUser);
@@ -240,7 +246,7 @@ describe('UserService', () => {
       // Arrange
       const userId = uuidv4();
       const updateData = {
-        email: 'existing@example.com'
+        email: 'existing@example.com',
       };
 
       const existingUser = {
@@ -249,7 +255,7 @@ describe('UserService', () => {
         email: 'original@example.com',
         password: 'hashedpassword',
         role: 'USER' as const,
-        createdAt: new Date()
+        createdAt: new Date(),
       };
 
       const anotherUser = {
@@ -258,7 +264,7 @@ describe('UserService', () => {
         email: 'existing@example.com', // Same email as updateData
         password: 'hashedpassword',
         role: 'USER' as const,
-        createdAt: new Date()
+        createdAt: new Date(),
       };
 
       sandbox.stub(UserRepository, 'findById').resolves(existingUser);
@@ -297,7 +303,7 @@ describe('UserService', () => {
         email: 'test@example.com',
         password: 'hashedpassword',
         role: 'USER' as const,
-        createdAt: new Date()
+        createdAt: new Date(),
       };
 
       sandbox.stub(UserRepository, 'findById').resolves(existingUser);
@@ -307,7 +313,7 @@ describe('UserService', () => {
       await UserService.deleteUser(userId);
 
       // Assert
-      expect(deleteStub.calledOnceWith(userId)).to.be.true;
+      expect(deleteStub.calledOnceWith(userId)).to.be.equal(true);
     });
 
     it('should throw NotFoundError when user does not exist', async () => {
@@ -350,19 +356,22 @@ describe('UserService', () => {
         email: 'test@example.com',
         password: hashedOldPassword,
         role: 'USER' as const,
-        createdAt: new Date()
+        createdAt: new Date(),
       };
 
       sandbox.stub(UserRepository, 'findById').resolves(existingUser);
       sandbox.stub(bcrypt, 'compare').resolves(true);
       sandbox.stub(bcrypt, 'hash').resolves(hashedNewPassword);
-      const updatePasswordStub = sandbox.stub(UserRepository, 'updatePassword').resolves();
+      const updatePasswordStub = sandbox
+        .stub(UserRepository, 'updatePassword')
+        .resolves();
 
       // Act
       await UserService.changePassword(userId, oldPassword, newPassword);
 
       // Assert
-      expect(updatePasswordStub.calledOnceWith(userId, hashedNewPassword)).to.be.true;
+      expect(updatePasswordStub.calledOnceWith(userId, hashedNewPassword)).to.be
+        .equal(true);
     });
 
     it('should throw NotFoundError when user does not exist', async () => {
@@ -395,7 +404,7 @@ describe('UserService', () => {
         email: 'test@example.com',
         password: hashedOldPassword,
         role: 'USER' as const,
-        createdAt: new Date()
+        createdAt: new Date(),
       };
 
       sandbox.stub(UserRepository, 'findById').resolves(existingUser);
@@ -425,4 +434,4 @@ describe('UserService', () => {
       }
     });
   });
-}); 
+});
