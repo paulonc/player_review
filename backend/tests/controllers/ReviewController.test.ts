@@ -14,12 +14,12 @@ describe('ReviewController', () => {
 
   beforeEach(() => {
     sandbox = sinon.createSandbox();
-    
+
     req = {};
     res = {
       status: sandbox.stub().returnsThis(),
       json: sandbox.stub().returnsThis(),
-      send: sandbox.stub().returnsThis()
+      send: sandbox.stub().returnsThis(),
     };
     next = sandbox.spy();
   });
@@ -35,25 +35,32 @@ describe('ReviewController', () => {
         userId: uuidv4(),
         gameId: uuidv4(),
         rating: 4,
-        review: 'Great game!'
+        review: 'Great game!',
       };
-      
+
       const createdReview: Review = {
         id: uuidv4(),
         ...reviewData,
-        createdAt: new Date()
+        createdAt: new Date(),
       };
-      
+
       req.body = reviewData;
-      const createStub = sandbox.stub(ReviewService, 'create').resolves(createdReview);
-      
+      const createStub = sandbox
+        .stub(ReviewService, 'create')
+        .resolves(createdReview);
+
       // Act
-      await ReviewController.createReview(req as Request, res as Response, next as unknown as NextFunction);
-      
+      await ReviewController.createReview(
+        req as Request,
+        res as Response,
+        next as unknown as NextFunction,
+      );
+
       // Assert
       expect(createStub.calledOnceWith(reviewData)).to.be.true;
       expect((res.status as sinon.SinonStub).calledWith(201)).to.be.true;
-      expect((res.json as sinon.SinonStub).calledWith(createdReview)).to.be.true;
+      expect((res.json as sinon.SinonStub).calledWith(createdReview)).to.be
+        .true;
     });
 
     it('should call next with error if service throws', async () => {
@@ -61,10 +68,14 @@ describe('ReviewController', () => {
       const error = new Error('Service error');
       req.body = { userId: uuidv4(), gameId: uuidv4(), rating: 5 };
       sandbox.stub(ReviewService, 'create').rejects(error);
-      
+
       // Act
-      await ReviewController.createReview(req as Request, res as Response, next as NextFunction);
-      
+      await ReviewController.createReview(
+        req as Request,
+        res as Response,
+        next as NextFunction,
+      );
+
       // Assert
       expect(next.calledOnceWith(error)).to.be.true;
     });
@@ -80,15 +91,21 @@ describe('ReviewController', () => {
         gameId: uuidv4(),
         rating: 5,
         review: 'Amazing gameplay and graphics!',
-        createdAt: new Date()
+        createdAt: new Date(),
       };
-      
+
       req.params = { id: reviewId };
-      const getReviewByIdStub = sandbox.stub(ReviewService, 'getReviewById').resolves(review);
-      
+      const getReviewByIdStub = sandbox
+        .stub(ReviewService, 'getReviewById')
+        .resolves(review);
+
       // Act
-      await ReviewController.getReview(req as Request, res as Response, next as NextFunction);
-      
+      await ReviewController.getReview(
+        req as Request,
+        res as Response,
+        next as NextFunction,
+      );
+
       // Assert
       expect(getReviewByIdStub.calledOnceWith(reviewId)).to.be.true;
       expect(res.status).to.have.been.calledWith(200);
@@ -100,10 +117,14 @@ describe('ReviewController', () => {
       const error = new Error('Service error');
       req.params = { id: uuidv4() };
       sandbox.stub(ReviewService, 'getReviewById').rejects(error);
-      
+
       // Act
-      await ReviewController.getReview(req as Request, res as Response, next as NextFunction);
-      
+      await ReviewController.getReview(
+        req as Request,
+        res as Response,
+        next as NextFunction,
+      );
+
       // Assert
       expect(next.calledOnceWith(error)).to.be.true;
     });
@@ -119,7 +140,7 @@ describe('ReviewController', () => {
           gameId: uuidv4(),
           rating: 5,
           review: 'Excellent game!',
-          createdAt: new Date()
+          createdAt: new Date(),
         },
         {
           id: uuidv4(),
@@ -127,15 +148,21 @@ describe('ReviewController', () => {
           gameId: uuidv4(),
           rating: 3,
           review: 'Good but not great',
-          createdAt: new Date()
-        }
+          createdAt: new Date(),
+        },
       ];
-      
-      const getAllReviewsStub = sandbox.stub(ReviewService, 'getAllReviews').resolves(reviews);
-      
+
+      const getAllReviewsStub = sandbox
+        .stub(ReviewService, 'getAllReviews')
+        .resolves(reviews);
+
       // Act
-      await ReviewController.getAllReviews(req as Request, res as Response, next as NextFunction);
-      
+      await ReviewController.getAllReviews(
+        req as Request,
+        res as Response,
+        next as NextFunction,
+      );
+
       // Assert
       expect(getAllReviewsStub.calledOnce).to.be.true;
       expect(res.status).to.have.been.calledWith(200);
@@ -146,10 +173,14 @@ describe('ReviewController', () => {
       // Arrange
       const error = new Error('Service error');
       sandbox.stub(ReviewService, 'getAllReviews').rejects(error);
-      
+
       // Act
-      await ReviewController.getAllReviews(req as Request, res as Response, next as NextFunction);
-      
+      await ReviewController.getAllReviews(
+        req as Request,
+        res as Response,
+        next as NextFunction,
+      );
+
       // Assert
       expect(next.calledOnceWith(error)).to.be.true;
     });
@@ -161,25 +192,31 @@ describe('ReviewController', () => {
       const reviewId = uuidv4();
       const updateData = {
         rating: 4,
-        review: 'Updated review content'
+        review: 'Updated review content',
       };
-      
+
       const updatedReview = {
         id: reviewId,
         userId: uuidv4(),
         gameId: uuidv4(),
         rating: 4,
         review: 'Updated review content',
-        createdAt: new Date()
+        createdAt: new Date(),
       };
-      
+
       req.params = { id: reviewId };
       req.body = updateData;
-      const updateStub = sandbox.stub(ReviewService, 'update').resolves(updatedReview);
-      
+      const updateStub = sandbox
+        .stub(ReviewService, 'update')
+        .resolves(updatedReview);
+
       // Act
-      await ReviewController.updateReview(req as Request, res as Response, next as NextFunction);
-      
+      await ReviewController.updateReview(
+        req as Request,
+        res as Response,
+        next as NextFunction,
+      );
+
       // Assert
       expect(updateStub.calledOnceWith(reviewId, updateData)).to.be.true;
       expect(res.status).to.have.been.calledWith(200);
@@ -192,10 +229,14 @@ describe('ReviewController', () => {
       req.params = { id: uuidv4() };
       req.body = { rating: 3 };
       sandbox.stub(ReviewService, 'update').rejects(error);
-      
+
       // Act
-      await ReviewController.updateReview(req as Request, res as Response, next as NextFunction);
-      
+      await ReviewController.updateReview(
+        req as Request,
+        res as Response,
+        next as NextFunction,
+      );
+
       // Assert
       expect(next.calledOnceWith(error)).to.be.true;
     });
@@ -206,25 +247,31 @@ describe('ReviewController', () => {
       // Arrange
       const reviewId = uuidv4();
       const patchData = {
-        rating: 3
+        rating: 3,
       };
-      
+
       const updatedReview = {
         id: reviewId,
         userId: uuidv4(),
         gameId: uuidv4(),
         rating: 3,
         review: 'Original content',
-        createdAt: new Date()
+        createdAt: new Date(),
       };
-      
+
       req.params = { id: reviewId };
       req.body = patchData;
-      const updateStub = sandbox.stub(ReviewService, 'update').resolves(updatedReview);
-      
+      const updateStub = sandbox
+        .stub(ReviewService, 'update')
+        .resolves(updatedReview);
+
       // Act
-      await ReviewController.patchReview(req as Request, res as Response, next as NextFunction);
-      
+      await ReviewController.patchReview(
+        req as Request,
+        res as Response,
+        next as NextFunction,
+      );
+
       // Assert
       expect(updateStub.calledOnceWith(reviewId, patchData)).to.be.true;
       expect(res.status).to.have.been.calledWith(200);
@@ -237,10 +284,14 @@ describe('ReviewController', () => {
       req.params = { id: uuidv4() };
       req.body = { review: 'New Review' };
       sandbox.stub(ReviewService, 'update').rejects(error);
-      
+
       // Act
-      await ReviewController.patchReview(req as Request, res as Response, next as NextFunction);
-      
+      await ReviewController.patchReview(
+        req as Request,
+        res as Response,
+        next as NextFunction,
+      );
+
       // Assert
       expect(next.calledOnceWith(error)).to.be.true;
     });
@@ -252,10 +303,14 @@ describe('ReviewController', () => {
       const reviewId = uuidv4();
       req.params = { id: reviewId };
       const deleteStub = sandbox.stub(ReviewService, 'delete').resolves();
-      
+
       // Act
-      await ReviewController.deleteReview(req as Request, res as Response, next as NextFunction);
-      
+      await ReviewController.deleteReview(
+        req as Request,
+        res as Response,
+        next as NextFunction,
+      );
+
       // Assert
       expect(deleteStub.calledOnceWith(reviewId)).to.be.true;
       expect(res.status).to.have.been.calledWith(204);
@@ -267,12 +322,16 @@ describe('ReviewController', () => {
       const error = new Error('Service error');
       req.params = { id: uuidv4() };
       sandbox.stub(ReviewService, 'delete').rejects(error);
-      
+
       // Act
-      await ReviewController.deleteReview(req as Request, res as Response, next as NextFunction);
-      
+      await ReviewController.deleteReview(
+        req as Request,
+        res as Response,
+        next as NextFunction,
+      );
+
       // Assert
       expect(next.calledOnceWith(error)).to.be.true;
     });
   });
-}); 
+});

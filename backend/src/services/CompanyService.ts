@@ -23,7 +23,7 @@ class CompanyService {
     return company;
   }
 
-  async getAllCompanys(): Promise<Company[]> {
+  async getAllCompanies(): Promise<Company[]> {
     return await CompanyRepository.findAll();
   }
 

@@ -36,7 +36,7 @@ class CompanyController {
     next: NextFunction,
   ): Promise<Response | void> {
     try {
-      const companies = await CompanyService.getAllCompanys();
+      const companies = await CompanyService.getAllCompanies();
       return res.status(200).json(companies);
     } catch (error) {
       logger.error('Error getting all companies', error);
