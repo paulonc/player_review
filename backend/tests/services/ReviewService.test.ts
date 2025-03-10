@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import { expect } from 'chai';
 import sinon from 'sinon';
 import { v4 as uuidv4 } from 'uuid';
@@ -63,7 +64,7 @@ describe('ReviewService', () => {
       const result = await ReviewService.create(reviewData);
 
       // Assert
-      expect(createStub.calledOnce).to.be.equal(true);
+      expect(createStub.calledOnce).to.be.true;
       expect(result).to.deep.equal(expectedReview);
     });
 
@@ -268,7 +269,7 @@ describe('ReviewService', () => {
       await ReviewService.delete(reviewId);
 
       // Assert
-      expect(deleteStub.calledOnceWith(reviewId)).to.be.equal(true);
+      expect(deleteStub.calledOnceWith(reviewId)).to.be.true;
     });
 
     it('should throw ValidationError when id is not provided', async () => {

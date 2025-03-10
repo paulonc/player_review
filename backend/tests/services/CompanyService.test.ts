@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import { expect } from 'chai';
 import sinon from 'sinon';
 import CompanyService from '../../src/services/CompanyService';
@@ -207,7 +208,7 @@ describe('CompanyService', () => {
         .resolves();
 
       await CompanyService.deleteCompany(companyId);
-      expect(deleteStub.calledOnce).to.be.equal(true);
+      expect(deleteStub.calledOnce).to.be.true;
     });
 
     it('should throw a ValidationError if the id is missing', async () => {

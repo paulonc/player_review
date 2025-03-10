@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import { expect } from 'chai';
 import sinon from 'sinon';
 import { v4 as uuidv4 } from 'uuid';
@@ -51,7 +52,7 @@ describe('UserService', () => {
       const result = await UserService.register(userData);
 
       // Assert
-      expect(createStub.calledOnce).to.be.equal(true);
+      expect(createStub.calledOnce).to.be.true;
       expect(result).to.deep.equal(expectedUser);
     });
 
@@ -313,7 +314,7 @@ describe('UserService', () => {
       await UserService.deleteUser(userId);
 
       // Assert
-      expect(deleteStub.calledOnceWith(userId)).to.be.equal(true);
+      expect(deleteStub.calledOnceWith(userId)).to.be.true;
     });
 
     it('should throw NotFoundError when user does not exist', async () => {
@@ -371,7 +372,7 @@ describe('UserService', () => {
 
       // Assert
       expect(updatePasswordStub.calledOnceWith(userId, hashedNewPassword)).to.be
-        .equal(true);
+        .true;
     });
 
     it('should throw NotFoundError when user does not exist', async () => {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import { expect } from 'chai';
 import sinon from 'sinon';
 import { v4 as uuidv4 } from 'uuid';
@@ -52,7 +53,7 @@ describe('GameService', () => {
       const result = await GameService.createGame(gameData);
 
       // Assert
-      expect(createStub.calledOnce).to.be.equal(true);
+      expect(createStub.calledOnce).to.be.true;
       expect(result).to.deep.equal(expectedGame);
     });
 
@@ -260,7 +261,7 @@ describe('GameService', () => {
       await GameService.deleteGame(gameId);
 
       // Assert
-      expect(deleteStub.calledOnceWith(gameId)).to.be.equal(true);
+      expect(deleteStub.calledOnceWith(gameId)).to.be.true;
     });
 
     it('should throw NotFoundError when game does not exist', async () => {
