@@ -8,7 +8,10 @@ const gameSchema = z.object({
   title: z.string().min(1, 'Title is required'),
   description: z.string().min(1, 'Description is required'),
   releaseDate: z
-    .date()
+    .preprocess(
+      (val) => (typeof val === 'string' ? new Date(val) : val),
+      z.date(),
+    )
     .refine((val) => !isNaN(val.getTime()), 'Invalid release date format')
     .transform((val) => val.toISOString()),
   companyId: z.string().uuid('Invalid company ID format'),
