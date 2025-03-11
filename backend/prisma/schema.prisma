@@ -35,8 +35,8 @@ model Review {
     rating    Int
     review    String?
     createdAt DateTime @default(now()) @map("created_at")
-    game      Game     @relation(fields: [gameId], references: [id])
-    user      User     @relation(fields: [userId], references: [id])
+    game      Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Game {
@@ -46,7 +46,7 @@ model Game {
     releaseDate DateTime @map("release_date")
     createdAt   DateTime @default(now()) @map("created_at")
     companyId   String   @db.Uuid
-    company     Company  @relation(fields: [companyId], references: [id])
+    company     Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
     reviews     Review[]
 }
 
