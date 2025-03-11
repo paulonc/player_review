@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import GameController from '../controllers/GameController';
+import { authenticate, authorize } from '../middlewares/authMiddleware';
 
 const router = Router();
 
@@ -24,7 +25,7 @@ const router = Router();
  *       500:
  *          description: Internal server error.
  */
-router.get('/', GameController.getAllGames);
+router.get('/', authenticate, GameController.getAllGames);
 
 /**
  * @swagger
@@ -49,7 +50,7 @@ router.get('/', GameController.getAllGames);
  *       500:
  *          description: Internal server error.
  */
-router.get('/:id', GameController.getGame);
+router.get('/:id', authenticate, GameController.getGame);
 
 /**
  * @swagger
@@ -84,7 +85,7 @@ router.get('/:id', GameController.getGame);
  *       500:
  *         description: Internal server error.
  */
-router.post('/', GameController.create);
+router.post('/', authenticate, authorize(['ADMIN']), GameController.create);
 
 /**
  * @swagger
@@ -128,7 +129,7 @@ router.post('/', GameController.create);
  *       500:
  *         description: Internal server error.
  */
-router.put('/:id', GameController.update);
+router.put('/:id', authenticate, authorize(['ADMIN']), GameController.update);
 
 /**
  * @swagger
@@ -163,7 +164,12 @@ router.put('/:id', GameController.update);
  *       500:
  *         description: Internal server error.
  */
-router.patch('/:id', GameController.updateReleaseDate);
+router.patch(
+  '/:id',
+  authenticate,
+  authorize(['ADMIN']),
+  GameController.updateReleaseDate,
+);
 
 /**
  * @swagger
@@ -188,6 +194,11 @@ router.patch('/:id', GameController.updateReleaseDate);
  *       500:
  *         description: Internal server error.
  */
-router.delete('/:id', GameController.delete);
+router.delete(
+  '/:id',
+  authenticate,
+  authorize(['ADMIN']),
+  GameController.delete,
+);
 
 export default router;

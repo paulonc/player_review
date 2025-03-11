@@ -1,5 +1,7 @@
 import { Router } from 'express';
 import CompanyController from '../controllers/CompanyController';
+import { authorize } from '../middlewares/authMiddleware';
+import { authenticate } from '../middlewares/authMiddleware';
 
 const router = Router();
 
@@ -24,7 +26,7 @@ const router = Router();
  *       500:
  *          description: Internal server error.
  */
-router.get('/', CompanyController.getAllCompanies);
+router.get('/', authenticate, CompanyController.getAllCompanies);
 
 /**
  * @swagger
@@ -50,7 +52,7 @@ router.get('/', CompanyController.getAllCompanies);
  *       500:
  *          description: Internal server error.
  */
-router.get('/:id', CompanyController.getCompany);
+router.get('/:id', authenticate, CompanyController.getCompany);
 
 /**
  * @swagger
@@ -79,7 +81,7 @@ router.get('/:id', CompanyController.getCompany);
  *       500:
  *         description: Internal server error.
  */
-router.post('/', CompanyController.create);
+router.post('/', authenticate, authorize(['ADMIN']), CompanyController.create);
 
 /**
  * @swagger
@@ -118,7 +120,12 @@ router.post('/', CompanyController.create);
  *       500:
  *         description: Internal server error.
  */
-router.put('/:id', CompanyController.update);
+router.put(
+  '/:id',
+  authenticate,
+  authorize(['ADMIN']),
+  CompanyController.update,
+);
 
 /**
  * @swagger
@@ -154,7 +161,12 @@ router.put('/:id', CompanyController.update);
  *       500:
  *         description: Internal server error.
  */
-router.patch('/:id', CompanyController.updateCompanyName);
+router.patch(
+  '/:id',
+  authenticate,
+  authorize(['ADMIN']),
+  CompanyController.updateCompanyName,
+);
 
 /**
  * @swagger
@@ -180,6 +192,11 @@ router.patch('/:id', CompanyController.updateCompanyName);
  *       500:
  *         description: Internal server error.
  */
-router.delete('/:id', CompanyController.delete);
+router.delete(
+  '/:id',
+  authenticate,
+  authorize(['ADMIN']),
+  CompanyController.delete,
+);
 
 export default router;

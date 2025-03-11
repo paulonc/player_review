@@ -2,6 +2,7 @@ import {
   ValidationError,
   NotFoundError,
   ConflictError,
+  UnauthorizedError,
 } from '../errors/AppError';
 import bcrypt from 'bcryptjs';
 import UserRepository from '../repositories/UserRepository';
@@ -44,10 +45,15 @@ class UserService {
   }
 
   async update(
+    userId: string,
     id: string,
     userData: Partial<Omit<User, 'id' | 'password' | 'createdAt'>>,
   ): Promise<Omit<User, 'password'> | null> {
     if (!id) throw new ValidationError('User ID is required');
+
+    if (userId !== id) {
+      throw new ValidationError('You can only update your own information');
+    }
 
     const user = await UserRepository.findById(id);
     if (!user) throw new NotFoundError('User not found');
@@ -58,37 +64,49 @@ class UserService {
         throw new ConflictError('Email is already in use by another user');
       }
     }
-    const updatedUser = await UserRepository.update(id, userData);
-    return updatedUser;
+
+    return await UserRepository.update(id, userData);
   }
 
-  async deleteUser(id: string): Promise<void> {
-    if (!id) throw new ValidationError('User ID is required');
+  async deleteUser(userId: string, requesterId: string): Promise<void> {
+    if (!userId) throw new ValidationError('User ID is required');
 
-    const user = await UserRepository.findById(id);
+    if (userId !== requesterId) {
+      throw new UnauthorizedError(
+        'You do not have permission to delete this account',
+      );
+    }
+
+    const user = await UserRepository.findById(userId);
     if (!user) throw new NotFoundError('User not found');
 
-    await UserRepository.delete(id);
+    await UserRepository.delete(userId);
   }
 
   async changePassword(
-    id: string,
+    userId: string,
+    requesterId: string,
     oldPassword: string,
     newPassword: string,
   ): Promise<void> {
+    if (userId !== requesterId) {
+      throw new UnauthorizedError('You can only change your own password');
+    }
+
     const { oldPassword: oldPwd, newPassword: newPwd } =
       changePasswordSchema.parse({
         oldPassword,
         newPassword,
       });
-    const user = await UserRepository.findById(id);
+
+    const user = await UserRepository.findById(userId);
     if (!user) throw new NotFoundError('User not found');
 
     const isMatch = await bcrypt.compare(oldPwd, user.password);
     if (!isMatch) throw new ValidationError('Incorrect current password');
 
     const hashedNewPassword = await bcrypt.hash(newPwd, 10);
-    await UserRepository.updatePassword(id, hashedNewPassword);
+    await UserRepository.updatePassword(userId, hashedNewPassword);
   }
 }
 

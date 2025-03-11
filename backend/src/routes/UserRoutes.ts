@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import UserController from '../controllers/UserController';
+import { authenticate, authorize } from '../middlewares/authMiddleware';
 
 const router = Router();
 
@@ -24,7 +25,7 @@ const router = Router();
  *       500:
  *          description: Internal server error.
  */
-router.get('/', UserController.getAllUsers);
+router.get('/', authenticate, UserController.getAllUsers);
 
 /**
  * @swagger
@@ -49,7 +50,7 @@ router.get('/', UserController.getAllUsers);
  *       500:
  *          description: Internal server error.
  */
-router.get('/:id', UserController.getUser);
+router.get('/:id', authenticate, UserController.getUser);
 
 /**
  * @swagger
@@ -129,7 +130,7 @@ router.post('/', UserController.register);
  *       500:
  *         description: Internal server error.
  */
-router.put('/:id', UserController.updateUser);
+router.put('/:id', authenticate, UserController.updateUser);
 
 /**
  * @swagger
@@ -164,7 +165,7 @@ router.put('/:id', UserController.updateUser);
  *       500:
  *         description: Internal server error.
  */
-router.patch('/:id', UserController.updatePassword);
+router.patch('/:id', authenticate, UserController.updatePassword);
 
 /**
  * @swagger
@@ -189,6 +190,11 @@ router.patch('/:id', UserController.updatePassword);
  *       500:
  *         description: Internal server error.
  */
-router.delete('/:id', UserController.deleteUser);
+router.delete(
+  '/:id',
+  authenticate,
+  authorize(['ADMIN']),
+  UserController.deleteUser,
+);
 
 export default router;
