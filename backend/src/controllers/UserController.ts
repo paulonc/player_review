@@ -50,10 +50,12 @@ class UserController {
     res: Response,
     next: NextFunction,
   ): Promise<Response | void> {
-    const { id } = req.params;
-    const { username, email } = req.body;
     try {
-      const updatedUser = await UserService.update(id, {
+      const userId = req.user!.id;
+      const { id } = req.params;
+      const { username, email } = req.body;
+
+      const updatedUser = await UserService.update(userId, id, {
         username,
         email,
       });
@@ -69,9 +71,11 @@ class UserController {
     res: Response,
     next: NextFunction,
   ): Promise<Response | void> {
-    const { id } = req.params;
     try {
-      await UserService.deleteUser(id);
+      const userId = req.user!.id;
+      const { id } = req.params;
+
+      await UserService.deleteUser(userId, id);
       return res.status(204).send();
     } catch (error) {
       logger.error('Error deleting user', error);
@@ -84,11 +88,12 @@ class UserController {
     res: Response,
     next: NextFunction,
   ): Promise<Response | void> {
+    const userId = req.user!.id;
     const { id } = req.params;
     const { oldPassword, newPassword } = req.body;
 
     try {
-      await UserService.changePassword(id, oldPassword, newPassword);
+      await UserService.changePassword(userId, id, oldPassword, newPassword);
       return res.status(200).json({ message: 'Password changed successfully' });
     } catch (error) {
       logger.error('Error changing password', error);
