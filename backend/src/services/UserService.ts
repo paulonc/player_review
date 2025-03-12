@@ -22,7 +22,7 @@ const changePasswordSchema = z.object({
   newPassword: z.string().min(6, 'Password must be at least 6 characters'),
 });
 class UserService {
-  async register(user: Omit<User, 'id' | 'createdAt'>): Promise<string> {
+  async register(user: Omit<User, 'id' | 'createdAt'>): Promise<{ id: string, token: string }> {
     const parsedUser = userSchema.parse(user);
 
     const existingUser = await UserRepository.findByEmail(parsedUser.email);
@@ -33,7 +33,7 @@ class UserService {
       ...user,
       password: hashedPassword,
     });
-    return generateToken(newUser.id, newUser.role);
+    return { id: newUser.id, token: generateToken(newUser.id, newUser.role) };
   }
 
   async getUserById(id: string): Promise<Omit<User, 'password'> | null> {
