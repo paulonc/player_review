@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
 import { UnauthorizedError } from '../errors/AppError';
+import { verifyToken } from '../config/jwt';
 
 interface JwtPayload {
   id: string;
@@ -24,11 +24,13 @@ export const authenticate = (
     return next(new UnauthorizedError('Invalid token format'));
   }
 
-  jwt.verify(token, process.env.JWT_SECRET as string, (err, decoded) => {
-    if (err) return next(new UnauthorizedError('Invalid token'));
+  try {
+    const decoded = verifyToken(token);
     req.user = decoded as JwtPayload;
     next();
-  });
+  } catch {
+    return next(new UnauthorizedError('Invalid token'));
+  }
 };
 
 export const authorize = (roles: string[]) => {

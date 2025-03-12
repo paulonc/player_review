@@ -8,6 +8,7 @@ import bcrypt from 'bcryptjs';
 import UserRepository from '../repositories/UserRepository';
 import { User } from '../models/User';
 import { z } from 'zod';
+import { generateToken } from '../config/jwt';
 
 const userSchema = z.object({
   username: z.string().min(3, 'Username must be at least 3 characters'),
@@ -21,14 +22,18 @@ const changePasswordSchema = z.object({
   newPassword: z.string().min(6, 'Password must be at least 6 characters'),
 });
 class UserService {
-  async register(user: Omit<User, 'id' | 'createdAt'>): Promise<User> {
+  async register(user: Omit<User, 'id' | 'createdAt'>): Promise<string> {
     const parsedUser = userSchema.parse(user);
 
     const existingUser = await UserRepository.findByEmail(parsedUser.email);
     if (existingUser) throw new ConflictError('Email already in use');
 
     const hashedPassword = await bcrypt.hash(user.password, 10);
-    return await UserRepository.create({ ...user, password: hashedPassword });
+    const newUser = await UserRepository.create({
+      ...user,
+      password: hashedPassword,
+    });
+    return generateToken(newUser.id, newUser.role);
   }
 
   async getUserById(id: string): Promise<Omit<User, 'password'> | null> {
