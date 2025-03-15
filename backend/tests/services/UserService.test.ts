@@ -42,18 +42,23 @@ describe('UserService', () => {
         createdAt: new Date(),
       };
 
+      const fakeToken = 'fake-jwt-token';
+      
       sandbox.stub(UserRepository, 'findByEmail').resolves(null);
       sandbox.stub(bcrypt, 'hash').resolves(hashedPassword);
       const createStub = sandbox
         .stub(UserRepository, 'create')
         .resolves(expectedUser);
+      
+      // Add this line to mock the JWT token generation
+      const generateTokenStub = sandbox.stub(require('../../src/config/jwt'), 'generateToken').returns(fakeToken);
 
       // Act
       const result = await UserService.register(userData);
 
       // Assert
-      expect(createStub.calledOnce).to.be.true;
-      expect(result).to.deep.equal(expectedUser);
+      expect(generateTokenStub.calledOnceWith(expectedUser.id, expectedUser.role)).to.be.true;
+      expect(result).to.deep.equal({ id: expectedUser.id, token: fakeToken });
     });
 
     it('should throw ConflictError when email is already in use', async () => {
@@ -183,13 +188,50 @@ describe('UserService', () => {
       sandbox.stub(UserRepository, 'findAll').resolves(usersWithoutPasswords);
 
       // Act
-      const result = await UserService.getAllUsers();
+      const result = await UserService.getAllUsers(1, 10);
 
       // Assert
       expect(result).to.deep.equal(usersWithoutPasswords);
       result.forEach((user) => {
         expect(user).to.not.have.property('password');
       });
+    });
+
+    it('should call repository with correct pagination parameters', async () => {
+      // Arrange
+      const page = 2;
+      const limit = 5;
+      const expectedOffset = (page - 1) * limit; // 5
+      
+      const findAllStub = sandbox.stub(UserRepository, 'findAll').resolves([]);
+      
+      // Act
+      await UserService.getAllUsers(page, limit);
+      
+      // Assert
+      expect(findAllStub.calledOnceWith(expectedOffset, limit)).to.be.true;
+    });
+    
+    it('should throw ValidationError when page is less than 1', async () => {
+      // Act & Assert
+      try {
+        await UserService.getAllUsers(0, 10);
+        expect.fail('Expected error was not thrown');
+      } catch (error) {
+        expect(error).to.be.instanceOf(ValidationError);
+        expect((error as Error).message).to.equal('Page must be greater than 0');
+      }
+    });
+    
+    it('should throw ValidationError when limit is less than 1', async () => {
+      // Act & Assert
+      try {
+        await UserService.getAllUsers(1, 0);
+        expect.fail('Expected error was not thrown');
+      } catch (error) {
+        expect(error).to.be.instanceOf(ValidationError);
+        expect((error as Error).message).to.equal('Limit must be greater than 0');
+      }
     });
   });
 
@@ -221,7 +263,7 @@ describe('UserService', () => {
       sandbox.stub(UserRepository, 'update').resolves(updatedUser);
 
       // Act
-      const result = await UserService.update(userId, updateData);
+      const result = await UserService.update(userId, userId, updateData);
 
       // Assert
       expect(result).to.deep.equal(updatedUser);
@@ -236,7 +278,7 @@ describe('UserService', () => {
 
       // Act & Assert
       try {
-        await UserService.update(userId, updateData);
+        await UserService.update(userId, userId, updateData);
         expect.fail('Expected error was not thrown');
       } catch (error) {
         expect(error).to.be.instanceOf(NotFoundError);
@@ -273,7 +315,7 @@ describe('UserService', () => {
 
       // Act & Assert
       try {
-        await UserService.update(userId, updateData);
+        await UserService.update(userId, userId, updateData);
         expect.fail('Expected error was not thrown');
       } catch (error) {
         expect(error).to.be.instanceOf(ConflictError);
@@ -286,7 +328,7 @@ describe('UserService', () => {
 
       // Act & Assert
       try {
-        await UserService.update('', updateData);
+        await UserService.update('', '', updateData);
         expect.fail('Expected error was not thrown');
       } catch (error) {
         expect(error).to.be.instanceOf(ValidationError);
@@ -311,7 +353,7 @@ describe('UserService', () => {
       const deleteStub = sandbox.stub(UserRepository, 'delete').resolves();
 
       // Act
-      await UserService.deleteUser(userId);
+      await UserService.deleteUser(userId, userId);
 
       // Assert
       expect(deleteStub.calledOnceWith(userId)).to.be.true;
@@ -324,7 +366,7 @@ describe('UserService', () => {
 
       // Act & Assert
       try {
-        await UserService.deleteUser(userId);
+        await UserService.deleteUser(userId, userId);
         expect.fail('Expected error was not thrown');
       } catch (error) {
         expect(error).to.be.instanceOf(NotFoundError);
@@ -334,7 +376,7 @@ describe('UserService', () => {
     it('should throw ValidationError when id is not provided', async () => {
       // Act & Assert
       try {
-        await UserService.deleteUser('');
+        await UserService.deleteUser('', '');
         expect.fail('Expected error was not thrown');
       } catch (error) {
         expect(error).to.be.instanceOf(ValidationError);
@@ -368,7 +410,7 @@ describe('UserService', () => {
         .resolves();
 
       // Act
-      await UserService.changePassword(userId, oldPassword, newPassword);
+      await UserService.changePassword(userId, userId, oldPassword, newPassword);
 
       // Assert
       expect(updatePasswordStub.calledOnceWith(userId, hashedNewPassword)).to.be
@@ -385,7 +427,7 @@ describe('UserService', () => {
 
       // Act & Assert
       try {
-        await UserService.changePassword(userId, oldPassword, newPassword);
+        await UserService.changePassword(userId, userId, oldPassword, newPassword);
         expect.fail('Expected error was not thrown');
       } catch (error) {
         expect(error).to.be.instanceOf(NotFoundError);
@@ -413,7 +455,7 @@ describe('UserService', () => {
 
       // Act & Assert
       try {
-        await UserService.changePassword(userId, oldPassword, newPassword);
+        await UserService.changePassword(userId, userId, oldPassword, newPassword);
         expect.fail('Expected error was not thrown');
       } catch (error) {
         expect(error).to.be.instanceOf(ValidationError);
@@ -428,7 +470,7 @@ describe('UserService', () => {
 
       // Act & Assert
       try {
-        await UserService.changePassword(userId, oldPassword, newPassword);
+        await UserService.changePassword(userId, userId, oldPassword, newPassword);
         expect.fail('Expected error was not thrown');
       } catch (error) {
         expect(error).to.be.instanceOf(Error);
