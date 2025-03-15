@@ -10,8 +10,14 @@ class GameRepository {
     return await prisma.game.findUnique({ where: { id } });
   }
 
-  async findAll(): Promise<Game[]> {
-    return await prisma.game.findMany();
+  async findAll(offset: number, limit: number): Promise<Game[]> {
+    const totalCount = await prisma.game.count();
+
+    if (offset > 0 && offset >= totalCount) {
+      return [];
+    }
+    
+    return await prisma.game.findMany({ skip: offset, take: limit });
   }
 
   async update(

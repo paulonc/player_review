@@ -10,8 +10,14 @@ class CompanyRepository {
     return await prisma.company.findUnique({ where: { id } });
   }
 
-  async findAll(): Promise<Company[]> {
-    return await prisma.company.findMany();
+  async findAll(offset: number, limit: number): Promise<Company[]> {
+    const totalCount = await prisma.company.count();
+
+    if (offset > 0 && offset >= totalCount) {
+      return [];
+    }
+    
+    return await prisma.company.findMany({ skip: offset, take: limit });
   }
 
   async update(
