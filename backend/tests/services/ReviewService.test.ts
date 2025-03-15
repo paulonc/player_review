@@ -211,10 +211,47 @@ describe('ReviewService', () => {
       sandbox.stub(ReviewRepository, 'findAll').resolves(expectedReviews);
 
       // Act
-      const result = await ReviewService.getAllReviews();
+      const result = await ReviewService.getAllReviews(1, 10);
 
       // Assert
       expect(result).to.deep.equal(expectedReviews);
+    });
+
+    it('should call repository with correct pagination parameters', async () => {
+      // Arrange
+      const page = 2;
+      const limit = 5;
+      const expectedOffset = (page - 1) * limit; // 5
+      
+      const findAllStub = sandbox.stub(ReviewRepository, 'findAll').resolves([]);
+      
+      // Act
+      await ReviewService.getAllReviews(page, limit);
+      
+      // Assert
+      expect(findAllStub.calledOnceWith(expectedOffset, limit)).to.be.true;
+    });
+    
+    it('should throw ValidationError when page is less than 1', async () => {
+      // Act & Assert
+      try {
+        await ReviewService.getAllReviews(0, 10);
+        expect.fail('Expected error was not thrown');
+      } catch (error) {
+        expect(error).to.be.instanceOf(ValidationError);
+        expect((error as Error).message).to.equal('Page must be greater than 0');
+      }
+    });
+    
+    it('should throw ValidationError when limit is less than 1', async () => {
+      // Act & Assert
+      try {
+        await ReviewService.getAllReviews(1, 0);
+        expect.fail('Expected error was not thrown');
+      } catch (error) {
+        expect(error).to.be.instanceOf(ValidationError);
+        expect((error as Error).message).to.equal('Limit must be greater than 0');
+      }
     });
   });
 
