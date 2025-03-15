@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import UserService from '../services/UserService';
 import logger from '../config/logger';
-
+import { UserAuthenticatedRequest } from '../types/express';
 class UserController {
   async register(
     req: Request,
@@ -49,7 +49,7 @@ class UserController {
   }
 
   async updateUser(
-    req: Request,
+    req: UserAuthenticatedRequest,
     res: Response,
     next: NextFunction,
   ): Promise<Response | void> {
@@ -70,7 +70,7 @@ class UserController {
   }
 
   async deleteUser(
-    req: Request,
+    req: UserAuthenticatedRequest,
     res: Response,
     next: NextFunction,
   ): Promise<Response | void> {
@@ -87,7 +87,7 @@ class UserController {
   }
 
   async updatePassword(
-    req: Request,
+    req: UserAuthenticatedRequest,
     res: Response,
     next: NextFunction,
   ): Promise<Response | void> {

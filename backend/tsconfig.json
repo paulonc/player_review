@@ -9,6 +9,6 @@
     "types": ["node", "mocha", "chai", "sinon", "sinon-chai"],
     "outDir": "./dist"
   },
-  "include": ["src/**/*.ts", "tests/**/*.ts", "eslint.config.mjs"],
+  "include": ["src/**/*.ts", "tests/**/*.ts", "eslint.config.mjs", "src/types/**/*.d.ts"],
   "exclude": ["node_modules"]
 }
