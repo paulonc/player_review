@@ -7,9 +7,12 @@ import authRoutes from './routes/AuthRoutes';
 import { setupSwagger } from './config/swagger';
 import logger from './config/logger';
 import errorHandler from './middlewares/errorHandler';
+import { apiLimiter } from './middlewares/rateLimiter';
 
 const app = express();
 app.use(express.json());
+
+app.use(apiLimiter);
 
 app.use('/login', authRoutes);
 app.use('/users', userRoutes);
