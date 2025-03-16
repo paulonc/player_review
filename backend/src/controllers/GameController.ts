@@ -47,6 +47,20 @@ class GameController {
     }
   }
 
+  async getTopRatedGames(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response | void> {
+    try {
+      const topRatedGames = await GameService.getTopRatedGames();
+      return res.status(200).json(topRatedGames);
+    } catch (error) {
+      logger.error('Error getting top rated games', error);
+      next(error);
+    }
+  }
+
   async update(
     req: Request,
     res: Response,

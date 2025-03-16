@@ -3,6 +3,7 @@ import CompanyService from './CompanyService';
 import { Game } from '../models/Game';
 import { NotFoundError, ValidationError } from '../errors/AppError';
 import { z } from 'zod';
+import { TopRatedGame } from '../models/RatedGame';
 
 const gameSchema = z.object({
   title: z.string().min(1, 'Title is required'),
@@ -41,6 +42,14 @@ class GameService {
     const offset = (page - 1) * limit;
 
     return await GameRepository.findAll(offset, limit);
+  }
+
+  async getTopRatedGames(): Promise<TopRatedGame[]> {
+    const topRatedGames = await GameRepository.getTopRatedGames();
+    if (!topRatedGames || topRatedGames.length === 0) {
+      throw new NotFoundError('No games with ratings found');
+    }
+    return topRatedGames;
   }
 
   async updateGame(

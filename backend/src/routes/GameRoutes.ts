@@ -29,6 +29,25 @@ router.get('/', authenticate, GameController.getAllGames);
 
 /**
  * @swagger
+ * /games/top-rated:
+ *   get:
+ *     summary: Get the top-rated games
+ *     description: Returns the top-rated games based on user reviews.
+ *     tags:
+ *       - Games
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved top-rated games.
+ *       404:
+ *         description: No games with ratings found.
+ *       500: 
+ *         description: Internal server error.
+ */ 
+router.get('/top-rated', authenticate, GameController.getTopRatedGames);
+
+
+/**
+ * @swagger
  * /games/{id}:
  *   get:
  *     summary: Get a game by ID

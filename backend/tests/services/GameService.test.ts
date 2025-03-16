@@ -413,5 +413,45 @@ describe('GameService', () => {
         expect(error).to.be.instanceOf(ValidationError);
       }
     });
+
+    describe('getTopRatedGames', () => {
+      it('should return the top-rated games', async () => {
+        // Arrange
+        const expectedGames = [
+          {
+            game: {
+              id: uuidv4(),
+              title: 'Game 1',
+              description: 'Description 1',
+              releaseDate: new Date(),
+              companyId: uuidv4(),
+              createdAt: new Date(),
+            },
+            avgRating: 4.5
+          },
+        ];  
+
+        sandbox.stub(GameRepository, 'getTopRatedGames').resolves(expectedGames);
+
+        // Act
+        const result = await GameService.getTopRatedGames();
+
+        // Assert
+        expect(result).to.deep.equal(expectedGames);
+      });
+
+      it('should throw NotFoundError when no games with ratings are found', async () => {
+        // Arrange
+        sandbox.stub(GameRepository, 'getTopRatedGames').resolves([]);
+  
+        // Act & Assert
+        try {
+          await GameService.getTopRatedGames(); 
+          expect.fail('Expected error was not thrown');
+        } catch (error) {
+          expect(error).to.be.instanceOf(NotFoundError);
+        }
+      });
+    });
   });
 });
