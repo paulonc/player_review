@@ -32,27 +32,31 @@ class GameRepository {
     await prisma.game.delete({ where: { id } });
   }
 
-  async getTopRatedGames(): Promise<TopRatedGame[]> {
-    const topRatings = await prisma.review.groupBy({
+  async getTopRatedGames(limit: number = 10): Promise<TopRatedGame[]> {
+    const grouped = await prisma.review.groupBy({
       by: ['gameId'],
       _avg: { rating: true },
-      orderBy: { _avg: { rating: 'desc' } },
-      take: 10,
+      orderBy: {
+        _avg: { rating: 'desc' },
+      },
+      take: limit,
     });
 
-    const gameIds = topRatings.map((item) => item.gameId);
+    const gameIds = grouped.map((g) => g.gameId);
 
     const games = await prisma.game.findMany({
       where: { id: { in: gameIds } },
     });
 
-    return topRatings.map((item) => {
-      const game = games.find((g) => g.id === item.gameId);
+    const result: TopRatedGame[] = grouped.map((group) => {
+      const game = games.find((g) => g.id === group.gameId);
       return {
         game: game!,
-        avgRating: item._avg.rating ?? 0,
+        avgRating: group._avg.rating ? Number(group._avg.rating.toFixed(2)) : 0,
       };
     });
+
+    return result;
   }
 }
 
