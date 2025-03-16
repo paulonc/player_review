@@ -12,8 +12,6 @@ import { apiLimiter } from './middlewares/rateLimiter';
 const app = express();
 app.use(express.json());
 
-app.use(apiLimiter);
-
 app.use('/login', authRoutes);
 app.use('/users', userRoutes);
 app.use('/games', gameRoutes);
@@ -21,6 +19,7 @@ app.use('/companies', companyRoutes);
 app.use('/reviews', reviewRoutes);
 
 app.use(errorHandler);
+app.use(apiLimiter);
 
 setupSwagger(app);
 
