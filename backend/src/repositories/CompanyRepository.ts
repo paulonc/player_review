@@ -16,7 +16,7 @@ class CompanyRepository {
     if (offset > 0 && offset >= totalCount) {
       return [];
     }
-    
+
     return await prisma.company.findMany({ skip: offset, take: limit });
   }
 

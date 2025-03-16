@@ -16,7 +16,7 @@ class ReviewRepository {
     if (offset > 0 && offset >= totalCount) {
       return [];
     }
-    
+
     return await prisma.review.findMany({ skip: offset, take: limit });
   }
 

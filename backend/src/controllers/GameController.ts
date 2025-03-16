@@ -38,7 +38,7 @@ class GameController {
     try {
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 10;
-      
+
       const games = await GameService.getAllGames(page, limit);
       return res.status(200).json(games);
     } catch (error) {

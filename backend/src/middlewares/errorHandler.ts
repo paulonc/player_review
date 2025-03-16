@@ -14,7 +14,7 @@ const errorHandler = (
   }
 
   if (err instanceof ZodError) {
-    const errorDetails = err.errors.map(e => ({
+    const errorDetails = err.errors.map((e) => ({
       field: e.path[0],
       message: e.message,
     }));

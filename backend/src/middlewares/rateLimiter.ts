@@ -7,11 +7,12 @@ export const loginLimiter = rateLimit({
   max: 5,
   standardHeaders: true,
   legacyHeaders: false,
-  
+
   handler: (req: Request, res: Response) => {
     logger.warn(`Rate limit exceeded for IP: ${req.ip}`);
     return res.status(429).json({
-      message: 'Too many login attempts from this IP, please try again after 15 minutes'
+      message:
+        'Too many login attempts from this IP, please try again after 15 minutes',
     });
   },
 
@@ -23,5 +24,5 @@ export const apiLimiter = rateLimit({
   max: 100,
   standardHeaders: true,
   legacyHeaders: false,
-  message: 'Too many requests from this IP, please try again after a minute'
-}); 
+  message: 'Too many requests from this IP, please try again after a minute',
+});

@@ -16,7 +16,7 @@ class GameRepository {
     if (offset > 0 && offset >= totalCount) {
       return [];
     }
-    
+
     return await prisma.game.findMany({ skip: offset, take: limit });
   }
 

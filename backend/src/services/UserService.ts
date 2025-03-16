@@ -22,7 +22,9 @@ const changePasswordSchema = z.object({
   newPassword: z.string().min(6, 'Password must be at least 6 characters'),
 });
 class UserService {
-  async register(user: Omit<User, 'id' | 'createdAt'>): Promise<{ id: string, token: string }> {
+  async register(
+    user: Omit<User, 'id' | 'createdAt'>,
+  ): Promise<{ id: string; token: string }> {
     const parsedUser = userSchema.parse(user);
 
     const existingUser = await UserRepository.findByEmail(parsedUser.email);
@@ -45,12 +47,15 @@ class UserService {
     return userWithoutPassword;
   }
 
-  async getAllUsers(page: number, limit: number): Promise<Omit<User, 'password'>[]> {
+  async getAllUsers(
+    page: number,
+    limit: number,
+  ): Promise<Omit<User, 'password'>[]> {
     if (page < 1) throw new ValidationError('Page must be greater than 0');
     if (limit < 1) throw new ValidationError('Limit must be greater than 0');
-    
+
     const offset = (page - 1) * limit;
-    
+
     return await UserRepository.findAll(offset, limit);
   }
 

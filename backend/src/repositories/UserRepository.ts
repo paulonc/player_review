@@ -14,13 +14,16 @@ class UserRepository {
     return await prisma.user.findUnique({ where: { id } });
   }
 
-  async findAll(offset: number, limit: number): Promise<Omit<User, 'password'>[]> {
+  async findAll(
+    offset: number,
+    limit: number,
+  ): Promise<Omit<User, 'password'>[]> {
     const totalCount = await prisma.game.count();
 
     if (offset > 0 && offset >= totalCount) {
       return [];
     }
-    
+
     return await prisma.user.findMany({
       skip: offset,
       take: limit,
