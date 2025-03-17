@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import UserService from '../services/UserService';
 import logger from '../config/logger';
-
+import { UserAuthenticatedRequest } from '../types/express';
 class UserController {
   async register(
     req: Request,
@@ -37,7 +37,10 @@ class UserController {
     next: NextFunction,
   ): Promise<Response | void> {
     try {
-      const users = await UserService.getAllUsers();
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 10;
+
+      const users = await UserService.getAllUsers(page, limit);
       return res.status(200).json(users);
     } catch (error) {
       logger.error('Error getting all users', error);
@@ -46,14 +49,16 @@ class UserController {
   }
 
   async updateUser(
-    req: Request,
+    req: UserAuthenticatedRequest,
     res: Response,
     next: NextFunction,
   ): Promise<Response | void> {
-    const { id } = req.params;
-    const { username, email } = req.body;
     try {
-      const updatedUser = await UserService.update(id, {
+      const userId = req.user!.id;
+      const { id } = req.params;
+      const { username, email } = req.body;
+
+      const updatedUser = await UserService.update(userId, id, {
         username,
         email,
       });
@@ -65,13 +70,15 @@ class UserController {
   }
 
   async deleteUser(
-    req: Request,
+    req: UserAuthenticatedRequest,
     res: Response,
     next: NextFunction,
   ): Promise<Response | void> {
-    const { id } = req.params;
     try {
-      await UserService.deleteUser(id);
+      const userId = req.user!.id;
+      const { id } = req.params;
+
+      await UserService.deleteUser(userId, id);
       return res.status(204).send();
     } catch (error) {
       logger.error('Error deleting user', error);
@@ -80,15 +87,16 @@ class UserController {
   }
 
   async updatePassword(
-    req: Request,
+    req: UserAuthenticatedRequest,
     res: Response,
     next: NextFunction,
   ): Promise<Response | void> {
+    const userId = req.user!.id;
     const { id } = req.params;
     const { oldPassword, newPassword } = req.body;
 
     try {
-      await UserService.changePassword(id, oldPassword, newPassword);
+      await UserService.changePassword(userId, id, oldPassword, newPassword);
       return res.status(200).json({ message: 'Password changed successfully' });
     } catch (error) {
       logger.error('Error changing password', error);

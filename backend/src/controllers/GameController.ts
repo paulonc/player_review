@@ -36,10 +36,27 @@ class GameController {
     next: NextFunction,
   ): Promise<Response | void> {
     try {
-      const games = await GameService.getAllGames();
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 10;
+
+      const games = await GameService.getAllGames(page, limit);
       return res.status(200).json(games);
     } catch (error) {
       logger.error('Error getting all games', error);
+      next(error);
+    }
+  }
+
+  async getTopRatedGames(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response | void> {
+    try {
+      const topRatedGames = await GameService.getTopRatedGames();
+      return res.status(200).json(topRatedGames);
+    } catch (error) {
+      logger.error('Error getting top rated games', error);
       next(error);
     }
   }

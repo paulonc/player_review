@@ -3,14 +3,18 @@ import CompanyService from './CompanyService';
 import { Game } from '../models/Game';
 import { NotFoundError, ValidationError } from '../errors/AppError';
 import { z } from 'zod';
+import { TopRatedGame } from '../models/RatedGame';
 
 const gameSchema = z.object({
   title: z.string().min(1, 'Title is required'),
   description: z.string().min(1, 'Description is required'),
   releaseDate: z
-    .string()
-    .refine((val) => !isNaN(Date.parse(val)), 'Invalid release date format')
-    .transform((val) => new Date(val)),
+    .preprocess(
+      (val) => (typeof val === 'string' ? new Date(val) : val),
+      z.date(),
+    )
+    .refine((val) => !isNaN(val.getTime()), 'Invalid release date format')
+    .transform((val) => val.toISOString()),
   companyId: z.string().uuid('Invalid company ID format'),
 });
 
@@ -31,8 +35,21 @@ class GameService {
     return game;
   }
 
-  async getAllGames(): Promise<Game[]> {
-    return await GameRepository.findAll();
+  async getAllGames(page: number, limit: number): Promise<Game[]> {
+    if (page < 1) throw new ValidationError('Page must be greater than 0');
+    if (limit < 1) throw new ValidationError('Limit must be greater than 0');
+
+    const offset = (page - 1) * limit;
+
+    return await GameRepository.findAll(offset, limit);
+  }
+
+  async getTopRatedGames(): Promise<TopRatedGame[]> {
+    const topRatedGames = await GameRepository.getTopRatedGames();
+    if (!topRatedGames || topRatedGames.length === 0) {
+      throw new NotFoundError('No games with ratings found');
+    }
+    return topRatedGames;
   }
 
   async updateGame(

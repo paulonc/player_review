@@ -37,7 +37,10 @@ class ReviewController {
     next: NextFunction,
   ): Promise<Response | void> {
     try {
-      const reviews = await ReviewService.getAllReviews();
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 10;
+
+      const reviews = await ReviewService.getAllReviews(page, limit);
       return res.status(200).json(reviews);
     } catch (error) {
       logger.error('Error fetching reviews', error);

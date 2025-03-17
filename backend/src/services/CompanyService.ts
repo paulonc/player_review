@@ -23,8 +23,13 @@ class CompanyService {
     return company;
   }
 
-  async getAllCompanys(): Promise<Company[]> {
-    return await CompanyRepository.findAll();
+  async getAllCompanies(page: number, limit: number): Promise<Company[]> {
+    if (page < 1) throw new ValidationError('Page must be greater than 0');
+    if (limit < 1) throw new ValidationError('Limit must be greater than 0');
+
+    const offset = (page - 1) * limit;
+
+    return await CompanyRepository.findAll(offset, limit);
   }
 
   async updateCompany(

@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import UserController from '../controllers/UserController';
+import { authenticate, authorize } from '../middlewares/authMiddleware';
 
 const router = Router();
 
@@ -18,13 +19,28 @@ const router = Router();
  *     description: Returns all registered users.
  *     tags:
  *       - Users
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *           minimum: 1
+ *         description: The page number for pagination
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *           minimum: 1
+ *         description: The number of items per page
  *     responses:
  *       200:
  *         description: Successfully retrieved user list.
  *       500:
  *          description: Internal server error.
  */
-router.get('/', UserController.getAllUsers);
+router.get('/', authenticate, UserController.getAllUsers);
 
 /**
  * @swagger
@@ -49,7 +65,7 @@ router.get('/', UserController.getAllUsers);
  *       500:
  *          description: Internal server error.
  */
-router.get('/:id', UserController.getUser);
+router.get('/:id', authenticate, UserController.getUser);
 
 /**
  * @swagger
@@ -129,7 +145,7 @@ router.post('/', UserController.register);
  *       500:
  *         description: Internal server error.
  */
-router.put('/:id', UserController.updateUser);
+router.put('/:id', authenticate, UserController.updateUser);
 
 /**
  * @swagger
@@ -164,7 +180,7 @@ router.put('/:id', UserController.updateUser);
  *       500:
  *         description: Internal server error.
  */
-router.patch('/:id', UserController.updatePassword);
+router.patch('/:id', authenticate, UserController.updatePassword);
 
 /**
  * @swagger
@@ -189,6 +205,11 @@ router.patch('/:id', UserController.updatePassword);
  *       500:
  *         description: Internal server error.
  */
-router.delete('/:id', UserController.deleteUser);
+router.delete(
+  '/:id',
+  authenticate,
+  authorize(['ADMIN']),
+  UserController.deleteUser,
+);
 
 export default router;

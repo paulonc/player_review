@@ -10,8 +10,14 @@ class ReviewRepository {
     return await prisma.review.findUnique({ where: { id } });
   }
 
-  async findAll(): Promise<Review[]> {
-    return await prisma.review.findMany();
+  async findAll(offset: number, limit: number): Promise<Review[]> {
+    const totalCount = await prisma.review.count();
+
+    if (offset > 0 && offset >= totalCount) {
+      return [];
+    }
+
+    return await prisma.review.findMany({ skip: offset, take: limit });
   }
 
   async update(
