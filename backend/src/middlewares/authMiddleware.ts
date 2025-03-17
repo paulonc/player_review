@@ -1,6 +1,7 @@
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 import { UnauthorizedError } from '../errors/AppError';
 import { verifyToken } from '../config/jwt';
+import { UserAuthenticatedRequest } from '../types/express';
 
 interface JwtPayload {
   id: string;
@@ -10,7 +11,7 @@ interface JwtPayload {
 }
 
 export const authenticate = (
-  req: Request,
+  req: UserAuthenticatedRequest,
   res: Response,
   next: NextFunction,
 ): void => {
@@ -34,7 +35,7 @@ export const authenticate = (
 };
 
 export const authorize = (roles: string[]) => {
-  return (req: Request, res: Response, next: NextFunction): void => {
+  return (req: UserAuthenticatedRequest, res: Response, next: NextFunction): void => {
     const user = req.user;
     if (!user) {
       return next(new UnauthorizedError('User not authenticated'));
