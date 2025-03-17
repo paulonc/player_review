@@ -20,6 +20,21 @@ const router = Router();
  *     description: Returns all registered companies.
  *     tags:
  *       - Companies
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *           minimum: 1
+ *         description: The page number for pagination
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *           minimum: 1
+ *         description: The number of items per page
  *     responses:
  *       200:
  *         description: Successfully retrieved company list.
