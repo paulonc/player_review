@@ -4,6 +4,7 @@ import gameRoutes from './routes/GameRoutes';
 import companyRoutes from './routes/CompanyRoutes';
 import reviewRoutes from './routes/ReviewRoutes';
 import authRoutes from './routes/AuthRoutes';
+import categoryRoutes from './routes/CategoryRoutes';
 import { setupSwagger } from './config/swagger';
 import logger from './config/logger';
 import errorHandler from './middlewares/errorHandler';
@@ -17,6 +18,7 @@ app.use('/users', userRoutes);
 app.use('/games', gameRoutes);
 app.use('/companies', companyRoutes);
 app.use('/reviews', reviewRoutes);
+app.use('/categories', categoryRoutes);
 
 app.use(errorHandler);
 app.use(apiLimiter);

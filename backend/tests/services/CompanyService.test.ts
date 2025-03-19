@@ -15,7 +15,7 @@ describe('CompanyService', () => {
 
   describe('createCompany', () => {
     it('should create a company when valid data is provided', async () => {
-      const companyData = { name: 'Empresa Teste', country: 'Brasil' };
+      const companyData = { name: 'Empresa Teste', country: 'Brasil', imageUrl: null };
       const createdCompany = { id: '1', ...companyData, createdAt: new Date() };
       sinon.stub(CompanyRepository, 'create').resolves(createdCompany);
 
@@ -52,6 +52,7 @@ describe('CompanyService', () => {
         name: 'Empresa Teste',
         country: 'Brasil',
         createdAt: new Date(),
+        imageUrl: null,
       };
 
       sinon
@@ -98,12 +99,14 @@ describe('CompanyService', () => {
           name: 'Empresa A',
           country: 'Brasil',
           createdAt: new Date(),
+          imageUrl: null,
         },
         {
           id: '2',
           name: 'Empresa B',
           country: 'Argentina',
           createdAt: new Date(),
+          imageUrl: null,
         },
       ];
 
@@ -159,6 +162,7 @@ describe('CompanyService', () => {
         name: 'Empresa Antiga',
         country: 'Brasil',
         createdAt: new Date(),
+        imageUrl: null,
       };
       const updateData = { name: 'Empresa Atualizada' };
       const updatedCompany = { ...existingCompany, ...updateData };
@@ -209,6 +213,7 @@ describe('CompanyService', () => {
         name: 'Empresa Antiga',
         country: 'Brasil',
         createdAt: new Date(),
+        imageUrl: null,
       };
 
       sinon
@@ -233,6 +238,7 @@ describe('CompanyService', () => {
         name: 'Empresa Teste',
         country: 'Brasil',
         createdAt: new Date(),
+        imageUrl: null,
       };
 
       sinon

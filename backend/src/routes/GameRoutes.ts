@@ -110,6 +110,9 @@ router.get('/:id', authenticate, GameController.getGame);
  *               companyId:
  *                 type: string
  *                 example: "123e4567-e89b-12d3-a456-426614174000"
+ *               categoryId:
+ *                 type: string
+ *                 example: "123e4567-e89b-12d3-a456-426614174000"
  *               releaseDate:
  *                 type: string
  *                 example: "2015-05-19T00:00:00.000Z"

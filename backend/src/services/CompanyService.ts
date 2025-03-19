@@ -6,6 +6,7 @@ import { z } from 'zod';
 const companySchema = z.object({
   name: z.string().min(1, 'Company name is required'),
   country: z.string().min(1, 'Country is required'),
+  imageUrl: z.string().nullable().optional().transform(val => val ?? null),
 });
 
 class CompanyService {

@@ -53,7 +53,9 @@ describe('ReviewService', () => {
         description: 'A test game description',
         releaseDate: new Date(),
         companyId: uuidv4(),
+        categoryId: uuidv4(),
         createdAt: new Date(),
+        imageUrl: null,
       });
 
       const createStub = sandbox

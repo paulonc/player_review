@@ -46,8 +46,18 @@ model Game {
     releaseDate DateTime @map("release_date")
     createdAt   DateTime @default(now()) @map("created_at")
     companyId   String   @db.Uuid
+    categoryId  String   @db.Uuid
     company     Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+    category    Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
     reviews     Review[]
+    imageUrl    String?  @db.VarChar(255)
+}
+
+model Category {
+    id        String   @id @default(uuid()) @db.Uuid
+    name      String   @unique @db.VarChar(100)
+    games     Game[]
+    createdAt DateTime @default(now()) @map("created_at")
 }
 
 model Company {
@@ -56,4 +66,5 @@ model Company {
     country   String   @db.VarChar(255)
     createdAt DateTime @default(now()) @map("created_at")
     Game      Game[]
+    imageUrl  String?  @db.VarChar(255)
 }

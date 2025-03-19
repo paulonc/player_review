@@ -4,6 +4,7 @@ import { Game } from '../models/Game';
 import { NotFoundError, ValidationError } from '../errors/AppError';
 import { z } from 'zod';
 import { TopRatedGame } from '../models/RatedGame';
+import CategoryService from './CategoryService';
 
 const gameSchema = z.object({
   title: z.string().min(1, 'Title is required'),
@@ -16,15 +17,19 @@ const gameSchema = z.object({
     .refine((val) => !isNaN(val.getTime()), 'Invalid release date format')
     .transform((val) => val.toISOString()),
   companyId: z.string().uuid('Invalid company ID format'),
+  categoryId: z.string().uuid('Invalid category ID format'),
+  imageUrl: z.string().nullable().optional().transform(val => val ?? null),
 });
 
 class GameService {
   async createGame(game: Omit<Game, 'id' | 'created_at'>): Promise<Game> {
     const parsedGame = gameSchema.parse(game);
 
-    const { companyId } = parsedGame;
+    const { companyId, categoryId } = parsedGame;
     const company = await CompanyService.getCompanyById(companyId);
     if (!company) throw new NotFoundError('Company not found');
+    const category = await CategoryService.getCategoryById(categoryId);
+    if (!category) throw new NotFoundError('Category not found');
     return await GameRepository.create(game);
   }
 

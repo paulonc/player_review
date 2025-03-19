@@ -3,6 +3,8 @@ export interface Game {
   title: string;
   description: string | null;
   companyId: string;
+  categoryId: string;
   releaseDate: Date;
   createdAt: Date;
+  imageUrl: string | null;
 }
