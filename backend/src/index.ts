@@ -19,6 +19,7 @@ app.use('/games', gameRoutes);
 app.use('/companies', companyRoutes);
 app.use('/reviews', reviewRoutes);
 app.use('/categories', categoryRoutes);
+
 app.use(errorHandler);
 app.use(apiLimiter);
 
