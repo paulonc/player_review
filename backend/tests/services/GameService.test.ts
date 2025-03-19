@@ -6,6 +6,7 @@ import GameService from '../../src/services/GameService';
 import GameRepository from '../../src/repositories/GameRepository';
 import CompanyService from '../../src/services/CompanyService';
 import { NotFoundError, ValidationError } from '../../src/errors/AppError';
+import CategoryService from '../../src/services/CategoryService';
 
 describe('GameService', () => {
   let sandbox: sinon.SinonSandbox;
@@ -23,11 +24,13 @@ describe('GameService', () => {
       const date = new Date();
       // Arrange
       const companyId = uuidv4();
+      const categoryId = uuidv4();
       const gameData = {
         title: 'Test Game',
         description: 'A test game description',
         releaseDate: new Date(),
         companyId: companyId,
+        categoryId: categoryId,
         createdAt: date,
       };
 
@@ -42,6 +45,12 @@ describe('GameService', () => {
         id: companyId,
         name: 'Test Company',
         country: 'United States',
+        createdAt: new Date(),
+      });
+
+      sandbox.stub(CategoryService, 'getCategoryById').resolves({
+        id: categoryId,
+        name: 'Test Category',
         createdAt: new Date(),
       });
 
@@ -63,8 +72,9 @@ describe('GameService', () => {
       const gameData = {
         title: 'Test Game',
         description: 'A test game description',
-        releaseDate: new Date(),
+        releaseDate: new Date(),  
         companyId: uuidv4(),
+        categoryId: uuidv4(),
         createdAt: date,
       };
 
@@ -86,6 +96,7 @@ describe('GameService', () => {
         description: 'A test game description',
         releaseDate: new Date('invalid-date'),
         companyId: 'invalid-uuid',
+        categoryId: 'invalid-uuid',
         createdAt: new Date(),
       };
 
@@ -109,6 +120,7 @@ describe('GameService', () => {
         description: 'A test game description',
         releaseDate: new Date(),
         companyId: uuidv4(),
+        categoryId: uuidv4(),
         createdAt: new Date(),
       };
 
@@ -156,6 +168,7 @@ describe('GameService', () => {
           description: 'Description 1',
           releaseDate: new Date(),
           companyId: uuidv4(),
+          categoryId: uuidv4(),
           createdAt: new Date(),
         },
         {
@@ -164,6 +177,7 @@ describe('GameService', () => {
           description: 'Description 2',
           releaseDate: new Date(),
           companyId: uuidv4(),
+          categoryId: uuidv4(),
           createdAt: new Date(),
         },
       ];
@@ -231,6 +245,7 @@ describe('GameService', () => {
         releaseDate: new Date(),
         companyId: uuidv4(),
         createdAt: new Date(),
+        categoryId: uuidv4(),
       };
 
       const updatedGame = {
@@ -288,6 +303,7 @@ describe('GameService', () => {
         description: 'A test game description',
         releaseDate: new Date(),
         companyId: uuidv4(),
+        categoryId: uuidv4(),
         createdAt: new Date(),
       };
 
@@ -340,6 +356,7 @@ describe('GameService', () => {
         releaseDate: new Date(),
         companyId: uuidv4(),
         createdAt: date,
+        categoryId: uuidv4(),
       };
 
       const updatedGame = {
@@ -400,6 +417,7 @@ describe('GameService', () => {
         description: 'A test game description',
         releaseDate: new Date(),
         companyId: uuidv4(),
+        categoryId: uuidv4(),
         createdAt: new Date(),
       };
 
@@ -425,6 +443,7 @@ describe('GameService', () => {
               description: 'Description 1',
               releaseDate: new Date(),
               companyId: uuidv4(),
+              categoryId: uuidv4(),
               createdAt: new Date(),
             },
             avgRating: 4.5
