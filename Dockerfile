@@ -10,6 +10,9 @@ COPY ./backend ./backend
 
 RUN npx prisma generate --schema=./backend/prisma/schema.prisma
 
+COPY entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
+
 EXPOSE 3000
 
-CMD ["npm", "start", "--prefix", "./backend"]
+ENTRYPOINT ["/app/entrypoint.sh"]
