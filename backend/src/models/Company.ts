@@ -3,4 +3,5 @@ export interface Company {
   name: string;
   country: string;
   createdAt: Date;
+  imageUrl: string | null;
 }

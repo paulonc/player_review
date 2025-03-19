@@ -18,6 +18,7 @@ const gameSchema = z.object({
     .transform((val) => val.toISOString()),
   companyId: z.string().uuid('Invalid company ID format'),
   categoryId: z.string().uuid('Invalid category ID format'),
+  imageUrl: z.string().nullable().optional().transform(val => val ?? null),
 });
 
 class GameService {

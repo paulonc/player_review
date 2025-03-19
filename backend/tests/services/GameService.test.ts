@@ -32,6 +32,7 @@ describe('GameService', () => {
         companyId: companyId,
         categoryId: categoryId,
         createdAt: date,
+        imageUrl: null,
       };
 
       const expectedGame = {
@@ -39,6 +40,7 @@ describe('GameService', () => {
         ...gameData,
         releaseDate: new Date(),
         createdAt: date,
+        imageUrl: null,
       };
 
       sandbox.stub(CompanyService, 'getCompanyById').resolves({
@@ -46,6 +48,7 @@ describe('GameService', () => {
         name: 'Test Company',
         country: 'United States',
         createdAt: new Date(),
+        imageUrl: null,
       });
 
       sandbox.stub(CategoryService, 'getCategoryById').resolves({
@@ -76,6 +79,7 @@ describe('GameService', () => {
         companyId: uuidv4(),
         categoryId: uuidv4(),
         createdAt: date,
+        imageUrl: null,
       };
 
       sandbox.stub(CompanyService, 'getCompanyById').resolves(null);
@@ -98,6 +102,7 @@ describe('GameService', () => {
         companyId: 'invalid-uuid',
         categoryId: 'invalid-uuid',
         createdAt: new Date(),
+        imageUrl: null,
       };
 
       // Act & Assert
@@ -122,6 +127,7 @@ describe('GameService', () => {
         companyId: uuidv4(),
         categoryId: uuidv4(),
         createdAt: new Date(),
+        imageUrl: null,
       };
 
       sandbox.stub(GameRepository, 'findById').resolves(expectedGame);
@@ -170,6 +176,7 @@ describe('GameService', () => {
           companyId: uuidv4(),
           categoryId: uuidv4(),
           createdAt: new Date(),
+          imageUrl: null,
         },
         {
           id: uuidv4(),
@@ -179,6 +186,7 @@ describe('GameService', () => {
           companyId: uuidv4(),
           categoryId: uuidv4(),
           createdAt: new Date(),
+          imageUrl: null,
         },
       ];
 
@@ -246,11 +254,13 @@ describe('GameService', () => {
         companyId: uuidv4(),
         createdAt: new Date(),
         categoryId: uuidv4(),
+        imageUrl: null,
       };
 
       const updatedGame = {
         ...existingGame,
         ...updateData,
+        imageUrl: null,
       };
 
       sandbox.stub(GameRepository, 'findById').resolves(existingGame);
@@ -305,6 +315,7 @@ describe('GameService', () => {
         companyId: uuidv4(),
         categoryId: uuidv4(),
         createdAt: new Date(),
+        imageUrl: null,
       };
 
       sandbox.stub(GameRepository, 'findById').resolves(existingGame);
@@ -357,11 +368,13 @@ describe('GameService', () => {
         companyId: uuidv4(),
         createdAt: date,
         categoryId: uuidv4(),
+        imageUrl: null,
       };
 
       const updatedGame = {
         ...existingGame,
         releaseDate: newReleaseDate,
+        imageUrl: null,
       };
 
       sandbox.stub(GameRepository, 'findById').resolves(existingGame);
@@ -419,6 +432,7 @@ describe('GameService', () => {
         companyId: uuidv4(),
         categoryId: uuidv4(),
         createdAt: new Date(),
+        imageUrl: null,
       };
 
       sandbox.stub(GameRepository, 'findById').resolves(existingGame);
@@ -445,6 +459,7 @@ describe('GameService', () => {
               companyId: uuidv4(),
               categoryId: uuidv4(),
               createdAt: new Date(),
+              imageUrl: null,
             },
             avgRating: 4.5
           },

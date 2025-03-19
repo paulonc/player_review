@@ -6,4 +6,5 @@ export interface Game {
   categoryId: string;
   releaseDate: Date;
   createdAt: Date;
+  imageUrl: string | null;
 }
