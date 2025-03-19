@@ -19,7 +19,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@prisma/client": "^6.4.1",
+    "@prisma/client": "^6.5.0",
     "bcryptjs": "^3.0.2",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
@@ -58,7 +58,7 @@
     "mocha": "^10.8.2",
     "nyc": "^17.1.0",
     "prettier": "^3.5.3",
-    "prisma": "^6.4.1",
+    "prisma": "^6.5.0",
     "rimraf": "^6.0.1",
     "sinon": "^15.2.0",
     "sinon-chai": "^3.7.0",
