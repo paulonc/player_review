@@ -50,6 +50,7 @@ model Game {
     company     Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
     category    Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
     reviews     Review[]
+    imageUrl    String?  @db.VarChar(255)
 }
 
 model Category {
@@ -65,4 +66,5 @@ model Company {
     country   String   @db.VarChar(255)
     createdAt DateTime @default(now()) @map("created_at")
     Game      Game[]
+    imageUrl  String?  @db.VarChar(255)
 }
