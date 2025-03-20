@@ -1,4 +1,6 @@
-import { useEffect, useState } from "react"
+"use client"
+
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -10,38 +12,21 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { ChevronDown } from "lucide-react"
 
-interface Category {
-  id: string
-  name: string
-  created_at: string
-}
-
 export default function CategoryFilter() {
-  const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>([])
-  const [categories, setCategories] = useState<Category[]>([])
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([])
 
-  const fetchCategories = async (): Promise<void> => {
-    try {
-      const response = await fetch('http://localhost:3000/categories')
-      if (!response.ok) {
-        throw new Error('Failed to fetch categories')
-      }
-      const data: Category[] = await response.json()
-      setCategories(data)
-    } catch (error) {
-      console.error('Error fetching categories:', error)
-    }
-  }
+  const categories = [
+    "Action",
+    "Adventure",
+    "RPG",
+    "Strategy",
+    "Simulation",
+    "Sports",
+  ]
 
-  useEffect(() => {
-    fetchCategories()
-  }, [])
-
-  const toggleCategory = (categoryId: string) => {
-    setSelectedCategoryIds((prev) =>
-      prev.includes(categoryId)
-        ? prev.filter((id) => id !== categoryId)
-        : [...prev, categoryId]
+  const toggleCategory = (category: string) => {
+    setSelectedCategories((prev) =>
+      prev.includes(category) ? prev.filter((c) => c !== category) : [...prev, category],
     )
   }
 
@@ -58,11 +43,11 @@ export default function CategoryFilter() {
         <DropdownMenuSeparator />
         {categories.map((category) => (
           <DropdownMenuCheckboxItem
-            key={category.id}
-            checked={selectedCategoryIds.includes(category.id)}
-            onCheckedChange={() => toggleCategory(category.id)}
+            key={category}
+            checked={selectedCategories.includes(category)}
+            onCheckedChange={() => toggleCategory(category)}
           >
-            {category.name}
+            {category}
           </DropdownMenuCheckboxItem>
         ))}
       </DropdownMenuContent>

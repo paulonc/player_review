@@ -15,24 +15,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const navigate = useNavigate()
 
   useEffect(() => {
-    const token = Cookies.get("authToken") // Lê o cookie HTTP-only
+    const token = Cookies.get("authToken")
     if (token) {
       setIsAuthenticated(true)
     }
   }, [])
 
   const login = (token: string) => {
-    // Definindo o cookie HTTP-only com segurança (mesmo após login)
     Cookies.set("authToken", token, { 
-      expires: 7, // Expiração em 7 dias
-      secure: true, // Garantir que seja enviado apenas por HTTPS
-      sameSite: "Strict" // Evitar que o cookie seja enviado em requisições de outros sites
+      expires: 7,
+      secure: true,
+      sameSite: "Strict"
     })
     setIsAuthenticated(true)
   }
 
   const logout = () => {
-    Cookies.remove("authToken") // Remove o cookie ao fazer logout
+    Cookies.remove("authToken")
     setIsAuthenticated(false)
     navigate("/login")
   }
