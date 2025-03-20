@@ -84,6 +84,31 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+.container {
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+@media (min-width: 1400px) {
+  .container {
+    width: 1400px;
+  }
+}
+
+.lg {
+  border-radius: var(--radius);
+}
+
+.md {
+  border-radius: calc(var(--radius) - 2px);
+}
+
+.sm {
+  border-radius: calc(var(--radius) - 4px);
+}
+
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
