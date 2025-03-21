@@ -3,8 +3,11 @@ import Home from './pages/Home'
 import Contact from './pages/Contact'
 import Login from './pages/Login'
 import Register from './pages/Register'
+import Game from './pages/Game'
 import { AuthProvider } from './contexts/AuthContext'
 import ProtectedRoute from './components/auth/ProtectedRoute'
+import WriteReview from './pages/WriteReview'
+import { Toaster } from "sonner"
 
 function App() {
   return (
@@ -30,7 +33,24 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/games/:id"
+            element={
+              <ProtectedRoute>
+                <Game />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/games/:id/review"
+            element={
+              <ProtectedRoute>
+                <WriteReview />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
+        <Toaster position="top-right" />
       </AuthProvider>
     </BrowserRouter>
   )
