@@ -8,6 +8,7 @@ import GameRepository from '../repositories/GameRepository';
 const reviewSchema = z.object({
   userId: z.string().min(1, 'User ID is required'),
   gameId: z.string().min(1, 'Game ID is required'),
+  title: z.string().min(1, 'Title is required'),
   rating: z
     .number()
     .min(1, 'Rating must be at least 1')
@@ -16,6 +17,11 @@ const reviewSchema = z.object({
     .string()
     .optional()
     .transform((val) => val ?? null),
+    hoursPlayed: z
+    .number()
+    .optional()
+    .transform((val) => (val === undefined ? null : val)),
+    recommended: z.boolean().optional().transform((val) => (val === undefined ? null : val)),
 });
 
 class ReviewService {
