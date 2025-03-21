@@ -88,6 +88,31 @@ router.get('/:id', authenticate, GameController.getGame);
 
 /**
  * @swagger
+ * /games/{id}/details:
+ *   get:
+ *     summary: Get detailed game information
+ *     description: Returns detailed game information including average rating, review count, company name, and category name.
+ *     tags:
+ *       - Games
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The unique identifier of the game.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved game details.
+ *       404:
+ *         description: Game not found.
+ *       500:
+ *         description: Internal server error.
+ */
+router.get('/:id/details', authenticate, GameController.getGameDetails);
+
+/**
+ * @swagger
  * /games:
  *   post:
  *     summary: Create a new game

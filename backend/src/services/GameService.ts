@@ -57,6 +57,13 @@ class GameService {
     return topRatedGames;
   }
 
+  async getGameDetails(id: string) {
+    if (!id) throw new ValidationError('Game ID is required');
+    const gameDetails = await GameRepository.getGameDetails(id);
+    if (!gameDetails) throw new NotFoundError('Game not found');
+    return gameDetails;
+  }
+
   async updateGame(
     id: string,
     gameData: Partial<Omit<Game, 'id' | 'created_at'>>,

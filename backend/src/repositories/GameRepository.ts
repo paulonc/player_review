@@ -73,11 +73,39 @@ class GameRepository {
     });
   
     return result;
-  } 
+  }
 
+  async getGameDetails(id: string) {
+    const game = await prisma.game.findUnique({
+      where: { id },
+      include: {
+        category: true,
+        company: true,
+        reviews: true
+      }
+    });
 
+    if (!game) return null;
 
-  
+    const avgRating = game.reviews.length > 0
+      ? game.reviews.reduce((acc, review) => acc + review.rating, 0) / game.reviews.length
+      : 0;
+
+    return {
+      game: {
+        id: game.id,
+        title: game.title,
+        description: game.description,
+        releaseDate: game.releaseDate,
+        imageUrl: game.imageUrl,
+        createdAt: game.createdAt
+      },
+      avgRating: Number(avgRating.toFixed(2)),
+      reviewCount: game.reviews.length,
+      companyName: game.company.name,
+      categoryName: game.category.name
+    };
+  }
 }
 
 export default new GameRepository();

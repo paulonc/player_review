@@ -108,6 +108,20 @@ class GameController {
       next(error);
     }
   }
+
+  async getGameDetails(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response | void> {
+    try {
+      const gameDetails = await GameService.getGameDetails(req.params.id);
+      return res.status(200).json(gameDetails);
+    } catch (error) {
+      logger.error('Error getting game details', error);
+      next(error);
+    }
+  }
 }
 
 export default new GameController();
