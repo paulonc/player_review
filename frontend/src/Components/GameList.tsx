@@ -5,8 +5,8 @@ interface GameListProps {
         id: string;
         title: string;
         image: string;
-        category: string;
-        rating: number;
+        categoryName: string;
+        avgRating: number;
         reviewCount: number;
     }[];
 }
@@ -14,13 +14,14 @@ interface GameListProps {
 const GameList = ({ games }: GameListProps) => (
   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
     {games.map((game) => (
+      console.log(game.image),
       <GameCard
         key={game.id}
         id={game.id}
         title={game.title}
         image={game.image}
-        category={game.category}
-        rating={game.rating}
+        categoryName={game.categoryName}
+        avgRating={game.avgRating}
         reviewCount={game.reviewCount}
       />
     ))}

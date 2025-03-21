@@ -6,22 +6,63 @@ import GameList from "@/components/GameList";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import CategoryFilter from "@/components/CategoryFilter";
+import { useEffect, useState } from "react";
+import { gameService } from "@/services/gameService";
+import { Game, TopRatedGame } from "@/types/api";
 
+interface GameListItem {
+  id: string;
+  title: string;
+  image: string;
+  categoryId: string;
+  avgRating: number;
+  reviewCount: number;
+  categoryName: string;
+}
 
 export default function Home() {
-  const topRatedGames = [
-    { id: "1", title: "Elden Ring", image: "/placeholder.svg?height=300&width=400", category: "RPG", rating: 4.8, reviewCount: 1243 },
-    { id: "2", title: "God of War: Ragnarök", image: "/placeholder.svg?height=300&width=400", category: "Action Adventure", rating: 4.9, reviewCount: 982 },
-    { id: "3", title: "Cyberpunk 2077", image: "/placeholder.svg?height=300&width=400", category: "RPG", rating: 4.2, reviewCount: 1876 },
-    { id: "4", title: "Horizon Forbidden West", image: "/placeholder.svg?height=300&width=400", category: "Action RPG", rating: 4.7, reviewCount: 754 }
-  ];
+  const [topRatedGames, setTopRatedGames] = useState<GameListItem[]>([]);
+  const [recentGames, setRecentGames] = useState<GameListItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const recentlyReviewedGames = [
-    { id: "5", title: "Starfield", image: "/placeholder.svg?height=300&width=400", category: "Sci-Fi RPG", rating: 4.5, reviewCount: 632 },
-    { id: "6", title: "Baldur's Gate 3", image: "/placeholder.svg?height=300&width=400", category: "RPG", rating: 4.9, reviewCount: 1432 },
-    { id: "7", title: "Final Fantasy XVI", image: "/placeholder.svg?height=300&width=400", category: "JRPG", rating: 4.6, reviewCount: 892 },
-    { id: "8", title: "Resident Evil 4 Remake", image: "/placeholder.svg?height=300&width=400", category: "Horror", rating: 4.8, reviewCount: 743 }
-  ];
+  const transformGameData = (data: Game | TopRatedGame): GameListItem => {
+    const isTopRated = "game" in data;
+    const gameData = isTopRated ? data.game : data;
+  
+    return {
+      id: gameData.id,
+      title: gameData.title,
+      image: gameData.imageUrl,
+      categoryId: gameData.categoryId,
+      categoryName: isTopRated ? data.categoryName : "Unknown",
+      avgRating: isTopRated ? data.avgRating : 0,
+      reviewCount: isTopRated ? data.reviewCount : 0,
+    };
+  };
+  
+  useEffect(() => {
+    const fetchGames = async () => {
+      try {
+        const [topRatedResponse, newReleasesResponse] = await Promise.all([
+          gameService.getTopRatedGames(4),
+          gameService.getNewReleases(4)
+        ]);
+
+        const topRated = topRatedResponse.data;
+        const newReleases = newReleasesResponse.data;
+
+        setTopRatedGames(topRated.map(transformGameData));
+        setRecentGames(newReleases.map(transformGameData));
+
+      } catch (error) {
+        console.error('Error fetching games:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchGames();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-background/95">
@@ -36,7 +77,11 @@ export default function Home() {
               <FilterButtons />
             </div>
           </div>  
-          <GameList games={topRatedGames} />
+          {isLoading ? (
+            <div>Loading...</div>
+          ) : (
+            <GameList games={topRatedGames} />
+          )}
           <div className="flex justify-center mt-8">
             <Button variant="outline" className="border-primary/20 hover:bg-primary/10 transition-all duration-300">
               View All Top Rated Games
@@ -45,11 +90,15 @@ export default function Home() {
         </section>
 
         <section className="py-12">
-          <SectionTitle title="Recently Reviewed" colorClass="bg-purple-500" />
-          <GameList games={recentlyReviewedGames} />
+          <SectionTitle title="Recently Released" colorClass="bg-purple-500" />
+          {isLoading ? (
+            <div>Loading...</div>
+          ) : (
+            <GameList games={recentGames} />
+          )}
           <div className="flex justify-center mt-8">
             <Button variant="outline" className="border-primary/20 hover:bg-primary/10 transition-all duration-300">
-              View All Recent Reviews
+              View All Recent Games
             </Button>
           </div>
         </section>
