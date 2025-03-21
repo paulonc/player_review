@@ -3,8 +3,9 @@ import { Star } from "lucide-react"
 interface SimilarGame {
   id: string
   title: string
-  image: string
-  rating: number
+  imageUrl: string
+  avgRating: number
+  reviewCount: number
 }
 
 interface SimilarGamesProps {
@@ -19,7 +20,7 @@ export default function SimilarGames({ games }: SimilarGamesProps) {
         {games.map((game) => (
           <div key={game.id} className="flex gap-3 group">
             <img
-              src={game.image}
+              src={game.imageUrl}
               alt={game.title}
               className="w-16 h-16 rounded object-cover group-hover:scale-105 transition-transform duration-300"
             />
@@ -27,7 +28,8 @@ export default function SimilarGames({ games }: SimilarGamesProps) {
               <h3 className="font-medium group-hover:text-primary transition-colors">{game.title}</h3>
               <div className="flex items-center">
                 <Star className="h-3 w-3 fill-yellow-500 text-yellow-500 mr-1" />
-                <span className="text-sm">{game.rating}</span>
+                <span className="text-sm">{game.avgRating}</span>
+                <span className="text-sm ml-2">({game.reviewCount} reviews)</span>
               </div>
             </div>
           </div>

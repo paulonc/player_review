@@ -74,8 +74,8 @@ export const gameService = {
     id: string;
     title: string;
     imageUrl: string;
-    rating: number;
-    categoryName: string;
+    avgRating: number;
+    reviewCount: number;
   }[]>> {
     const response = await api.get(`/games/${id}/similar`);
     return response;

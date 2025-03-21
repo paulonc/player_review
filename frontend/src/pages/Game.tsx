@@ -19,12 +19,20 @@ interface GameDetails {
   categoryName: string;
 }
 
+interface SimilarGame {
+  id: string;
+  title: string;
+  imageUrl: string;
+  avgRating: number;
+  reviewCount: number;
+}
+
 export default function GamePage() {
   const { id } = useParams();
   const [gameDetails, setGameDetails] = useState<GameDetails | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-    
+  const [similarGames, setSimilarGames] = useState<SimilarGame[]>([]);
   useEffect(() => {
     const fetchGameDetails = async () => {
       if (!id) return;
@@ -35,6 +43,7 @@ export default function GamePage() {
         setGameDetails(response.data);
         const similarGamesResponse = await gameService.getTopRatedGamesByCategory(id);
         console.log("similarGamesResponse", similarGamesResponse);
+        setSimilarGames(similarGamesResponse.data);
       } catch (err) {
         setError('Failed to load game details');
         console.error('Error fetching game details:', err);
@@ -74,32 +83,6 @@ export default function GamePage() {
     );
   }
 
-  const similarGames = [
-    {
-      id: "1",
-      title: "Dark Souls 3",
-      image: "/placeholder.svg?height=60&width=60",
-      rating: 4.7
-    },
-    {
-      id: "2",
-      title: "Bloodborne",
-      image: "/placeholder.svg?height=60&width=60",
-      rating: 4.8
-    },
-    {
-      id: "3",
-      title: "Sekiro: Shadows Die Twice",
-      image: "/placeholder.svg?height=60&width=60",
-      rating: 4.6
-    },
-    {
-      id: "4",
-      title: "Demon's Souls",
-      image: "/placeholder.svg?height=60&width=60",
-      rating: 4.5
-    }
-  ]
 
   const reviews = [
     {
