@@ -53,7 +53,8 @@ class GameController {
     next: NextFunction,
   ): Promise<Response | void> {
     try {
-      const topRatedGames = await GameService.getTopRatedGames();
+      const limit = parseInt(req.query.limit as string) || 10;
+      const topRatedGames = await GameService.getTopRatedGames(limit);
       return res.status(200).json(topRatedGames);
     } catch (error) {
       logger.error('Error getting top rated games', error);

@@ -11,7 +11,7 @@ const loginSchema = z.object({
 
 class AuthService {
   async login(email: string, password: string): Promise<{ token: string }> {
-    const { emailZod, passwordZod } = loginSchema.parse({ email, password });
+    const { emailZod, passwordZod } = loginSchema.parse({ emailZod: email, passwordZod: password });
 
     const user = await UserRepository.findByEmail(emailZod);
     if (!user) throw new NotFoundError('User not found');

@@ -49,8 +49,8 @@ class GameService {
     return await GameRepository.findAll(offset, limit);
   }
 
-  async getTopRatedGames(): Promise<TopRatedGame[]> {
-    const topRatedGames = await GameRepository.getTopRatedGames();
+  async getTopRatedGames(limit: number): Promise<TopRatedGame[]> {
+    const topRatedGames = await GameRepository.getTopRatedGames(limit);
     if (!topRatedGames || topRatedGames.length === 0) {
       throw new NotFoundError('No games with ratings found');
     }
