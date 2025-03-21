@@ -2,9 +2,13 @@ import api from './api';
 import { ApiResponse, Review, PaginatedResponse } from '../types/api';
 
 interface CreateReviewData {
-  content: string;
+  title: string;
+  review: string;
   rating: number;
+  hoursPlayed: number | null;
+  recommended: boolean | null;
   gameId: string;
+  userId: string;
 }
 
 type UpdateReviewData = Partial<CreateReviewData>;
