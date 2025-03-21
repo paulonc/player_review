@@ -8,6 +8,8 @@ import AuthError from "@/components/auth/AuthError"
 import FormField from "@/components/auth/FormField"
 import AuthNavbar from "@/components/auth/AuthNavbar"
 import { useAuth } from "@/contexts/AuthContext"
+import { authService } from "@/services/authService"
+import { AxiosError } from "axios"
 
 export default function LoginPage() {
   const [email, setEmail] = useState("")
@@ -22,7 +24,7 @@ export default function LoginPage() {
     e.preventDefault()
 
     if (!email || !password) {
-      setError("Por favor, preencha todos os campos")
+      setError("Please fill in all fields")
       return
     }
 
@@ -30,31 +32,17 @@ export default function LoginPage() {
     setIsLoading(true)
 
     try {
-      const response = await fetch("http://localhost:3000/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ email, password })
-      })
-
-      const data = await response.json()
-
-      if (!response.ok) {
-        setError(data.message || "E-mail ou senha inválidos")
-        return
-      }
-
-      const { token } = data
+      const { token } = await authService.login({ email, password })
       if (token) {
         login(token)
         navigate("/")
       } else {
-        setError("Token não retornado")
+        setError("Token not returned")
       }
     } catch (err) {
       console.error(err)
-      setError("Erro ao realizar login. Tente novamente mais tarde.")
+      const axiosError = err as AxiosError<{ message: string }>
+      setError(axiosError.response?.data?.message || "Error logging in. Please try again later.")
     } finally {
       setIsLoading(false)
     }
