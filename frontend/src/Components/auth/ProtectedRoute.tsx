@@ -10,7 +10,11 @@ export default function ProtectedRoute({
   children, 
   redirectTo = "/login" 
 }: ProtectedRouteProps) {
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated, isLoading } = useAuth()
+
+  if (isLoading) {
+    return null
+  }
 
   if (!isAuthenticated) {
     return <Navigate to={redirectTo} replace />

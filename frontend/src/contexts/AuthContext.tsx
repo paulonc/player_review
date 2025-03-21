@@ -4,6 +4,7 @@ import Cookies from "js-cookie"
 
 interface AuthContextType {
   isAuthenticated: boolean
+  isLoading: boolean
   login: (token: string) => void
   logout: () => void
 }
@@ -11,7 +12,11 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | null>(null)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    const token = Cookies.get("authToken")
+    return !!token
+  })
+  const [isLoading, setIsLoading] = useState(true)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -19,6 +24,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (token) {
       setIsAuthenticated(true)
     }
+    setIsLoading(false)
   }, [])
 
   const login = (token: string) => {
@@ -37,7 +43,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, isLoading, login, logout }}>
       {children}
     </AuthContext.Provider>
   )

@@ -13,7 +13,7 @@ class AuthController {
       const { token } = await AuthService.login(email, password);
       return res.status(200).json({ token });
     } catch (error) {
-      logger.error('Erro no login', error);
+      logger.error('Error on login', error);
       next(error);
     }
   }
