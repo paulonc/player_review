@@ -1,7 +1,7 @@
 import GameRepository from '../repositories/GameRepository';
 import CompanyService from './CompanyService';
 import { Game } from '../models/Game';
-import { NotFoundError, ValidationError } from '../errors/AppError';
+import { ConflictError, NotFoundError, ValidationError } from '../errors/AppError';
 import { z } from 'zod';
 import { TopRatedGame } from '../models/RatedGame';
 import CategoryService from './CategoryService';
@@ -62,6 +62,17 @@ class GameService {
     const gameDetails = await GameRepository.getGameDetails(id);
     if (!gameDetails) throw new NotFoundError('Game not found');
     return gameDetails;
+  }
+
+  async getTopRatedGamesByCategory(gameId: string) {
+    if (!gameId) throw new ValidationError('Game ID is required');
+    const game = await GameRepository.findById(gameId);
+    if (!game) throw new NotFoundError('Game not found');
+    const similarGames = await GameRepository.getTopRatedGamesByCategory(gameId, game.categoryId);
+    if (!similarGames || similarGames.length === 0) {
+      throw new ConflictError('No similar games found');
+    }
+    return similarGames;
   }
 
   async updateGame(

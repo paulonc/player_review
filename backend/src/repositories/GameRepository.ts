@@ -54,15 +54,15 @@ class GameRepository {
       },
       take: limit,
     });
-  
+
     const gameIds = recentReviews.map((r) => r.gameId);
-  
+
     const games = await prisma.game.findMany({
       where: { id: { in: gameIds } },
       include: { category: true }
     });
-  
-    const result: TopRatedGame[] = recentReviews.map((group) => {
+
+    return recentReviews.map((group) => {
       const game = games.find((g) => g.id === group.gameId);
       return {
         game: game!,
@@ -71,8 +71,6 @@ class GameRepository {
         categoryName: game?.category?.name || "Unknown",
       };
     });
-  
-    return result;
   }
 
   async getGameDetails(id: string) {
@@ -105,6 +103,34 @@ class GameRepository {
       companyName: game.company.name,
       categoryName: game.category.name
     };
+  }
+
+  async getTopRatedGamesByCategory(gameId: string, categoryId: string) {
+    const topGames = await prisma.review.groupBy({
+      by: ['gameId'],
+      where: {
+        game: {
+          categoryId,
+        },
+      },
+      _avg: {
+        rating: true,
+      },
+      orderBy: {
+        _avg: {
+          rating: 'desc',
+        },
+      },
+      take: 4,
+    });
+
+    const gameIds = topGames.map((item) => item.gameId);
+
+    return prisma.game.findMany({
+      where: {
+        id: { in: gameIds },
+      },
+    });
   }
 }
 

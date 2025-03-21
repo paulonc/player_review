@@ -122,6 +122,20 @@ class GameController {
       next(error);
     }
   }
+
+  async getTopRatedGamesByCategory(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response | void> {
+    try {
+      const similarGames = await GameService.getTopRatedGamesByCategory(req.params.id);
+      return res.status(200).json(similarGames);
+    } catch (error) {
+      logger.error('Error getting top rated games by category', error);
+      next(error);
+    }
+  }
 }
 
 export default new GameController();

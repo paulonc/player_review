@@ -111,6 +111,32 @@ router.get('/:id', authenticate, GameController.getGame);
  */
 router.get('/:id/details', authenticate, GameController.getGameDetails);
 
+
+/** 
+ * @swagger
+ * /games/{id}/similar:
+ *   get:
+ *     summary: Get similar games by category
+ *     description: Returns similar games based on the game's category.
+ *     tags:
+ *       - Games
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The unique identifier of the game.  
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved similar games.
+ *       404:
+ *         description: Game not found.
+ *       500:
+ *         description: Internal server error.
+ */
+router.get('/:id/similar', authenticate, GameController.getTopRatedGamesByCategory);
+
 /**
  * @swagger
  * /games:
