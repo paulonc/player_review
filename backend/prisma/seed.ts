@@ -1,4 +1,5 @@
-import { PrismaClient } from '@prisma/client'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Prisma, PrismaClient } from '@prisma/client'
 import { hash } from 'bcryptjs'
 
 const prisma = new PrismaClient()
@@ -52,6 +53,7 @@ async function main() {
         })
     ])
 
+    // Create games with relation to companies and categories
     const games = await Promise.all([
         prisma.game.create({
             data: {
@@ -148,27 +150,35 @@ async function main() {
         })
     ])
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const reviews: Promise<any>[] = []
+    const reviews: Prisma.Prisma__ReviewClient<any>[] = []
 
-    const createReview = (userId: string, gameId: string, rating: number, review: string) => {
-        reviews.push(prisma.review.create({
-            data: {
-                userId,
-                gameId,
-                rating,
-                review
-            }
-        }))
+    const createReview = (userId: string, gameId: string, title: string, rating: number, review: string) => {
+        const hoursPlayed = Math.floor(Math.random() * 200) + 1
+        const recommended = Math.random() < 0.8
+        reviews.push(
+            prisma.review.create({
+                data: {
+                    userId,
+                    gameId,
+                    title,
+                    rating,
+                    review,
+                    hoursPlayed,
+                    recommended
+                }
+            })
+        )
     }
 
-    for (let userId = 1; userId <= users.length; userId++) {
-        for (let gameId = 1; gameId <= games.length; gameId++) {
+    for (const user of users) {
+        for (const game of games) {
+            const rating = Math.floor(Math.random() * 5) + 1
             createReview(
-                users[userId - 1].id,
-                games[gameId - 1].id,
-                Math.floor(Math.random() * 5) + 1,
-                `This is a review for game ${games[gameId - 1].title} by user ${users[userId - 1].username}.`
+                user.id,
+                game.id,
+                `Review for ${game.title} by ${user.username}`,
+                rating,
+                `This is a review for game "${game.title}" by user "${user.username}".`
             )
         }
     }
