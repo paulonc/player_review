@@ -126,10 +126,26 @@ class GameRepository {
 
     const gameIds = topGames.map((item) => item.gameId);
 
-    return prisma.game.findMany({
+    const games = await prisma.game.findMany({
       where: {
         id: { in: gameIds },
       },
+      include: {
+        company: true,
+        category: true,
+        reviews: true
+      }
+    });
+
+    return games.map((game) => {
+      const gameRating = topGames.find((item) => item.gameId === game.id)?._avg.rating || 0;
+      return {
+        id: game.id,
+        title: game.title,
+        imageUrl: game.imageUrl,
+        avgRating: Number(gameRating.toFixed(2)),
+        reviewCount: game.reviews.length,
+      };
     });
   }
 }
