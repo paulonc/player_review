@@ -11,32 +11,32 @@ const Footer = () => (
           <h3 className="font-bold text-xl mb-4 text-white">Navigation</h3>
           <ul className="space-y-2">
             <li>
-              <Link to="/" className="hover:text-primary transition-colors">
+              <Link to="/" className="hover:text-secondary transition-colors">
                 Home
               </Link>
             </li>
             <li>
-              <Link to="/games" className="hover:text-primary transition-colors">
+              <Link to="/games" className="hover:text-secondary transition-colors">
                 Games
               </Link>
             </li>
             <li>
-              <Link to="/top-games" className="hover:text-primary transition-colors">
+              <Link to="/top-games" className="hover:text-secondary transition-colors">
                 Top Games
               </Link>
             </li>
             <li>
-              <Link to="/reviews" className="hover:text-primary transition-colors">
+              <Link to="/reviews" className="hover:text-secondary transition-colors">
                 Reviews
               </Link>
             </li>
             <li>
-              <Link to="/about" className="hover:text-primary transition-colors">
+              <Link to="/about" className="hover:text-secondary transition-colors">
                 About Us
               </Link>
             </li>
             <li>
-              <Link to="/contact" className="hover:text-primary transition-colors">
+              <Link to="/contact" className="hover:text-secondary transition-colors">
                 Contact
               </Link>
             </li>
@@ -47,22 +47,22 @@ const Footer = () => (
           <h3 className="font-bold text-xl mb-4 text-white">Community</h3>
           <ul className="space-y-2">
             <li>
-              <Link to="/forum" className="hover:text-primary transition-colors">
+              <Link to="/forum" className="hover:text-secondary transition-colors">
                 Forum
               </Link>
             </li>
             <li>
-              <Link to="/guides" className="hover:text-primary transition-colors">
+              <Link to="/guides" className="hover:text-secondary transition-colors">
                 Game Guides
               </Link>
             </li>
             <li>
-              <Link to="/blog" className="hover:text-primary transition-colors">
+              <Link to="/blog" className="hover:text-secondary transition-colors">
                 Blog
               </Link>
             </li>
             <li>
-              <Link to="/events" className="hover:text-primary transition-colors">
+              <Link to="/events" className="hover:text-secondary transition-colors">
                 Gaming Events
               </Link>
             </li>
@@ -76,7 +76,7 @@ const Footer = () => (
               Email:{' '}
               <a
                 href="mailto:player_review@gmail.com"
-                className="hover:text-primary transition-colors"
+                className="hover:text-secondary transition-colors"
               >
                 player_review@gmail.com
               </a>
@@ -106,7 +106,7 @@ const Footer = () => (
               href="https://facebook.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-300 hover:text-primary transition-colors"
+              className="text-gray-300 hover:text-secondary transition-colors"
             >
               <FaFacebookF size={20} />
             </a>
@@ -114,7 +114,7 @@ const Footer = () => (
               href="https://instagram.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-300 hover:text-primary transition-colors"
+              className="text-gray-300 hover:text-secondary transition-colors"
             >
               <FaInstagram size={20} />
             </a>
@@ -122,7 +122,7 @@ const Footer = () => (
               href="https://twitter.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-300 hover:text-primary transition-colors"
+              className="text-gray-300 hover:text-secondary transition-colors"
             >
               <FaTwitter size={20} />
             </a>
@@ -130,7 +130,7 @@ const Footer = () => (
               href="https://twitch.tv"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-300 hover:text-primary transition-colors"
+              className="text-gray-300 hover:text-secondary transition-colors"
             >
               <FaTwitch size={20} />
             </a>
