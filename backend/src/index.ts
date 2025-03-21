@@ -9,10 +9,11 @@ import { setupSwagger } from './config/swagger';
 import logger from './config/logger';
 import errorHandler from './middlewares/errorHandler';
 import { apiLimiter } from './middlewares/rateLimiter';
+import cors from 'cors';
 
 const app = express();
 app.use(express.json());
-
+app.use(cors());
 app.use('/login', authRoutes);
 app.use('/users', userRoutes);
 app.use('/games', gameRoutes);
