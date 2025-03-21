@@ -32,8 +32,9 @@ export default function GamePage() {
       try {
         setLoading(true);
         const response = await gameService.getGameDetails(id);
-        console.log(response.data);
         setGameDetails(response.data);
+        const similarGamesResponse = await gameService.getTopRatedGamesByCategory(id);
+        console.log("similarGamesResponse", similarGamesResponse);
       } catch (err) {
         setError('Failed to load game details');
         console.error('Error fetching game details:', err);

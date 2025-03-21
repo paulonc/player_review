@@ -68,5 +68,16 @@ export const gameService = {
   }>> {
     const response = await api.get(`/games/${id}/details`);
     return response;
+  },
+
+  async getTopRatedGamesByCategory(id: string): Promise<ApiResponse<{
+    id: string;
+    title: string;
+    imageUrl: string;
+    rating: number;
+    categoryName: string;
+  }[]>> {
+    const response = await api.get(`/games/${id}/similar`);
+    return response;
   }
 }; 
