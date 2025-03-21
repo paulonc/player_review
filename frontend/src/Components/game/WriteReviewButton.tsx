@@ -12,7 +12,6 @@ export default function WriteReviewButton({ gameId, gameTitle }: WriteReviewButt
   const handleClick = () => {
     navigate(`/games/${gameId}/review`)
   }
-
   return (
     <div className="rounded-lg border p-6 mb-6 bg-muted/10 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300">
       <h2 className="text-lg font-semibold mb-4 text-primary">Write a Review</h2>

@@ -42,7 +42,6 @@ export default function GamePage() {
         const response = await gameService.getGameDetails(id);
         setGameDetails(response.data);
         const similarGamesResponse = await gameService.getTopRatedGamesByCategory(id);
-        console.log("similarGamesResponse", similarGamesResponse);
         setSimilarGames(similarGamesResponse.data);
       } catch (err) {
         setError('Failed to load game details');
@@ -169,7 +168,7 @@ export default function GamePage() {
                 <GameInfo
                   description={gameDetails.game.description || ""}
                   releaseDate={new Date(gameDetails.game.releaseDate).toLocaleDateString()}
-                  developer={gameDetails.companyName}
+                  category={gameDetails.categoryName}
                   company={gameDetails.companyName}
                 />
               </TabsContent>
