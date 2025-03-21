@@ -57,5 +57,16 @@ export const gameService = {
       params: { limit }
     });
     return { data: response.data };
+  },
+
+  async getGameDetails(id: string): Promise<ApiResponse<{
+    game: Game;
+    avgRating: number;
+    reviewCount: number;
+    companyName: string;
+    categoryName: string;
+  }>> {
+    const response = await api.get(`/games/${id}/details`);
+    return response;
   }
 }; 

@@ -3,10 +3,9 @@ interface GameInfoProps {
   releaseDate: string
   developer: string
   company: string
-  platforms: string[]
 }
 
-export default function GameInfo({ description, releaseDate, developer, company, platforms }: GameInfoProps) {
+export default function GameInfo({ description, releaseDate, developer, company }: GameInfoProps) {
   return (
     <div>
       <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
@@ -27,10 +26,6 @@ export default function GameInfo({ description, releaseDate, developer, company,
         <div>
           <h3 className="font-medium text-primary">Publisher</h3>
           <p className="text-muted-foreground">{company}</p>
-        </div>
-        <div>
-          <h3 className="font-medium text-primary">Platforms</h3>
-          <p className="text-muted-foreground">{platforms.join(", ")}</p>
         </div>
       </div>
     </div>

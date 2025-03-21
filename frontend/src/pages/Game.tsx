@@ -7,23 +7,70 @@ import GameInfo from "@/components/game/GameInfo"
 import GameReviews from "@/components/game/GameReviews"
 import SimilarGames from "@/components/game/SimilarGames"
 import WriteReviewButton from "@/components/game/WriteReviewButton"
+import { useEffect, useState } from "react"
+import { gameService } from "@/services/gameService"
+import { Game } from "@/types/api"
+
+interface GameDetails {
+  game: Game;
+  avgRating: number;
+  reviewCount: number;
+  companyName: string;
+  categoryName: string;
+}
 
 export default function GamePage() {
   const { id } = useParams();
+  const [gameDetails, setGameDetails] = useState<GameDetails | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
     
-  const game = {
-    id: id,
-    title: "Elden Ring",
-    description:
-      "Elden Ring is an action role-playing game developed by FromSoftware and published by Bandai Namco Entertainment. The game was directed by Hidetaka Miyazaki and made in collaboration with fantasy novelist George R. R. Martin, who provided material for the game's setting.",
-    image: "https://gameforfun.com.br/wp-content/uploads/2020/05/Especial-Assassins-Creed-Valhalla.jpg",
-    releaseDate: "February 25, 2022",
-    developer: "FromSoftware",
-    company: "Bandai Namco Entertainment",
-    platforms: ["PlayStation 5", "PlayStation 4", "Xbox Series X/S", "Xbox One", "PC"],
-    category: "Action RPG",
-    rating: 4.8,
-    reviewCount: 1243,
+  useEffect(() => {
+    const fetchGameDetails = async () => {
+      if (!id) return;
+      
+      try {
+        setLoading(true);
+        const response = await gameService.getGameDetails(id);
+        console.log(response.data);
+        setGameDetails(response.data);
+      } catch (err) {
+        setError('Failed to load game details');
+        console.error('Error fetching game details:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchGameDetails();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-background to-background/95">
+        <Navbar />
+        <main className="container py-6">
+          <div className="flex items-center justify-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (error || !gameDetails) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-background to-background/95">
+        <Navbar />
+        <main className="container py-6">
+          <div className="flex items-center justify-center">
+            <div className="text-destructive">{error || 'Game not found'}</div>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
   }
 
   const similarGames = [
@@ -112,11 +159,11 @@ export default function GamePage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="md:col-span-2">
             <GameHeader
-              title={game.title}
-              image={game.image}
-              category={game.category}
-              rating={game.rating}
-              reviewCount={game.reviewCount}
+              title={gameDetails.game.title}
+              image={gameDetails.game.imageUrl || "/placeholder.svg"}
+              category={gameDetails.categoryName}
+              rating={gameDetails.avgRating}
+              reviewCount={gameDetails.reviewCount}
             />
 
             <Tabs defaultValue="overview" className="mb-8">
@@ -136,11 +183,10 @@ export default function GamePage() {
               </TabsList>
               <TabsContent value="overview" className="pt-6">
                 <GameInfo
-                  description={game.description}
-                  releaseDate={game.releaseDate}
-                  developer={game.developer}
-                  company={game.company}
-                  platforms={game.platforms}
+                  description={gameDetails.game.description || ""}
+                  releaseDate={new Date(gameDetails.game.releaseDate).toLocaleDateString()}
+                  developer={gameDetails.companyName}
+                  company={gameDetails.companyName}
                 />
               </TabsContent>
               <TabsContent value="reviews" className="pt-6">
@@ -151,7 +197,7 @@ export default function GamePage() {
 
           <div className="md:col-span-1 mt-12">
             <div className="sticky top-24">
-              {game.id && <WriteReviewButton gameId={game.id} gameTitle={game.title} />}
+              {gameDetails.game.id && <WriteReviewButton gameId={gameDetails.game.id} gameTitle={gameDetails.game.title} />}
               <SimilarGames games={similarGames} />
             </div>
           </div>
