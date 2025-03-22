@@ -8,6 +8,7 @@ import { AuthProvider } from './contexts/AuthContext'
 import ProtectedRoute from './components/auth/ProtectedRoute'
 import WriteReview from './pages/WriteReview'
 import { Toaster } from "sonner"
+import Games from './pages/Games'
 
 function App() {
   return (
@@ -49,6 +50,10 @@ function App() {
               </ProtectedRoute>
             }
           />
+        </Routes>
+
+        <Routes>
+          <Route path="/games" element={<ProtectedRoute><Games /></ProtectedRoute>} />
         </Routes>
         <Toaster position="top-right" />
       </AuthProvider>

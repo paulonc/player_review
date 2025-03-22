@@ -104,6 +104,153 @@ async function main() {
                 categoryId: categories[1].id,
                 imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Assassin%27s_Creed_Valhalla_logo.svg/1024px-Assassin%27s_Creed_Valhalla_logo.svg.png'
             }
+        }),
+        // Action Games
+        prisma.game.create({
+            data: {
+                title: 'Devil May Cry 5',
+                description: 'The latest entry in the Devil May Cry series, featuring fast-paced action combat.',
+                releaseDate: new Date('2019-03-08'),
+                companyId: companies[1].id,
+                categoryId: categories[0].id,
+                imageUrl: 'https://image.api.playstation.com/vulcan/ap/rnd/202207/1210/4xJ8XB3bi888QTLZYdl7Oi0s.png'
+            }
+        }),
+        prisma.game.create({
+            data: {
+                title: 'Bayonetta 3',
+                description: 'The third installment in the Bayonetta series, featuring intense action combat.',
+                releaseDate: new Date('2022-10-28'),
+                companyId: companies[0].id,
+                categoryId: categories[0].id,
+                imageUrl: 'https://assets.nintendo.com/image/upload/ar_16:9,b_auto:border,c_lpad/b_white/f_auto/q_auto/dpr_auto/c_scale,w_300/v1/ncom/en_US/games/switch/b/bayonetta-3-switch/hero'
+            }
+        }),
+        // RPG Games
+        prisma.game.create({
+            data: {
+                title: 'Final Fantasy XVI',
+                description: 'The latest entry in the Final Fantasy series, featuring a dark fantasy world.',
+                releaseDate: new Date('2023-06-22'),
+                companyId: companies[1].id,
+                categoryId: categories[1].id,
+                imageUrl: 'https://image.api.playstation.com/vulcan/ap/rnd/202207/1210/4xJ8XB3bi888QTLZYdl7Oi0s.png'
+            }
+        }),
+        prisma.game.create({
+            data: {
+                title: 'Dragon Quest XI',
+                description: 'A traditional JRPG featuring a grand adventure across a vast world.',
+                releaseDate: new Date('2017-07-29'),
+                companyId: companies[0].id,
+                categoryId: categories[1].id,
+                imageUrl: 'https://assets.nintendo.com/image/upload/ar_16:9,b_auto:border,c_lpad/b_white/f_auto/q_auto/dpr_auto/c_scale,w_300/v1/ncom/en_US/games/switch/d/dragon-quest-xi-s-echoes-of-an-elusive-age-definitive-edition-switch/hero'
+            }
+        }),
+        // Sports Games
+        prisma.game.create({
+            data: {
+                title: 'NBA 2K23',
+                description: 'The latest installment in the NBA 2K series, featuring realistic basketball gameplay.',
+                releaseDate: new Date('2022-09-09'),
+                companyId: companies[2].id,
+                categoryId: categories[3].id,
+                imageUrl: 'https://image.api.playstation.com/vulcan/ap/rnd/202207/1210/4xJ8XB3bi888QTLZYdl7Oi0s.png'
+            }
+        }),
+        prisma.game.create({
+            data: {
+                title: 'Madden NFL 23',
+                description: 'The latest entry in the Madden NFL series, featuring American football gameplay.',
+                releaseDate: new Date('2022-08-19'),
+                companyId: companies[2].id,
+                categoryId: categories[3].id,
+                imageUrl: 'https://image.api.playstation.com/vulcan/ap/rnd/202207/1210/4xJ8XB3bi888QTLZYdl7Oi0s.png'
+            }
+        }),
+        // Strategy Games
+        prisma.game.create({
+            data: {
+                title: 'Civilization VI',
+                description: 'The latest entry in the Civilization series, featuring turn-based strategy gameplay.',
+                releaseDate: new Date('2016-10-21'),
+                companyId: companies[2].id,
+                categoryId: categories[2].id,
+                imageUrl: 'https://image.api.playstation.com/vulcan/ap/rnd/202207/1210/4xJ8XB3bi888QTLZYdl7Oi0s.png'
+            }
+        }),
+        prisma.game.create({
+            data: {
+                title: 'Total War: Warhammer III',
+                description: 'The latest entry in the Total War series, featuring grand strategy and tactical battles.',
+                releaseDate: new Date('2022-02-17'),
+                companyId: companies[4].id,
+                categoryId: categories[2].id,
+                imageUrl: 'https://image.api.playstation.com/vulcan/ap/rnd/202207/1210/4xJ8XB3bi888QTLZYdl7Oi0s.png'
+            }
+        }),
+        // Adventure Games
+        prisma.game.create({
+            data: {
+                title: 'Uncharted 4: A Thief\'s End',
+                description: 'The final chapter in Nathan Drake\'s story, featuring thrilling adventure gameplay.',
+                releaseDate: new Date('2016-05-10'),
+                companyId: companies[1].id,
+                categoryId: categories[4].id,
+                imageUrl: 'https://image.api.playstation.com/vulcan/ap/rnd/202207/1210/4xJ8XB3bi888QTLZYdl7Oi0s.png'
+            }
+        }),
+        prisma.game.create({
+            data: {
+                title: 'Tomb Raider',
+                description: 'A reboot of the Tomb Raider series, featuring action-adventure gameplay.',
+                releaseDate: new Date('2013-03-05'),
+                companyId: companies[4].id,
+                categoryId: categories[4].id,
+                imageUrl: 'https://image.api.playstation.com/vulcan/ap/rnd/202207/1210/4xJ8XB3bi888QTLZYdl7Oi0s.png'
+            }
+        }),
+        // Puzzle Games
+        prisma.game.create({
+            data: {
+                title: 'Portal 2',
+                description: 'A puzzle-platform game featuring innovative portal mechanics.',
+                releaseDate: new Date('2011-04-19'),
+                companyId: companies[2].id,
+                categoryId: categories[5].id,
+                imageUrl: 'https://image.api.playstation.com/vulcan/ap/rnd/202207/1210/4xJ8XB3bi888QTLZYdl7Oi0s.png'
+            }
+        }),
+        prisma.game.create({
+            data: {
+                title: 'The Witness',
+                description: 'A puzzle game featuring a vast open world filled with puzzles.',
+                releaseDate: new Date('2016-01-26'),
+                companyId: companies[1].id,
+                categoryId: categories[5].id,
+                imageUrl: 'https://image.api.playstation.com/vulcan/ap/rnd/202207/1210/4xJ8XB3bi888QTLZYdl7Oi0s.png'
+            }
+        }),
+        // Simulation Games
+        prisma.game.create({
+            data: {
+                title: 'The Sims 4',
+                description: 'A life simulation game where players control virtual people.',
+                releaseDate: new Date('2014-09-02'),
+                companyId: companies[2].id,
+                categoryId: categories[6].id,
+                imageUrl: 'https://image.api.playstation.com/vulcan/ap/rnd/202207/1210/4xJ8XB3bi888QTLZYdl7Oi0s.png'
+            }
+        }),
+        prisma.game.create({
+            data: {
+                title: 'Stardew Valley',
+                description: 'A farming simulation game with RPG elements.',
+                releaseDate: new Date('2016-02-26'),
+                companyId: companies[0].id,
+                categoryId: categories[6].id,
+                imageUrl: 'https://image.api.playstation.com/vulcan/ap/rnd/202207/1210/4xJ8XB3bi888QTLZYdl7Oi0s.png'
+            }
         })
     ])
 
