@@ -9,8 +9,8 @@ export default function Contact() {
     <div className="flex flex-col min-h-screen bg-gray-50">
       <Navbar />
       <Header
-        title="Contato"
-        subtitle="Fale com a gente e compartilhe sua opinião sobre os games!"
+        title="Contact"
+        subtitle="Talk to us and share your opinion about the games!"
       />
       <main className="flex-grow container mx-auto px-4 py-12">
         <div className="bg-white shadow-xl rounded-2xl overflow-hidden">
