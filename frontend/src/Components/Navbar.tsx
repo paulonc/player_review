@@ -5,14 +5,14 @@ import { Button } from './ui/button';
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
 import { Menu, Search } from 'lucide-react';
 import { Input } from './ui/input';
-import { FaHome, FaGamepad, FaStar, FaRocket, FaEnvelope, FaSignOutAlt } from 'react-icons/fa';
+import { FaHome, FaGamepad, FaEnvelope, FaSignOutAlt } from 'react-icons/fa';
+import { MdOutlineRateReview } from "react-icons/md";
 import { useAuth } from '@/contexts/AuthContext';
 
 const NAV_ITEMS = [
   { label: 'Home', path: '/', icon: <FaHome /> },
   { label: 'Games', path: '/games', icon: <FaGamepad /> },
-  { label: 'Top Rated', path: '/top-rated', icon: <FaStar /> },
-  { label: 'New Releases', path: '/new-releases', icon: <FaRocket /> },
+  { label: 'Reviews', path: '/reviews', icon: <MdOutlineRateReview /> },
   { label: 'Contact', path: '/contact', icon: <FaEnvelope /> },
 ] as const;
 
