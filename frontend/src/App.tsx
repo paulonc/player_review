@@ -13,6 +13,9 @@ import Games from './pages/Games'
 import AdminDash from './pages/Admin/AdminDash'
 import GamesAdmin from './pages/Admin/Game'
 import NewGame from './pages/Admin/NewGame'
+import Category from './pages/Admin/Category'
+import NewCategory from './pages/Admin/NewCategory'
+
 function App() {
   return (
     <BrowserRouter>
@@ -74,6 +77,22 @@ function App() {
             element={
               <AdminRoute>
                 <NewGame />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/categories"
+            element={
+              <AdminRoute>
+                <Category />
+              </AdminRoute>
+            }
+          />  
+          <Route
+            path="/admin/categories/new"
+            element={
+              <AdminRoute>
+                <NewCategory />
               </AdminRoute>
             }
           />
