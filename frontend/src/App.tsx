@@ -10,8 +10,9 @@ import AdminRoute from './components/auth/AdminRoute'
 import WriteReview from './pages/WriteReview'
 import { Toaster } from "sonner"
 import Games from './pages/Games'
-import AdminDash from './pages/AdminDash'
-
+import AdminDash from './pages/Admin/AdminDash'
+import GamesAdmin from './pages/Admin/Game'
+import NewGame from './pages/Admin/NewGame'
 function App() {
   return (
     <BrowserRouter>
@@ -60,8 +61,23 @@ function App() {
               </AdminRoute>
             }
           />
+          <Route
+            path="/admin/games"
+            element={
+              <AdminRoute>
+                <GamesAdmin />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/games/new"
+            element={
+              <AdminRoute>
+                <NewGame />
+              </AdminRoute>
+            }
+          />
         </Routes>
-
         <Routes>
           <Route path="/games" element={<ProtectedRoute><Games /></ProtectedRoute>} />
         </Routes>
