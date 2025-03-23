@@ -6,9 +6,11 @@ import Register from './pages/Register'
 import Game from './pages/Game'
 import { AuthProvider } from './contexts/AuthContext'
 import ProtectedRoute from './components/auth/ProtectedRoute'
+import AdminRoute from './components/auth/AdminRoute'
 import WriteReview from './pages/WriteReview'
 import { Toaster } from "sonner"
 import Games from './pages/Games'
+import AdminDash from './pages/AdminDash'
 
 function App() {
   return (
@@ -48,6 +50,14 @@ function App() {
               <ProtectedRoute>
                 <WriteReview />
               </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin"
+            element={
+              <AdminRoute>
+                <AdminDash />
+              </AdminRoute>
             }
           />
         </Routes>

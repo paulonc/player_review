@@ -9,6 +9,7 @@ import CategoryFilter from "@/components/CategoryFilter";
 import { useEffect, useState } from "react";
 import { gameService } from "@/services/gameService";
 import { Game, TopRatedGame } from "@/types/api";
+import { useNavigate } from "react-router-dom";
 
 interface GameListItem {
   id: string;
@@ -21,6 +22,7 @@ interface GameListItem {
 }
 
 export default function Home() {
+  const navigate = useNavigate();
   const [topRatedGames, setTopRatedGames] = useState<GameListItem[]>([]);
   const [recentGames, setRecentGames] = useState<GameListItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -83,8 +85,8 @@ export default function Home() {
             <GameList games={topRatedGames} />
           )}
           <div className="flex justify-center mt-8">
-            <Button variant="outline" className="border-primary/20 hover:bg-primary/10 transition-all duration-300">
-              View All Top Rated Games
+            <Button variant="outline" className="border-primary/20 hover:bg-primary/10 transition-all duration-300" onClick={() => navigate('/games')}  >
+              View All Games
             </Button>
           </div>
         </section>
