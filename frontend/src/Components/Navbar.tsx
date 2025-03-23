@@ -1,24 +1,32 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, type JSX } from 'react';
 import { Link } from 'react-router-dom';
 import { GiConsoleController } from 'react-icons/gi';
 import { Button } from './ui/button';
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
 import { Menu, Search } from 'lucide-react';
 import { Input } from './ui/input';
-import { FaHome, FaGamepad, FaEnvelope, FaSignOutAlt } from 'react-icons/fa';
+import { FaHome, FaGamepad, FaEnvelope, FaSignOutAlt, FaUserShield } from 'react-icons/fa';
 import { MdOutlineRateReview } from "react-icons/md";
 import { useAuth } from '@/contexts/AuthContext';
 
-const NAV_ITEMS = [
+type NavItem = {
+  label: string;
+  path: string;
+  icon: JSX.Element;
+};
+
+const BASE_NAV_ITEMS: NavItem[] = [
   { label: 'Home', path: '/', icon: <FaHome /> },
   { label: 'Games', path: '/games', icon: <FaGamepad /> },
   { label: 'Reviews', path: '/reviews', icon: <MdOutlineRateReview /> },
   { label: 'Contact', path: '/contact', icon: <FaEnvelope /> },
-] as const;
+];
+
+const ADMIN_NAV_ITEM: NavItem = { label: 'Admin', path: '/admin', icon: <FaUserShield /> };
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,6 +35,11 @@ export default function Navbar() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const navItems = [...BASE_NAV_ITEMS];
+  if (user?.role === 'ADMIN') {
+    navItems.push(ADMIN_NAV_ITEM);
+  }
 
   return (
     <header
@@ -45,13 +58,14 @@ export default function Navbar() {
         </Link>
 
         <nav className="hidden md:flex items-center gap-6">
-          {NAV_ITEMS.map(({ label, path }) => (
+          {navItems.map(({ label, path, icon }) => (
             <Link
               key={label}
               to={path}
-              className="text-sm font-medium hover:text-primary transition-colors"
+              className="flex items-center gap-2 text-sm font-medium hover:text-primary transition-colors"
             >
-              {label}
+              {icon}
+              <span>{label}</span>
             </Link>
           ))}
         </nav>
@@ -83,7 +97,7 @@ export default function Navbar() {
             </SheetTrigger>
             <SheetContent side="right">
               <nav className="flex flex-col space-y-4 mt-6">
-                {NAV_ITEMS.map(({ label, path, icon }) => (
+                {navItems.map(({ label, path, icon }) => (
                   <Link
                     key={label}
                     to={path}
