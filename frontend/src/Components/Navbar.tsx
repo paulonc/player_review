@@ -5,8 +5,7 @@ import { Button } from './ui/button';
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
 import { Menu, Search } from 'lucide-react';
 import { Input } from './ui/input';
-import { FaHome, FaGamepad, FaEnvelope, FaSignOutAlt, FaUserShield } from 'react-icons/fa';
-import { MdOutlineRateReview } from "react-icons/md";
+import { FaHome, FaGamepad, FaEnvelope, FaSignOutAlt, FaUserShield, FaNewspaper } from 'react-icons/fa';
 import { useAuth } from '@/contexts/AuthContext';
 
 type NavItem = {
@@ -18,7 +17,7 @@ type NavItem = {
 const BASE_NAV_ITEMS: NavItem[] = [
   { label: 'Home', path: '/', icon: <FaHome /> },
   { label: 'Games', path: '/games', icon: <FaGamepad /> },
-  { label: 'Reviews', path: '/reviews', icon: <MdOutlineRateReview /> },
+  { label: 'Publishers', path: '/publishers', icon: <FaNewspaper /> },
   { label: 'Contact', path: '/contact', icon: <FaEnvelope /> },
 ];
 
