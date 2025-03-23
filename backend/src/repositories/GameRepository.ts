@@ -4,7 +4,12 @@ import { TopRatedGame } from '../models/RatedGame';
 
 class GameRepository {
   async create(game: Omit<Game, 'id' | 'created_at'>): Promise<Game> {
-    const createdGame = await prisma.game.create({ data: game });
+    const gameData = {
+      ...game,
+      releaseDate: new Date(game.releaseDate),
+    };
+
+    const createdGame = await prisma.game.create({ data: gameData });
 
     await prisma.category.update({
       where: { id: game.categoryId },
