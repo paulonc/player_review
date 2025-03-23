@@ -5,5 +5,10 @@ export const companyService = {
   async getCompanies(): Promise<ApiResponse<Company[]>> {
     const response = await api.get('/companies');
     return response;
+  },
+
+  async createCompany(data: { name: string; country: string; logoUrl: string }): Promise<ApiResponse<Company>> {
+    const response = await api.post('/companies', data);
+    return response;
   }
 };

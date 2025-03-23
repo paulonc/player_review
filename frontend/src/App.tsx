@@ -15,6 +15,8 @@ import GamesAdmin from './pages/Admin/Game'
 import NewGame from './pages/Admin/NewGame'
 import Category from './pages/Admin/Category'
 import NewCategory from './pages/Admin/NewCategory'
+import Publishers from './pages/Admin/Publishers'
+import NewPublisher from './pages/Admin/NewPublishers'
 
 function App() {
   return (
@@ -93,6 +95,22 @@ function App() {
             element={
               <AdminRoute>
                 <NewCategory />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/publishers"
+            element={
+              <AdminRoute>
+                <Publishers />
+              </AdminRoute> 
+            }
+          />
+          <Route
+            path="/admin/publishers/new"
+            element={
+              <AdminRoute>
+                <NewPublisher />
               </AdminRoute>
             }
           />

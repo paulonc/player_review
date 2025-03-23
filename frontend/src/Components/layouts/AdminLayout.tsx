@@ -1,5 +1,3 @@
-"use client"
-
 import type React from "react"
 import { Link, useLocation } from "react-router-dom"
 import { Button } from "@/components/ui/button"
@@ -11,6 +9,7 @@ import {
   Users,
   MessageSquare,
   LogOut,
+  Building,
 } from "lucide-react"
 
 export default function AdminLayout({
@@ -65,6 +64,15 @@ export default function AdminLayout({
               Categories
             </Button>
           </Link>
+          <Link to="/admin/publishers">
+            <Button
+              variant={isActive("/admin/publishers") ? "default" : "ghost"}
+              className={`w-full justify-start ${isActive("/admin/publishers") ? "bg-primary hover:bg-primary/90" : ""}`}
+            >
+              <Building className="mr-2 h-4 w-4" />
+              Publishers
+            </Button>
+          </Link>
           <Link to="/admin/users">
             <Button
               variant={isActive("/admin/users") ? "default" : "ghost"}
@@ -94,7 +102,6 @@ export default function AdminLayout({
         </nav>
       </div>
 
-      {/* Main content */}
       <div className="flex-1 flex flex-col">
         <header className="h-16 border-b flex items-center justify-between px-6">
           <div className="md:hidden flex items-center gap-2">
@@ -126,4 +133,3 @@ export default function AdminLayout({
     </div>
   )
 }
-
