@@ -11,12 +11,13 @@ import WriteReview from './pages/WriteReview'
 import { Toaster } from "sonner"
 import Games from './pages/Games'
 import AdminDash from './pages/Admin/AdminDash'
-import GamesAdmin from './pages/Admin/Game'
+import GamesAdmin from './pages/Admin/AdminGames'
 import NewGame from './pages/Admin/NewGame'
-import Category from './pages/Admin/Category'
+import Category from './pages/Admin/AdminCategories'
 import NewCategory from './pages/Admin/NewCategory'
-import Publishers from './pages/Admin/Publishers'
+import Publishers from './pages/Admin/AdminPublishers'
 import NewPublisher from './pages/Admin/NewPublishers'
+import UsersAdmin from './pages/Admin/AdminUsers'
 
 function App() {
   return (
@@ -111,6 +112,14 @@ function App() {
             element={
               <AdminRoute>
                 <NewPublisher />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/users"
+            element={
+              <AdminRoute>
+                <UsersAdmin />
               </AdminRoute>
             }
           />

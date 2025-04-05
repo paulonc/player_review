@@ -61,4 +61,5 @@ export interface Company {
   name: string;
   country: string;
   createdAt: string;
+  logo: string;
 } 
