@@ -207,6 +207,70 @@ const allGames = [
 // Extrair categorias únicas dos jogos
 const allCategories = Array.from(new Set(allGames.map((game) => game.category)))
 
+type SearchBarProps = {
+  searchQuery: string;
+  handleSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
+};
+
+const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, handleSearch }) => (
+  <div className="relative w-full md:w-[300px]">
+    <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+    <Input
+      type="search"
+      placeholder="Search games by name..."
+      className="pl-8 rounded-full bg-muted/50 border-muted focus-visible:ring-primary"
+      value={searchQuery}
+      onChange={handleSearch}
+    />
+  </div>
+);
+
+type CategoryFilterProps = {
+  allCategories: string[];
+  selectedCategories: string[];
+  toggleCategory: (category: string) => void;
+  clearFilters: () => void;
+  searchQuery: string;
+};
+
+const CategoryFilter: React.FC<CategoryFilterProps> = ({ allCategories, selectedCategories, toggleCategory, clearFilters, searchQuery }) => (
+  <div className="space-y-4">
+    <div className="flex items-center justify-between">
+      <h2 className="text-lg font-semibold flex items-center gap-2">
+        <Filter className="h-4 w-4" />
+        Filter by Category
+      </h2>
+      {(selectedCategories.length > 0 || searchQuery) && (
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={clearFilters}
+          className="h-8 px-2 text-xs hover:text-primary"
+        >
+          Clear Filters
+        </Button>
+      )}
+    </div>
+
+    <div className="flex flex-wrap gap-2">
+      {allCategories.map((category) => (
+        <Badge
+          key={category}
+          variant={selectedCategories.includes(category) ? "default" : "outline"}
+          className={
+            selectedCategories.includes(category)
+              ? "bg-primary hover:bg-primary/80"
+              : "border-primary/20 hover:bg-primary/10 hover:text-primary"
+          }
+          onClick={() => toggleCategory(category)}
+        >
+          {category}
+        </Badge>
+      ))}
+    </div>
+  </div>
+);
+
 export default function GamesPage() {
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
@@ -293,57 +357,16 @@ export default function GamesPage() {
             <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-500">
               All Games
             </h1>
-            <div className="relative w-full md:w-[300px]">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                type="search"
-                placeholder="Search games by name..."
-                className="pl-8 rounded-full bg-muted/50 border-muted focus-visible:ring-primary"
-                value={searchQuery}
-                onChange={handleSearch}
-              />
-            </div>
+            <SearchBar searchQuery={searchQuery} handleSearch={handleSearch} />
           </div>
 
-          {/* Filtros de categoria */}
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold flex items-center gap-2">
-                <Filter className="h-4 w-4" />
-                Filter by Category
-              </h2>
-              {(selectedCategories.length > 0 || searchQuery) && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={clearFilters}
-                  className="h-8 px-2 text-xs hover:text-primary"
-                >
-                  Clear Filters
-                </Button>
-              )}
-            </div>
-
-            <div className="flex flex-wrap gap-2">
-              {allCategories.map((category) => (
-                <Badge
-                  key={category}
-                  variant={selectedCategories.includes(category) ? "default" : "outline"}
-                  className={`
-                    cursor-pointer 
-                    ${
-                      selectedCategories.includes(category)
-                        ? "bg-primary hover:bg-primary/80"
-                        : "border-primary/20 hover:bg-primary/10 hover:text-primary"
-                    }
-                  `}
-                  onClick={() => toggleCategory(category)}
-                >
-                  {category}
-                </Badge>
-              ))}
-            </div>
-          </div>
+          <CategoryFilter
+            allCategories={allCategories}
+            selectedCategories={selectedCategories}
+            toggleCategory={toggleCategory}
+            clearFilters={clearFilters}
+            searchQuery={searchQuery}
+          />
 
           {/* Resultados e estatísticas */}
           <div className="text-sm text-muted-foreground">

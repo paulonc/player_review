@@ -1,14 +1,5 @@
 import { Input } from "@/components/ui/input";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Search, Shield } from "lucide-react";
+import { Search } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -17,10 +8,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import AdminLayout from "@/components/layouts/AdminLayout";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { User } from "@/types/api";
 import { userService } from "@/services/userService";
+import UserTable from "../../components/admin/users/UserTable";
 
 export default function UsersAdmin() {
   const [users, setUsers] = useState<User[]>([]);
@@ -78,48 +69,7 @@ export default function UsersAdmin() {
         </div>
 
         <div className="rounded-md border">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>User</TableHead>
-                <TableHead>Role</TableHead>
-                <TableHead>Created At</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredUsers.map((user) => (
-                <TableRow key={user.id} className="hover:bg-muted/30">
-                  <TableCell>
-                    <div className="flex items-center gap-3">
-                      <Avatar>
-                        <AvatarFallback className="bg-primary/10 text-primary">
-                          {user.username.substring(0, 2).toUpperCase()}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <div className="font-medium">{user.username}</div>
-                        <div className="text-sm text-muted-foreground">
-                          {user.email}
-                        </div>
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-1">
-                      {user.role === "Admin" && (
-                        <Shield className="h-3.5 w-3.5 text-primary" />
-                      )}
-                      <span>{user.role}</span>
-                    </div>
-                  </TableCell>
-
-                  <TableCell>
-                    {new Date(user.createdAt).toLocaleDateString()}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+          <UserTable users={filteredUsers} />
         </div>
       </div>
     </AdminLayout>
