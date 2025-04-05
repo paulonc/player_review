@@ -21,13 +21,8 @@ const Footer = () => (
               </Link>
             </li>
             <li>
-              <Link to="/top-games" className="hover:text-secondary transition-colors">
-                Top Games
-              </Link>
-            </li>
-            <li>
-              <Link to="/reviews" className="hover:text-secondary transition-colors">
-                Reviews
+              <Link to="/publishers" className="hover:text-secondary transition-colors">
+                Publishers
               </Link>
             </li>
             <li>
