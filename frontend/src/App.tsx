@@ -1,26 +1,27 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import Home from './pages/Home'
-import Contact from './pages/Contact'
-import Login from './pages/Login'
-import Register from './pages/Register'
-import Game from './pages/Game'
-import { AuthProvider } from './contexts/AuthContext'
-import ProtectedRoute from './components/auth/ProtectedRoute'
-import AdminRoute from './components/auth/AdminRoute'
-import WriteReview from './pages/WriteReview'
-import { Toaster } from "sonner"
-import Games from './pages/Games'
-import AdminDash from './pages/Admin/AdminDash'
-import GamesAdmin from './pages/Admin/AdminGames'
-import NewGame from './pages/Admin/NewGame'
-import Category from './pages/Admin/AdminCategories'
-import NewCategory from './pages/Admin/NewCategory'
-import Publishers from './pages/Admin/AdminPublishers'
-import NewPublisher from './pages/Admin/NewPublishers'
-import UsersAdmin from './pages/Admin/AdminUsers'
-import EditGame from './pages/Admin/EditGame' 
-import EditPublisher from './pages/Admin/EditPublisher'
-import EditCategory from './pages/Admin/EditCategory'
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Home from "./pages/Home";
+import Contact from "./pages/Contact";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Game from "./pages/Game";
+import { AuthProvider } from "./contexts/AuthContext";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
+import AdminRoute from "./components/auth/AdminRoute";
+import WriteReview from "./pages/WriteReview";
+import { Toaster } from "sonner";
+import Games from "./pages/Games";
+import AdminDash from "./pages/Admin/AdminDash";
+import GamesAdmin from "./pages/Admin/AdminGames";
+import NewGame from "./pages/Admin/NewGame";
+import Category from "./pages/Admin/AdminCategories";
+import NewCategory from "./pages/Admin/NewCategory";
+import Publishers from "./pages/Publishers";
+import NewPublisher from "./pages/Admin/NewPublishers";
+import UsersAdmin from "./pages/Admin/AdminUsers";
+import EditGame from "./pages/Admin/EditGame";
+import EditPublisher from "./pages/Admin/EditPublisher";
+import EditCategory from "./pages/Admin/EditCategory";
+import AdminPublishers from "./pages/Admin/AdminPublishers";
 
 function App() {
   return (
@@ -63,6 +64,14 @@ function App() {
             }
           />
           <Route
+            path="/publishers"
+            element={
+              <ProtectedRoute>
+                <Publishers />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/admin"
             element={
               <AdminRoute>
@@ -93,7 +102,7 @@ function App() {
                 <Category />
               </AdminRoute>
             }
-          />  
+          />
           <Route
             path="/admin/categories/new"
             element={
@@ -106,8 +115,8 @@ function App() {
             path="/admin/publishers"
             element={
               <AdminRoute>
-                <Publishers />
-              </AdminRoute> 
+                <AdminPublishers />
+              </AdminRoute>
             }
           />
           <Route
@@ -152,12 +161,19 @@ function App() {
           />
         </Routes>
         <Routes>
-          <Route path="/games" element={<ProtectedRoute><Games /></ProtectedRoute>} />
+          <Route
+            path="/games"
+            element={
+              <ProtectedRoute>
+                <Games />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
         <Toaster position="top-right" />
       </AuthProvider>
     </BrowserRouter>
-  )
+  );
 }
 
-export default App
+export default App;

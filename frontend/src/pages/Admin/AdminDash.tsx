@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { GamepadIcon as GameController, Users, MessageSquare, BarChart3 } from "lucide-react"
+import { GamepadIcon as GameController, Users, MessageSquare, Building, Tags } from "lucide-react"
 import AdminLayout from "@/components/layouts/AdminLayout"
 import { StatCard } from "@/components/admin/StatCard"
 import { QuickAction } from "@/components/admin/QuickAction"
@@ -29,9 +29,9 @@ export default function AdminDashboard() {
         <h2 className="text-xl font-semibold mt-8">Quick Actions</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <QuickAction to="/admin/games" Icon={GameController} label="Manage Games" />
-          <QuickAction to="/admin/categories" Icon={BarChart3} label="Manage Categories" />
+          <QuickAction to="/admin/categories" Icon={Tags} label="Manage Categories" />
+          <QuickAction to="/admin/publishers" Icon={Building} label="Manage Publishers" />
           <QuickAction to="/admin/users" Icon={Users} label="Manage Users" />
-          <QuickAction to="/admin/reviews" Icon={MessageSquare} label="Manage Reviews" />
         </div>
 
         <h2 className="text-xl font-semibold mt-8">Recent Activity</h2>
