@@ -82,10 +82,12 @@ export default function CategoriesAdmin() {
                 <TableCell className="font-medium">{category.name}</TableCell>
                 <TableCell className="text-right">
                   <div className="flex justify-end gap-2">
-                    <Button variant="ghost" size="icon" className="h-8 w-8">
-                      <Pencil className="h-4 w-4" />
-                      <span className="sr-only">Edit</span>
-                    </Button>
+                    <Link to={`/admin/categories/edit/${category.id}`}>
+                      <Button variant="ghost" size="icon" className="h-8 w-8">
+                        <Pencil className="h-4 w-4" />
+                        <span className="sr-only">Edit</span>
+                      </Button>
+                    </Link>
                     <Button
                       variant="ghost"
                       size="icon"

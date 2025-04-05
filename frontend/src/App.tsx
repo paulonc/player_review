@@ -20,6 +20,7 @@ import NewPublisher from './pages/Admin/NewPublishers'
 import UsersAdmin from './pages/Admin/AdminUsers'
 import EditGame from './pages/Admin/EditGame' 
 import EditPublisher from './pages/Admin/EditPublisher'
+import EditCategory from './pages/Admin/EditCategory'
 
 function App() {
   return (
@@ -138,6 +139,14 @@ function App() {
             element={
               <AdminRoute>
                 <EditPublisher />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/categories/edit/:id"
+            element={
+              <AdminRoute>
+                <EditCategory />
               </AdminRoute>
             }
           />

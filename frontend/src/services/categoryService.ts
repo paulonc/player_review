@@ -7,8 +7,18 @@ export const categoryService = {
     return response;
   },
 
+  async getCategory(id: string): Promise<ApiResponse<Category>> {
+    const response = await api.get(`/categories/${id}`);
+    return response;
+  },
+
   async createCategory(name: string): Promise<ApiResponse<Category>> {
     const response = await api.post('/categories', { name });
+    return response;
+  },
+
+  async updateCategory(id: string, name: string): Promise<ApiResponse<Category>> {
+    const response = await api.put(`/categories/${id}`, { name });
     return response;
   },
 
