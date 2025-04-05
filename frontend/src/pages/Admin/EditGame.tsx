@@ -41,8 +41,8 @@ export default function EditGame() {
     const load = async () => {
       try {
         const [catsRes, compsRes, gameRes] = await Promise.all([
-          categoryService.getCategories(),
-          companyService.getCompanies(),
+          categoryService.getCategories(1, 100),
+          companyService.getCompanies(1, 100),
           gameService.getGame(id!),
         ]);
         setCategories(catsRes.data);

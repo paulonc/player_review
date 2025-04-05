@@ -16,7 +16,7 @@ export default function CategoriesAdmin() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await categoryService.getCategories()
+        const response = await categoryService.getCategories(1, 100)
         setCategories(response.data)
       } catch (error) {
         console.error("Error fetching categories:", error)

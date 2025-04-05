@@ -16,7 +16,7 @@ export default function PublishersAdmin() {
 
   useEffect(() => {
     const fetchPublishers = async () => {
-      const response = await companyService.getCompanies()
+      const response = await companyService.getCompanies(1, 100)
       setPublishers(response.data)
     }
     fetchPublishers()

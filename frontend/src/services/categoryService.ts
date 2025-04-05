@@ -2,8 +2,8 @@ import api from './api';
 import { ApiResponse, Category } from '../types/api';
 
 export const categoryService = {
-  async getCategories(): Promise<ApiResponse<Category[]>> {
-    const response = await api.get('/categories');
+  async getCategories(page: number, limit: number): Promise<ApiResponse<Category[]>> {
+    const response = await api.get(`/categories?page=${page}&limit=${limit}`);
     return response;
   },
 

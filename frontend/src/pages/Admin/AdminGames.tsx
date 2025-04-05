@@ -15,7 +15,7 @@ export default function GamesAdmin() {
     const fetchGames = async () => {
       setLoading(true)
       try {
-        const response = await gameService.getGames({ search: searchQuery })
+        const response = await gameService.getGames({ page: 1, limit: 100 })
         setGames(response)
       } catch (error) {
         console.error("Error fetching games:", error)
