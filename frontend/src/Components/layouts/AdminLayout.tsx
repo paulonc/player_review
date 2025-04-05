@@ -7,7 +7,6 @@ import {
   GamepadIcon as GameController,
   Tags,
   Users,
-  MessageSquare,
   LogOut,
   Building,
 } from "lucide-react"
@@ -80,15 +79,6 @@ export default function AdminLayout({
             >
               <Users className="mr-2 h-4 w-4" />
               Users
-            </Button>
-          </Link>
-          <Link to="/admin/reviews">
-            <Button
-              variant={isActive("/admin/reviews") ? "default" : "ghost"}
-              className={`w-full justify-start ${isActive("/admin/reviews") ? "bg-primary hover:bg-primary/90" : ""}`}
-            >
-              <MessageSquare className="mr-2 h-4 w-4" />
-              Reviews
             </Button>
           </Link>
           <div className="pt-4 mt-4 border-t">
