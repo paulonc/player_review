@@ -41,7 +41,11 @@ class GameRepository {
     id: string,
     gameData: Partial<Omit<Game, 'id' | 'created_at'>>,
   ): Promise<Game | null> {
-    return await prisma.game.update({ where: { id }, data: gameData });
+    const parsedGame = {
+      ...gameData,
+      releaseDate: gameData.releaseDate ? new Date(gameData.releaseDate) : undefined,
+    };
+    return await prisma.game.update({ where: { id }, data: parsedGame });
   }
 
   async delete(id: string): Promise<void> {

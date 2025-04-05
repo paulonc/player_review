@@ -1,6 +1,7 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { Eye, Pencil, Trash2 } from "lucide-react"
+import { Link } from "react-router-dom"
 
 type Game = {
   id: string
@@ -11,7 +12,7 @@ type Game = {
 
 type GamesTableProps = {
   games: Game[]
-  onDelete: (id: string) => void // Passar a função de deletação como prop
+  onDelete: (id: string) => void
 }
 
 export function GamesTable({ games, onDelete }: GamesTableProps) {
@@ -36,15 +37,17 @@ export function GamesTable({ games, onDelete }: GamesTableProps) {
                     <Eye className="h-4 w-4" />
                     <span className="sr-only">View</span>
                   </Button>
-                  <Button variant="ghost" size="icon" className="h-8 w-8">
-                    <Pencil className="h-4 w-4" />
-                    <span className="sr-only">Edit</span>
-                  </Button>
+                  <Link to={`/admin/games/edit/${game.id}`}>
+                    <Button variant="ghost" size="icon" className="h-8 w-8">
+                      <Pencil className="h-4 w-4" />
+                      <span className="sr-only">Edit</span>
+                    </Button>
+                  </Link>
                   <Button
                     variant="ghost"
                     size="icon"
                     className="h-8 w-8 text-red-600 hover:text-red-700 hover:bg-red-100/10"
-                    onClick={() => onDelete(game.id)} // Chamar a função de deletação recebida por prop
+                    onClick={() => onDelete(game.id)}
                   >
                     <Trash2 className="h-4 w-4" />
                     <span className="sr-only">Delete</span>
