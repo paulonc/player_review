@@ -7,8 +7,18 @@ export const companyService = {
     return response;
   },
 
+  async getCompany(id: string): Promise<ApiResponse<Company>> {
+    const response = await api.get(`/companies/${id}`);
+    return response;
+  },
+
   async createCompany(data: { name: string; country: string; logoUrl: string }): Promise<ApiResponse<Company>> {
     const response = await api.post('/companies', data);
+    return response;
+  },
+
+  async updateCompany(id: string, data: { name: string; country: string; imageUrl: string }): Promise<ApiResponse<Company>> {
+    const response = await api.put(`/companies/${id}`, data);
     return response;
   },
 

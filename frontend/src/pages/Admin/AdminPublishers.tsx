@@ -75,7 +75,7 @@ export default function PublishersAdmin() {
                 <TableCell>
                   <div className="flex items-center gap-3">
                     <img
-                      src={publisher.logo || "/placeholder.svg"}
+                      src={publisher.imageUrl || "/placeholder.svg"}
                       alt={publisher.name}
                       className="h-8 w-8 rounded-md object-contain bg-muted/30"
                     />
@@ -88,10 +88,12 @@ export default function PublishersAdmin() {
                 </TableCell>
                 <TableCell className="text-right">
                   <div className="flex justify-end gap-2">
-                    <Button variant="ghost" size="icon" className="h-8 w-8">
-                      <Pencil className="h-4 w-4" />
-                      <span className="sr-only">Edit</span>
-                    </Button>
+                    <Link to={`/admin/publishers/edit/${publisher.id}`}>
+                      <Button variant="ghost" size="icon" className="h-8 w-8">
+                        <Pencil className="h-4 w-4" />
+                        <span className="sr-only">Edit</span>
+                      </Button>
+                    </Link>
                     <Button
                       variant="ghost"
                       size="icon"

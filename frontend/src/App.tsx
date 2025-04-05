@@ -19,6 +19,7 @@ import Publishers from './pages/Admin/AdminPublishers'
 import NewPublisher from './pages/Admin/NewPublishers'
 import UsersAdmin from './pages/Admin/AdminUsers'
 import EditGame from './pages/Admin/EditGame' 
+import EditPublisher from './pages/Admin/EditPublisher'
 
 function App() {
   return (
@@ -129,6 +130,14 @@ function App() {
             element={
               <AdminRoute>
                 <EditGame />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/publishers/edit/:id"
+            element={
+              <AdminRoute>
+                <EditPublisher />
               </AdminRoute>
             }
           />
