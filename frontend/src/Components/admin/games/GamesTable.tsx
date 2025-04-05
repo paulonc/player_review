@@ -1,14 +1,12 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Eye, Pencil, Trash2 } from "lucide-react"
 
 type Game = {
   id: string
   title: string
-  developer: string
-  category: string
-  rating: number
+  companyId: string
+  categoryId: string
 }
 
 type GamesTableProps = {
@@ -16,15 +14,13 @@ type GamesTableProps = {
 }
 
 export function GamesTable({ games }: GamesTableProps) {
+  console.log(games)
   return (
     <div className="rounded-md border">
       <Table>
         <TableHeader>
           <TableRow>
             <TableHead>Game Title</TableHead>
-            <TableHead>Developer</TableHead>
-            <TableHead>Category</TableHead>
-            <TableHead>Rating</TableHead>
             <TableHead className="text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -33,19 +29,6 @@ export function GamesTable({ games }: GamesTableProps) {
             <TableRow key={game.id} className="hover:bg-muted/30">
               <TableCell>
                 <div className="font-medium">{game.title}</div>
-              </TableCell>
-              <TableCell>{game.developer}</TableCell>
-              <TableCell>
-                <Badge variant="outline" className="border-primary/20 bg-primary/5 text-xs">
-                  {game.category}
-                </Badge>
-              </TableCell>
-              <TableCell>
-                {game.rating > 0 ? (
-                  <span>{game.rating.toFixed(1)}</span>
-                ) : (
-                  <span className="text-xs text-muted-foreground">Not rated</span>
-                )}
               </TableCell>
               <TableCell className="text-right">
                 <div className="flex justify-end gap-2">

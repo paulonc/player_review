@@ -1,5 +1,5 @@
 import api from './api';
-import { ApiResponse, Game, PaginatedResponse } from '../types/api';
+import { ApiResponse, Game } from '../types/api';
 
 interface CreateGameData {
   title: string;
@@ -21,7 +21,7 @@ interface GetGamesParams {
 }
 
 export const gameService = {
-  async getGames(params: GetGamesParams = {}): Promise<PaginatedResponse<Game>> {
+  async getGames(params: GetGamesParams = {}): Promise<Game[]> {
     const response = await api.get('/games', { params });
     return response.data;
   },
