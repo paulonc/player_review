@@ -29,6 +29,15 @@ export default function CategoriesAdmin() {
     setSearchQuery(event.target.value)
   }
 
+  const handleDelete = async (id: string) => {
+    try {
+      await categoryService.deleteCategory(id);
+      setCategories(categories.filter(category => category.id !== id));
+    } catch (error) {
+      console.error("Error deleting category:", error);
+    }
+  };
+
   const filteredCategories = categories.filter((category) =>
     category.name.toLowerCase().includes(searchQuery.toLowerCase())
   )
@@ -81,6 +90,7 @@ export default function CategoriesAdmin() {
                       variant="ghost"
                       size="icon"
                       className="h-8 w-8 text-red-600 hover:text-red-700 hover:bg-red-100/10"
+                      onClick={() => handleDelete(category.id)}
                     >
                       <Trash2 className="h-4 w-4" />
                       <span className="sr-only">Delete</span>

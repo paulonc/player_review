@@ -10,5 +10,9 @@ export const categoryService = {
   async createCategory(name: string): Promise<ApiResponse<Category>> {
     const response = await api.post('/categories', { name });
     return response;
+  },
+
+  async deleteCategory(id: string): Promise<void> {
+    await api.delete(`/categories/${id}`);
   }
 };
