@@ -63,3 +63,18 @@ export interface Company {
   createdAt: string;
   imageUrl: string;
 } 
+
+export interface DashCounts {
+  games: number;
+  reviews: number;
+  users: number;
+}
+
+export interface RecentActivity {
+  id: string;
+  type: string;
+  title: string;
+  timestamp: string;
+  author: string;
+  game: string;
+} 

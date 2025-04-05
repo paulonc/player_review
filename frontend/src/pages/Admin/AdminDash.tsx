@@ -5,8 +5,27 @@ import AdminLayout from "@/components/layouts/AdminLayout"
 import { StatCard } from "@/components/admin/StatCard"
 import { QuickAction } from "@/components/admin/QuickAction"
 import { ActivityItem } from "@/components/admin/ActivityItem"
+import { dashService } from "@/services/dashService"
+import { useEffect, useState } from "react"
+import { DashCounts, RecentActivity } from "@/types/api"
 
 export default function AdminDashboard() {
+  const [counts, setCounts] = useState<DashCounts>({ games: 0, reviews: 0, users: 0 })
+  const [activities, setActivities] = useState<RecentActivity[]>([])
+
+  const fetchDashboardData = async () => {
+    const [countsData, activitiesData] = await Promise.all([
+      dashService.getCounts(),
+      dashService.getRecentActivities(),
+    ])
+    setCounts(countsData)
+    setActivities(activitiesData)
+  }
+
+  useEffect(() => {
+    fetchDashboardData()
+  }, [])
+
   return (
     <AdminLayout>
       <div className="space-y-6">
@@ -15,15 +34,16 @@ export default function AdminDashboard() {
           <Button
             size="sm"
             className="bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90"
+            onClick={fetchDashboardData}
           >
             Refresh Data
           </Button>
         </div>
 
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          <StatCard title="Total Games" value={1248} Icon={GameController} />
-          <StatCard title="Active Users" value={34789} Icon={Users} />
-          <StatCard title="Reviews" value={24356} Icon={MessageSquare} />
+          <StatCard title="Total Games" value={counts.games} Icon={GameController} />
+          <StatCard title="Active Users" value={counts.users} Icon={Users} />
+          <StatCard title="Reviews" value={counts.reviews} Icon={MessageSquare} />
         </div>
 
         <h2 className="text-xl font-semibold mt-8">Quick Actions</h2>
@@ -38,26 +58,16 @@ export default function AdminDashboard() {
         <Card className="border-muted/60">
           <CardContent className="p-6">
             <div className="space-y-4">
-              <ActivityItem
-                Icon={GameController}
-                title="New game added:"
-                highlight="Starfield"
-                timestamp="2 hours ago"
-                author="Admin"
-              />
-              <ActivityItem
-                Icon={MessageSquare}
-                title="New review flagged for"
-                highlight="Elden Ring"
-                timestamp="3 hours ago"
-                author="System"
-              />
-              <ActivityItem
-                Icon={Users}
-                title="New user registered:"
-                highlight="GamerPro456"
-                timestamp="5 hours ago"
-              />
+              {activities.map((activity) => (
+                <ActivityItem
+                  key={activity.id}
+                  Icon={activity.type === 'Game' ? GameController : MessageSquare}
+                  title={'New Review Flagged for'}
+                  highlight={activity.game}
+                  timestamp={activity.timestamp}
+                  author={activity.author}
+                />
+              ))}
             </div>
           </CardContent>
         </Card>
@@ -65,4 +75,3 @@ export default function AdminDashboard() {
     </AdminLayout>
   )
 }
-

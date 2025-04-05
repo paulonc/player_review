@@ -10,7 +10,7 @@ import logger from './config/logger';
 import errorHandler from './middlewares/errorHandler';
 import { apiLimiter } from './middlewares/rateLimiter';
 import cors from 'cors';
-
+import dashRoutes from './routes/DashRoute';
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -20,6 +20,7 @@ app.use('/games', gameRoutes);
 app.use('/companies', companyRoutes);
 app.use('/reviews', reviewRoutes);
 app.use('/categories', categoryRoutes);
+app.use('/dash', dashRoutes);
 
 app.use(errorHandler);
 app.use(apiLimiter);

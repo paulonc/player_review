@@ -157,6 +157,11 @@ class GameRepository {
       };
     });
   }
+
+  async count(): Promise<number> {
+    return await prisma.game.count();
+  }
+
 }
 
 export default new GameRepository();

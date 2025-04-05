@@ -59,6 +59,11 @@ class UserRepository {
       data: { password: newPassword },
     });
   }
+
+  async count(): Promise<number> {
+    return await prisma.user.count();
+  }
+
 }
 
 export default new UserRepository();
