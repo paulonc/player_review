@@ -1,8 +1,9 @@
 import { Button } from "@/components/ui/button";
 import PublisherCard from "./PublisherCard";
 import SectionTitle from "./SectionTitle";
+import { Company } from "@/types/api";
 
-export default function PublisherSection() {
+export default function PublisherSection({ onViewAll, publishers, isLoading }: { onViewAll: () => void, publishers: Company[], isLoading: boolean }) {
   return (
     <section className="py-12">
       <SectionTitle title="Top Rated Publishers" colorClass="bg-primary" />
@@ -41,7 +42,7 @@ export default function PublisherSection() {
         />
       </div>
       <div className="flex justify-center mt-8">
-        <Button variant="outline" className="border-primary/20 hover:bg-primary/10 transition-all duration-300">
+        <Button variant="outline" className="border-primary/20 hover:bg-primary/10 transition-all duration-300" onClick={onViewAll}>
           View All Publishers
         </Button>
       </div>

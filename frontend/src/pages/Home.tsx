@@ -68,7 +68,11 @@ export default function Home() {
           isLoading={isLoading}
           onViewAll={() => navigate('/games')}
         />
-        <PublisherSection />
+        <PublisherSection
+        publishers={[]}
+        isLoading={isLoading}
+        onViewAll={() => navigate('/publishers')}
+        />
       </main>
       <Footer />
     </div>
