@@ -15,7 +15,7 @@ export default function GamesAdmin() {
     const fetchGames = async () => {
       setLoading(true)
       try {
-        const response = await gameService.getGames({ search: searchQuery }) 
+        const response = await gameService.getGames({ search: searchQuery })
         setGames(response)
       } catch (error) {
         console.error("Erro ao buscar os jogos:", error)
@@ -31,6 +31,16 @@ export default function GamesAdmin() {
     game.title.toLowerCase().includes(searchQuery.toLowerCase())
   )
 
+  const handleDelete = async (id: string) => {
+    try {
+      await gameService.deleteGame(id)
+      // Atualizar a lista de jogos no estado após a exclusão
+      setGames(games.filter((game) => game.id !== id))
+    } catch (error) {
+      console.error("Erro ao excluir o jogo:", error)
+    }
+  }
+
   return (
     <AdminLayout>
       <div className="space-y-6">
@@ -38,7 +48,8 @@ export default function GamesAdmin() {
         <div className="flex items-center justify-between">
           <GamesSearch onSearch={setSearchQuery} />
         </div>
-        <GamesTable games={filteredGames} />
+        {/* Passar a função handleDelete como prop */}
+        <GamesTable games={filteredGames} onDelete={handleDelete} />
       </div>
     </AdminLayout>
   )

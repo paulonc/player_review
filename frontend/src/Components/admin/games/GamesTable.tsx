@@ -11,10 +11,10 @@ type Game = {
 
 type GamesTableProps = {
   games: Game[]
+  onDelete: (id: string) => void // Passar a função de deletação como prop
 }
 
-export function GamesTable({ games }: GamesTableProps) {
-  console.log(games)
+export function GamesTable({ games, onDelete }: GamesTableProps) {
   return (
     <div className="rounded-md border">
       <Table>
@@ -44,6 +44,7 @@ export function GamesTable({ games }: GamesTableProps) {
                     variant="ghost"
                     size="icon"
                     className="h-8 w-8 text-red-600 hover:text-red-700 hover:bg-red-100/10"
+                    onClick={() => onDelete(game.id)} // Chamar a função de deletação recebida por prop
                   >
                     <Trash2 className="h-4 w-4" />
                     <span className="sr-only">Delete</span>
@@ -56,4 +57,4 @@ export function GamesTable({ games }: GamesTableProps) {
       </Table>
     </div>
   )
-} 
+}

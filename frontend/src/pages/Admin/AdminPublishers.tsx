@@ -26,6 +26,15 @@ export default function PublishersAdmin() {
     publisher.name.toLowerCase().includes(searchQuery.toLowerCase())
   )
 
+  const handleDelete = async (id: string) => {
+    try {
+      await companyService.deletePublisher(id);
+      setPublishers(publishers.filter(publisher => publisher.id !== id));
+    } catch (error) {
+      console.error("Error deleting publisher:", error);
+    }
+  };
+
   return (
     <AdminLayout>
       <div className="space-y-6">
@@ -87,6 +96,7 @@ export default function PublishersAdmin() {
                       variant="ghost"
                       size="icon"
                       className="h-8 w-8 text-red-600 hover:text-red-700 hover:bg-red-100/10"
+                      onClick={() => handleDelete(publisher.id)}
                     >
                       <Trash2 className="h-4 w-4" />
                       <span className="sr-only">Delete</span>
