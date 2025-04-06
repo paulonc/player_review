@@ -9,205 +9,8 @@ import GameCard from "@/components/GameCard"
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
 import { gameService } from "@/services/gameService"
+import { categoryService } from "@/services/categoryService"
 import type { Game } from "@/types/api"
-
-const allGames = [
-  {
-    id: "1",
-    title: "Elden Ring",
-    image: "/placeholder.svg?height=300&width=400",
-    category: "RPG",
-    rating: 4.8,
-    reviewCount: 1243,
-  },
-  {
-    id: "2",
-    title: "God of War: Ragnarök",
-    image: "/placeholder.svg?height=300&width=400",
-    category: "Action Adventure",
-    rating: 4.9,
-    reviewCount: 982,
-  },
-  {
-    id: "3",
-    title: "Cyberpunk 2077",
-    image: "/placeholder.svg?height=300&width=400",
-    category: "RPG",
-    rating: 4.2,
-    reviewCount: 1876,
-  },
-  {
-    id: "4",
-    title: "Horizon Forbidden West",
-    image: "/placeholder.svg?height=300&width=400",
-    category: "Action RPG",
-    rating: 4.7,
-    reviewCount: 754,
-  },
-  {
-    id: "5",
-    title: "Starfield",
-    image: "/placeholder.svg?height=300&width=400",
-    category: "Sci-Fi RPG",
-    rating: 4.5,
-    reviewCount: 632,
-  },
-  {
-    id: "6",
-    title: "Baldur's Gate 3",
-    image: "/placeholder.svg?height=300&width=400",
-    category: "RPG",
-    rating: 4.9,
-    reviewCount: 1432,
-  },
-  {
-    id: "7",
-    title: "Final Fantasy XVI",
-    image: "/placeholder.svg?height=300&width=400",
-    category: "JRPG",
-    rating: 4.6,
-    reviewCount: 892,
-  },
-  {
-    id: "8",
-    title: "Resident Evil 4 Remake",
-    image: "/placeholder.svg?height=300&width=400",
-    category: "Horror",
-    rating: 4.8,
-    reviewCount: 743,
-  },
-  {
-    id: "9",
-    title: "The Legend of Zelda: Tears of the Kingdom",
-    image: "/placeholder.svg?height=300&width=400",
-    category: "Action Adventure",
-    rating: 4.9,
-    reviewCount: 1567,
-  },
-  {
-    id: "10",
-    title: "Diablo IV",
-    image: "/placeholder.svg?height=300&width=400",
-    category: "Action RPG",
-    rating: 4.3,
-    reviewCount: 1123,
-  },
-  {
-    id: "11",
-    title: "Hogwarts Legacy",
-    image: "/placeholder.svg?height=300&width=400",
-    category: "Action RPG",
-    rating: 4.6,
-    reviewCount: 987,
-  },
-  {
-    id: "12",
-    title: "Star Wars Jedi: Survivor",
-    image: "/placeholder.svg?height=300&width=400",
-    category: "Action Adventure",
-    rating: 4.5,
-    reviewCount: 876,
-  },
-  {
-    id: "13",
-    title: "Street Fighter 6",
-    image: "/placeholder.svg?height=300&width=400",
-    category: "Fighting",
-    rating: 4.7,
-    reviewCount: 654,
-  },
-  {
-    id: "14",
-    title: "Assassin's Creed Mirage",
-    image: "/placeholder.svg?height=300&width=400",
-    category: "Action Adventure",
-    rating: 4.4,
-    reviewCount: 789,
-  },
-  {
-    id: "15",
-    title: "Alan Wake 2",
-    image: "/placeholder.svg?height=300&width=400",
-    category: "Horror",
-    rating: 4.8,
-    reviewCount: 543,
-  },
-  {
-    id: "16",
-    title: "Spider-Man 2",
-    image: "/placeholder.svg?height=300&width=400",
-    category: "Action Adventure",
-    rating: 4.9,
-    reviewCount: 1234,
-  },
-  {
-    id: "17",
-    title: "Mortal Kombat 1",
-    image: "/placeholder.svg?height=300&width=400",
-    category: "Fighting",
-    rating: 4.6,
-    reviewCount: 876,
-  },
-  {
-    id: "18",
-    title: "Forza Horizon 5",
-    image: "/placeholder.svg?height=300&width=400",
-    category: "Racing",
-    rating: 4.8,
-    reviewCount: 1023,
-  },
-  {
-    id: "19",
-    title: "The Last of Us Part I",
-    image: "/placeholder.svg?height=300&width=400",
-    category: "Action Adventure",
-    rating: 4.9,
-    reviewCount: 1432,
-  },
-  {
-    id: "20",
-    title: "Hades II",
-    image: "/placeholder.svg?height=300&width=400",
-    category: "Roguelike",
-    rating: 4.7,
-    reviewCount: 876,
-  },
-  {
-    id: "21",
-    title: "Persona 5 Royal",
-    image: "/placeholder.svg?height=300&width=400",
-    category: "JRPG",
-    rating: 4.9,
-    reviewCount: 1345,
-  },
-  {
-    id: "22",
-    title: "Hollow Knight: Silksong",
-    image: "/placeholder.svg?height=300&width=400",
-    category: "Metroidvania",
-    rating: 4.8,
-    reviewCount: 987,
-  },
-  {
-    id: "23",
-    title: "Stardew Valley",
-    image: "/placeholder.svg?height=300&width=400",
-    category: "Simulation",
-    rating: 4.8,
-    reviewCount: 2134,
-  },
-  {
-    id: "24",
-    title: "Minecraft",
-    image: "/placeholder.svg?height=300&width=400",
-    category: "Sandbox",
-    rating: 4.7,
-    reviewCount: 3456,
-  },
-]
-
-// Extrair categorias únicas dos jogos
-const allCategories = Array.from(new Set(allGames.map((game) => game.category)))
 
 type SearchBarProps = {
   searchQuery: string;
@@ -278,32 +81,37 @@ export default function GamesPage() {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
   const [currentPage, setCurrentPage] = useState(1)
   const [games, setGames] = useState<Game[]>([])
+  const [categories, setCategories] = useState<{ id: string; name: string }[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
   const gamesPerPage = 12
 
   useEffect(() => {
-    const fetchGames = async () => {
+    const fetchData = async () => {
       try {
         setIsLoading(true)
         setError(null)
-        const response = await gameService.getGames({
-          page: currentPage,
-          limit: gamesPerPage,
-          search: searchQuery,
-          categoryId: selectedCategories.length === 1 ? selectedCategories[0] : undefined
-        })
-        setGames(response)
+        const [gamesResponse, categoriesResponse] = await Promise.all([
+          gameService.getGames({
+            page: currentPage,
+            limit: gamesPerPage,
+            search: searchQuery,
+            categoryId: selectedCategories.length === 1 ? selectedCategories[0] : undefined
+          }),
+          categoryService.getCategories(1, 100)
+        ])
+        setGames(gamesResponse)
+        setCategories(categoriesResponse.data)
       } catch (err) {
-        setError("Failed to load games. Please try again later.")
-        console.error("Error fetching games:", err)
+        setError("Failed to load data. Please try again later.")
+        console.error("Error fetching data:", err)
       } finally {
         setIsLoading(false)
       }
     }
 
-    fetchGames()
+    fetchData()
   }, [currentPage, searchQuery, selectedCategories])
 
   // Filter games based on search query and selected categories
@@ -376,9 +184,14 @@ export default function GamesPage() {
           </div>
 
           <CategoryFilter
-            allCategories={allCategories}
-            selectedCategories={selectedCategories}
-            toggleCategory={toggleCategory}
+            allCategories={categories.map(cat => cat.name)}
+            selectedCategories={selectedCategories.map(id => categories.find(cat => cat.id === id)?.name || '')}
+            toggleCategory={(name) => {
+              const category = categories.find(cat => cat.name === name)
+              if (category) {
+                toggleCategory(category.id)
+              }
+            }}
             clearFilters={clearFilters}
             searchQuery={searchQuery}
           />
