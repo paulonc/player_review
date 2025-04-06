@@ -8,6 +8,8 @@ import { Search, Filter, ChevronLeft, ChevronRight } from "lucide-react"
 import GameCard from "@/components/GameCard"
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
+import { gameService } from "@/services/gameService"
+import type { Game } from "@/types/api"
 
 const allGames = [
   {
@@ -275,30 +277,43 @@ export default function GamesPage() {
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
   const [currentPage, setCurrentPage] = useState(1)
-  const [filteredGames, setFilteredGames] = useState(allGames)
-  const [displayedGames, setDisplayedGames] = useState<typeof allGames>([])
+  const [games, setGames] = useState<Game[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   const gamesPerPage = 12
+
+  useEffect(() => {
+    const fetchGames = async () => {
+      try {
+        setIsLoading(true)
+        setError(null)
+        const response = await gameService.getGames({
+          page: currentPage,
+          limit: gamesPerPage,
+          search: searchQuery,
+          categoryId: selectedCategories.length === 1 ? selectedCategories[0] : undefined
+        })
+        setGames(response)
+      } catch (err) {
+        setError("Failed to load games. Please try again later.")
+        console.error("Error fetching games:", err)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchGames()
+  }, [currentPage, searchQuery, selectedCategories])
+
+  // Filter games based on search query and selected categories
+  const filteredGames = games.filter((game) => {
+    const matchesSearch = game.title.toLowerCase().includes(searchQuery.toLowerCase())
+    const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(game.categoryId)
+    return matchesSearch && matchesCategory
+  })
+
   const totalPages = Math.ceil(filteredGames.length / gamesPerPage)
-
-  // Filtrar jogos com base na busca e categorias selecionadas
-  useEffect(() => {
-    const filtered = allGames.filter((game) => {
-      const matchesSearch = game.title.toLowerCase().includes(searchQuery.toLowerCase())
-      const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(game.category)
-      return matchesSearch && matchesCategory
-    })
-
-    setFilteredGames(filtered)
-    setCurrentPage(1) // Reset para a primeira página quando os filtros mudam
-  }, [searchQuery, selectedCategories])
-
-  // Atualizar jogos exibidos com base na página atual
-  useEffect(() => {
-    const startIndex = (currentPage - 1) * gamesPerPage
-    const endIndex = startIndex + gamesPerPage
-    setDisplayedGames(filteredGames.slice(startIndex, endIndex))
-  }, [filteredGames, currentPage])
 
   // Manipuladores de eventos
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -380,18 +395,29 @@ export default function GamesPage() {
             {searchQuery && <> matching "{searchQuery}"</>}
           </div>
 
+          {/* Error message */}
+          {error && (
+            <div className="text-red-500 text-center py-4">
+              {error}
+            </div>
+          )}
+
           {/* Lista de jogos */}
-          {filteredGames.length > 0 ? (
+          {isLoading ? (
+            <div className="flex justify-center items-center py-12">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+            </div>
+          ) : filteredGames.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {displayedGames.map((game) => (
+              {filteredGames.map((game) => (
                 <GameCard
                   key={game.id}
                   id={game.id}
                   title={game.title}
-                  image={game.image}
-                  categoryName={game.category}
-                  avgRating={game.rating}
-                  reviewCount={game.reviewCount}
+                  image={game.imageUrl || "/placeholder.svg?height=300&width=400"}
+                  categoryName={game.categoryId}
+                  avgRating={0} // These values will come from the API response
+                  reviewCount={0}
                 />
               ))}
             </div>
@@ -411,7 +437,7 @@ export default function GamesPage() {
           )}
 
           {/* Paginação */}
-          {filteredGames.length > 0 && (
+          {!isLoading && filteredGames.length > 0 && (
             <div className="flex justify-center mt-12">
               <div className="flex items-center gap-2">
                 <Button
