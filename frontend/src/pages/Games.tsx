@@ -86,6 +86,7 @@ export default function GamesPage() {
   const [error, setError] = useState<string | null>(null)
   const [totalGames, setTotalGames] = useState(0)
   const [totalPages, setTotalPages] = useState(1)
+  const [gameRatings, setGameRatings] = useState<Record<string, { avgRating: number; reviewCount: number }>>({})
 
   const gamesPerPage = 12
 
@@ -107,6 +108,29 @@ export default function GamesPage() {
         setTotalGames(gamesResponse.total)
         setTotalPages(gamesResponse.totalPages)
         setCategories(categoriesResponse.data)
+        
+        // Fetch rating information for each game
+        const ratingsPromises = gamesResponse.data.map(game => 
+          gameService.getGameDetails(game.id)
+            .then(response => ({
+              id: game.id,
+              avgRating: response.data.avgRating,
+              reviewCount: response.data.reviewCount
+            }))
+            .catch(() => ({
+              id: game.id,
+              avgRating: 0,
+              reviewCount: 0
+            }))
+        );
+        
+        const ratings = await Promise.all(ratingsPromises);
+        const ratingsMap = ratings.reduce((acc, rating) => {
+          acc[rating.id] = { avgRating: rating.avgRating, reviewCount: rating.reviewCount };
+          return acc;
+        }, {} as Record<string, { avgRating: number; reviewCount: number }>);
+        
+        setGameRatings(ratingsMap);
       } catch (err) {
         setError("Failed to load data. Please try again later.")
         console.error("Error fetching data:", err)
@@ -231,8 +255,8 @@ export default function GamesPage() {
                   title={game.title}
                   image={game.imageUrl || "/placeholder.svg?height=300&width=400"}
                   categoryName={categories.find(cat => cat.id === game.categoryId)?.name || game.categoryId}
-                  avgRating={0} // These values will come from the API response
-                  reviewCount={0}
+                  avgRating={gameRatings[game.id]?.avgRating || 0}
+                  reviewCount={gameRatings[game.id]?.reviewCount || 0}
                 />
               ))}
             </div>
