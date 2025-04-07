@@ -84,6 +84,8 @@ export default function GamesPage() {
   const [categories, setCategories] = useState<{ id: string; name: string }[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [totalGames, setTotalGames] = useState(0)
+  const [totalPages, setTotalPages] = useState(1)
 
   const gamesPerPage = 12
 
@@ -101,7 +103,9 @@ export default function GamesPage() {
           }),
           categoryService.getCategories(1, 100)
         ])
-        setGames(gamesResponse)
+        setGames(gamesResponse.data)
+        setTotalGames(gamesResponse.total)
+        setTotalPages(gamesResponse.totalPages)
         setCategories(categoriesResponse.data)
       } catch (err) {
         setError("Failed to load data. Please try again later.")
@@ -120,31 +124,6 @@ export default function GamesPage() {
     const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(game.categoryId)
     return matchesSearch && matchesCategory
   })
-
-  const totalPages = Math.ceil(filteredGames.length / gamesPerPage)
-
-  // Manipuladores de eventos
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value)
-  }
-
-  const toggleCategory = (category: string) => {
-    setSelectedCategories((prev) =>
-      prev.includes(category) ? prev.filter((c) => c !== category) : [...prev, category],
-    )
-  }
-
-  const clearFilters = () => {
-    setSearchQuery("")
-    setSelectedCategories([])
-  }
-
-  const goToPage = (page: number) => {
-    if (page >= 1 && page <= totalPages) {
-      setCurrentPage(page)
-      window.scrollTo({ top: 0, behavior: "smooth" })
-    }
-  }
 
   const getPageNumbers = () => {
     const pageNumbers = []
@@ -168,6 +147,29 @@ export default function GamesPage() {
     }
 
     return pageNumbers
+  }
+
+  const goToPage = (page: number) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page)
+      window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+  }
+
+  // Manipuladores de eventos
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value)
+  }
+
+  const toggleCategory = (category: string) => {
+    setSelectedCategories((prev) =>
+      prev.includes(category) ? prev.filter((c) => c !== category) : [...prev, category],
+    )
+  }
+
+  const clearFilters = () => {
+    setSearchQuery("")
+    setSelectedCategories([])
   }
 
   return (
@@ -198,7 +200,7 @@ export default function GamesPage() {
 
           {/* Resultados e estatísticas */}
           <div className="text-sm text-muted-foreground">
-            Showing {filteredGames.length} {filteredGames.length === 1 ? "game" : "games"}
+            Showing {((currentPage-1)*gamesPerPage)+games.length} of {totalGames} {totalGames === 1 ? "game" : "games"}
             {selectedCategories.length > 0 && (
               <>
                 {" "}

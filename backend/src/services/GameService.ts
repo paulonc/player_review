@@ -40,13 +40,13 @@ class GameService {
     return game;
   }
 
-  async getAllGames(page: number, limit: number): Promise<Game[]> {
-    if (page < 1) throw new ValidationError('Page must be greater than 0');
-    if (limit < 1) throw new ValidationError('Limit must be greater than 0');
-
+  async getAllGames(page: number, limit: number) {
     const offset = (page - 1) * limit;
-
-    return await GameRepository.findAll(offset, limit);
+    const [games, total] = await Promise.all([
+      GameRepository.findAll(offset, limit),
+      GameRepository.count()
+    ]);
+    return { games, total };
   }
 
   async getTopRatedGames(limit: number): Promise<TopRatedGame[]> {
