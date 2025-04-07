@@ -28,7 +28,7 @@ class GameRepository {
   }
 
   async findAll(offset: number, limit: number, filters?: { companyId?: string; categoryId?: string; search?: string }): Promise<Game[]> {
-    const where: any = {};
+    const where: Record<string, unknown> = {};
     
     if (filters?.companyId) {
       where.companyId = filters.companyId;
@@ -113,7 +113,11 @@ class GameRepository {
       include: {
         category: true,
         company: true,
-        reviews: true
+        reviews: {
+          include: {
+            user: true
+          }
+        }
       }
     });
 
@@ -131,7 +135,10 @@ class GameRepository {
         releaseDate: game.releaseDate,
         imageUrl: game.imageUrl,
         createdAt: game.createdAt,
-        reviews: game.reviews
+        reviews: game.reviews.map(review => ({
+          ...review,
+          username: review.user.username
+        }))
       },
       avgRating: Number(avgRating.toFixed(2)),
       reviewCount: game.reviews.length,
@@ -185,7 +192,7 @@ class GameRepository {
   }
 
   async count(filters?: { companyId?: string; categoryId?: string; search?: string }): Promise<number> {
-    const where: any = {};
+    const where: Record<string, unknown> = {};
     
     if (filters?.companyId) {
       where.companyId = filters.companyId;
