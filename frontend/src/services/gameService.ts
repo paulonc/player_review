@@ -21,15 +21,10 @@ interface GetGamesParams {
 }
 
 export const gameService = {
-  async getGames(params: {
-    page?: number;
-    limit?: number;
-    search?: string;
-    categoryId?: string;
-  }): Promise<PaginatedResponse<Game>> {
-    const { page = 1, limit = 10, search, categoryId } = params;
+  async getGames(params: GetGamesParams): Promise<PaginatedResponse<Game>> {
+    const { page = 1, limit = 10, search, categoryId, companyId } = params;
     const response = await api.get<PaginatedResponse<Game>>("/games", {
-      params: { page, limit, search, categoryId },
+      params: { page, limit, search, categoryId, companyId },
     });
     return response.data;
   },

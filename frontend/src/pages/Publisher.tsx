@@ -14,8 +14,6 @@ import { Link } from "react-router-dom"
 
 interface CompanyDetails {
   company: Company;
-  gameCount: number;
-  avgRating: number;
   games: Game[];
 }
 
@@ -34,16 +32,18 @@ export default function CompanyPage() {
         // Fetch company details
         const companyResponse = await companyService.getCompany(id);
         
-        // For now, we'll create a mock CompanyDetails object
-        // In a real implementation, you would fetch this data from the backend
-        const mockCompanyDetails: CompanyDetails = {
+        // Fetch games for this company
+        const gamesResponse = await gameService.getGames({ 
+          companyId: id,
+          limit: 100 // Get all games for this company
+        });
+        
+        const companyDetails: CompanyDetails = {
           company: companyResponse.data,
-          gameCount: 0, // This would come from the backend
-          avgRating: 0, // This would come from the backend
-          games: [] // This would come from the backend
+          games: gamesResponse.data
         };
         
-        setCompanyDetails(mockCompanyDetails);
+        setCompanyDetails(companyDetails);
       } catch (err) {
         setError('Failed to load company details');
         console.error('Error fetching company details:', err);
@@ -114,11 +114,7 @@ export default function CompanyPage() {
                   </Badge>
                   <Badge variant="outline" className="flex items-center gap-1">
                     <Gamepad className="h-3 w-3" />
-                    {companyDetails.gameCount} Games
-                  </Badge>
-                  <Badge variant="outline" className="flex items-center gap-1">
-                    <Star className="h-3 w-3" />
-                    {companyDetails.avgRating.toFixed(1)} Rating
+                    {companyDetails.games.length} Games
                   </Badge>
                   <Badge variant="outline" className="flex items-center gap-1">
                     <Calendar className="h-3 w-3" />
@@ -192,7 +188,7 @@ export default function CompanyPage() {
                   <CardContent>
                     <p className="text-muted-foreground mb-4">
                       {companyDetails.company.name} is a game development company based in {companyDetails.company.country}.
-                      They have published {companyDetails.gameCount} games with an average rating of {companyDetails.avgRating.toFixed(1)}.
+                      They have published {companyDetails.games.length} games.
                     </p>
                     <p className="text-muted-foreground">
                       Founded in {new Date(companyDetails.company.createdAt).getFullYear()}, 
@@ -214,11 +210,7 @@ export default function CompanyPage() {
                   <div className="space-y-4">
                     <div className="flex justify-between items-center">
                       <span className="text-muted-foreground">Games Published</span>
-                      <span className="font-medium">{companyDetails.gameCount}</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-muted-foreground">Average Rating</span>
-                      <span className="font-medium">{companyDetails.avgRating.toFixed(1)}</span>
+                      <span className="font-medium">{companyDetails.games.length}</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-muted-foreground">Founded</span>

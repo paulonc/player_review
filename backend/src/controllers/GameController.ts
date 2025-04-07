@@ -38,8 +38,11 @@ class GameController {
     try {
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 10;
+      const companyId = req.query.companyId as string;
+      const categoryId = req.query.categoryId as string;
+      const search = req.query.search as string;
 
-      const { games, total } = await GameService.getAllGames(page, limit);
+      const { games, total } = await GameService.getAllGames(page, limit, { companyId, categoryId, search });
       return res.status(200).json({
         data: games,
         total,

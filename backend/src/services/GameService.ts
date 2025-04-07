@@ -40,11 +40,11 @@ class GameService {
     return game;
   }
 
-  async getAllGames(page: number, limit: number) {
+  async getAllGames(page: number, limit: number, filters?: { companyId?: string; categoryId?: string; search?: string }) {
     const offset = (page - 1) * limit;
     const [games, total] = await Promise.all([
-      GameRepository.findAll(offset, limit),
-      GameRepository.count()
+      GameRepository.findAll(offset, limit, filters),
+      GameRepository.count(filters)
     ]);
     return { games, total };
   }

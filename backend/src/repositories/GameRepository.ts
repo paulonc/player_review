@@ -27,14 +27,39 @@ class GameRepository {
     return await prisma.game.findUnique({ where: { id } });
   }
 
-  async findAll(offset: number, limit: number): Promise<Game[]> {
-    const totalCount = await prisma.game.count();
+  async findAll(offset: number, limit: number, filters?: { companyId?: string; categoryId?: string; search?: string }): Promise<Game[]> {
+    const where: any = {};
+    
+    if (filters?.companyId) {
+      where.companyId = filters.companyId;
+    }
+    
+    if (filters?.categoryId) {
+      where.categoryId = filters.categoryId;
+    }
+    
+    if (filters?.search) {
+      where.title = {
+        contains: filters.search,
+        mode: 'insensitive'
+      };
+    }
+
+    const totalCount = await prisma.game.count({ where });
 
     if (offset > 0 && offset >= totalCount) {
       return [];
     }
 
-    return await prisma.game.findMany({ skip: offset, take: limit });
+    return await prisma.game.findMany({ 
+      where,
+      skip: offset, 
+      take: limit,
+      include: {
+        company: true,
+        category: true
+      }
+    });
   }
 
   async update(
@@ -159,8 +184,25 @@ class GameRepository {
     });
   }
 
-  async count(): Promise<number> {
-    return await prisma.game.count();
+  async count(filters?: { companyId?: string; categoryId?: string; search?: string }): Promise<number> {
+    const where: any = {};
+    
+    if (filters?.companyId) {
+      where.companyId = filters.companyId;
+    }
+    
+    if (filters?.categoryId) {
+      where.categoryId = filters.categoryId;
+    }
+    
+    if (filters?.search) {
+      where.title = {
+        contains: filters.search,
+        mode: 'insensitive'
+      };
+    }
+
+    return await prisma.game.count({ where });
   }
 
 }
