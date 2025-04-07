@@ -1,18 +1,17 @@
 import { Link } from "react-router-dom"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Star, Globe } from "lucide-react"
+import { Globe } from "lucide-react"
 
 interface PublisherCardProps {
   id: string
   name: string
   logo: string
   country: string
-  rating: number
   gameCount: number
 }
 
-export default function PublisherCard({ id, name, logo, country, rating, gameCount }: PublisherCardProps) {
+export default function PublisherCard({ id, name, logo, country, gameCount }: PublisherCardProps) {
   return (
     <Link to={`/publishers/${id}`}>
       <Card className="overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-primary/10 border-muted/60 group h-full">
@@ -32,11 +31,7 @@ export default function PublisherCard({ id, name, logo, country, rating, gameCou
         </div>
         <CardContent className="p-4 pt-0 flex flex-col items-center">
           <div className="flex items-center mt-2">
-            <div className="flex items-center">
-              <Star className="h-4 w-4 fill-yellow-500 text-yellow-500 mr-1" />
-              <span className="font-medium">{rating.toFixed(1)}</span>
-            </div>
-            <span className="text-muted-foreground text-sm ml-2">({gameCount} games)</span>
+            <span className="text-muted-foreground text-sm">{gameCount} games</span>
           </div>
           <Badge className="mt-3 bg-primary/10 text-primary hover:bg-primary/20 border-none">Top Publisher</Badge>
         </CardContent>

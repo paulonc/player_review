@@ -6,18 +6,19 @@ import { Badge } from "@/components/ui/badge"
 import { Search, Filter, ChevronLeft, ChevronRight, Loader2, Globe } from "lucide-react"
 import PublisherCard from "@/components/PublisherCard"
 import { companyService } from "@/services/companyService"
+import { gameService } from "@/services/gameService"
 import Navbar from "@/components/Navbar"
-import { PaginatedResponse, Company } from "@/types/api"
+import { PaginatedResponse, Company, Game } from "@/types/api"
 import { Link } from "react-router-dom"
 
 export default function PublishersPage() {
   // States to control UI and data
   const [searchQuery, setSearchQuery] = useState("")
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("")
-  const [selectedCountries, setSelectedCountries] = useState<string[]>([])
+
   const [currentPage, setCurrentPage] = useState(1)
   const [publishers, setPublishers] = useState<Company[]>([])
-  const [countries, setCountries] = useState<{name: string, count: number}[]>([])
+  const [publisherGames, setPublisherGames] = useState<Record<string, Game[]>>({})
   const [pagination, setPagination] = useState<{
     total: number;
     page: number;
@@ -37,27 +38,7 @@ export default function PublishersPage() {
     return () => clearTimeout(timer)
   }, [searchQuery])
 
-  useEffect(() => {
-    const fetchCountries = async () => {
-      try {
-        // Since there's no getCountries method, we'll extract unique countries from publishers
-        // This will be populated after we fetch publishers
-        if (publishers.length > 0) {
-          const uniqueCountries = [...new Set(publishers.map(p => p.country))]
-          const countryCounts = uniqueCountries.map(country => ({
-            name: country,
-            count: publishers.filter(p => p.country === country).length
-          }))
-          setCountries(countryCounts)
-        }
-      } catch (err) {
-        setError("Failed to load countries. Please try again later.")
-        console.error("Error loading countries:", err)
-      }
-    }
 
-    fetchCountries()
-  }, [publishers])
 
   useEffect(() => {
     const fetchPublishers = async () => {
@@ -83,7 +64,40 @@ export default function PublishersPage() {
     }
 
     fetchPublishers()
-  }, [currentPage, selectedCountries, debouncedSearchQuery])
+  }, [currentPage, debouncedSearchQuery])
+
+  // Fetch games for each publisher
+  useEffect(() => {
+    const fetchPublisherGames = async () => {
+      if (publishers.length === 0) return;
+      
+      try {
+        const gamesPromises = publishers.map(publisher => 
+          gameService.getGames({ companyId: publisher.id, limit: 100 })
+            .then(response => ({ publisherId: publisher.id, games: response.data }))
+            .catch(err => {
+              console.error(`Error fetching games for publisher ${publisher.id}:`, err);
+              return { publisherId: publisher.id, games: [] };
+            })
+        );
+        
+        const results = await Promise.all(gamesPromises);
+        
+        // Create a map of publisher ID to games
+        const gamesMap: Record<string, Game[]> = {};
+        
+        results.forEach(result => {
+          gamesMap[result.publisherId] = result.games;
+        });
+        
+        setPublisherGames(gamesMap);
+      } catch (err) {
+        console.error("Error fetching publisher games:", err);
+      }
+    };
+    
+    fetchPublisherGames();
+  }, [publishers]);
 
   // Event handlers
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -91,17 +105,9 @@ export default function PublishersPage() {
     setCurrentPage(1) // Reset to first page when search changes
   }
 
-  const toggleCountry = (country: string) => {
-    setSelectedCountries(
-      (prev) => (prev.includes(country) ? prev.filter((c) => c !== country) : [country]), // Allow only one country at a time
-    )
-    setCurrentPage(1) // Reset to first page when country changes
-  }
-
   const clearFilters = () => {
     setSearchQuery("")
     setDebouncedSearchQuery("")
-    setSelectedCountries([])
     setCurrentPage(1)
   }
 
@@ -165,55 +171,10 @@ export default function PublishersPage() {
             </div>
           </div>
 
-          {/* Country filters */}
-          {countries.length > 0 && (
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <h2 className="text-lg font-semibold flex items-center gap-2">
-                  <Filter className="h-4 w-4" />
-                  Filter by Country
-                </h2>
-                {(selectedCountries.length > 0 || searchQuery) && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={clearFilters}
-                    className="h-8 px-2 text-xs hover:text-primary"
-                  >
-                    Clear Filters
-                  </Button>
-                )}
-              </div>
-
-              <div className="flex flex-wrap gap-2">
-                {countries.map((country) => (
-                  <Badge
-                    key={country.name}
-                    variant={selectedCountries.includes(country.name) ? "default" : "outline"}
-                    className={`
-                      cursor-pointer 
-                      ${
-                        selectedCountries.includes(country.name)
-                          ? "bg-primary hover:bg-primary/80"
-                          : "border-primary/20 hover:bg-primary/10 hover:text-primary"
-                      }
-                    `}
-                    onClick={() => toggleCountry(country.name)}
-                  >
-                    <Globe className="h-3 w-3 mr-1" />
-                    {country.name}
-                    {country.count && <span className="ml-1 text-xs opacity-70">({country.count})</span>}
-                  </Badge>
-                ))}
-              </div>
-            </div>
-          )}
-
           {/* Results and stats */}
           {pagination && !isLoading && (
             <div className="text-sm text-muted-foreground">
               Showing {pagination.total} {pagination.total === 1 ? "publisher" : "publishers"}
-              {selectedCountries.length > 0 && countries.length > 0 && <> from {selectedCountries.join(", ")}</>}
               {searchQuery && <> matching "{searchQuery}"</>}
             </div>
           )}
@@ -239,8 +200,7 @@ export default function PublishersPage() {
                       name={publisher.name}
                       logo={publisher.imageUrl}
                       country={publisher.country}
-                      rating={0} // Default value since it's not in the Company interface
-                      gameCount={0} // Default value since it's not in the Company interface
+                      gameCount={publisherGames[publisher.id]?.length || 0}
                     />
                   ))}
                 </div>
