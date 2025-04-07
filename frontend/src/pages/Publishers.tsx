@@ -7,8 +7,8 @@ import { Search, Filter, ChevronLeft, ChevronRight, Loader2, Globe } from "lucid
 import PublisherCard from "@/components/PublisherCard"
 import { companyService } from "@/services/companyService"
 import Navbar from "@/components/Navbar"
-import { PaginatedResponse } from "@/types/api"
-import { Company } from "@/types/api"
+import { PaginatedResponse, Company } from "@/types/api"
+import { Link } from "react-router-dom"
 
 export default function PublishersPage() {
   // States to control UI and data
@@ -17,7 +17,13 @@ export default function PublishersPage() {
   const [selectedCountries, setSelectedCountries] = useState<string[]>([])
   const [currentPage, setCurrentPage] = useState(1)
   const [publishers, setPublishers] = useState<Company[]>([])
-  const [meta, setMeta] = useState<PaginatedResponse<Company>["meta"] | null>(null)
+  const [countries, setCountries] = useState<{name: string, count: number}[]>([])
+  const [pagination, setPagination] = useState<{
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+  } | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -34,8 +40,16 @@ export default function PublishersPage() {
   useEffect(() => {
     const fetchCountries = async () => {
       try {
-        const countriesData = await companyService.getCountries()
-        setCountries(countriesData)
+        // Since there's no getCountries method, we'll extract unique countries from publishers
+        // This will be populated after we fetch publishers
+        if (publishers.length > 0) {
+          const uniqueCountries = [...new Set(publishers.map(p => p.country))]
+          const countryCounts = uniqueCountries.map(country => ({
+            name: country,
+            count: publishers.filter(p => p.country === country).length
+          }))
+          setCountries(countryCounts)
+        }
       } catch (err) {
         setError("Failed to load countries. Please try again later.")
         console.error("Error loading countries:", err)
@@ -43,7 +57,7 @@ export default function PublishersPage() {
     }
 
     fetchCountries()
-  }, [])
+  }, [publishers])
 
   useEffect(() => {
     const fetchPublishers = async () => {
@@ -51,10 +65,15 @@ export default function PublishersPage() {
       setError(null)
 
       try {
-        const response = await companyService.getCompanies()
+        const response = await companyService.getCompanies(currentPage, publishersPerPage)
         
         setPublishers(response.data)
-        setMeta(response.meta)
+        setPagination({
+          total: response.data.length,
+          page: currentPage,
+          limit: publishersPerPage,
+          totalPages: Math.ceil(response.data.length / publishersPerPage)
+        })
       } catch (err) {
         setError("Failed to load publishers. Please try again later.")
         console.error("Error loading publishers:", err)
@@ -87,7 +106,7 @@ export default function PublishersPage() {
   }
 
   const goToPage = (page: number) => {
-    if (meta && page >= 1 && page <= meta.totalPages) {
+    if (pagination && page >= 1 && page <= pagination.totalPages) {
       setCurrentPage(page)
       window.scrollTo({ top: 0, behavior: "smooth" })
     }
@@ -95,11 +114,11 @@ export default function PublishersPage() {
 
   // Generate array of pages for pagination
   const getPageNumbers = () => {
-    if (!meta) return []
+    if (!pagination) return []
 
     const pageNumbers = []
     const maxVisiblePages = 5
-    const totalPages = meta.totalPages
+    const totalPages = pagination.totalPages
 
     if (totalPages <= maxVisiblePages) {
       // Show all pages if there are fewer than the maximum visible
@@ -126,7 +145,7 @@ export default function PublishersPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-background/95">
-      <Navbar currentPath="/publishers" />
+      <Navbar />
 
       <main className="container py-6 md:py-12">
         <div className="space-y-8">
@@ -191,9 +210,9 @@ export default function PublishersPage() {
           )}
 
           {/* Results and stats */}
-          {meta && !isLoading && (
+          {pagination && !isLoading && (
             <div className="text-sm text-muted-foreground">
-              Showing {meta.totalItems} {meta.totalItems === 1 ? "publisher" : "publishers"}
+              Showing {pagination.total} {pagination.total === 1 ? "publisher" : "publishers"}
               {selectedCountries.length > 0 && countries.length > 0 && <> from {selectedCountries.join(", ")}</>}
               {searchQuery && <> matching "{searchQuery}"</>}
             </div>
@@ -218,10 +237,10 @@ export default function PublishersPage() {
                       key={publisher.id}
                       id={publisher.id}
                       name={publisher.name}
-                      logo={publisher.logo}
+                      logo={publisher.imageUrl}
                       country={publisher.country}
-                      rating={publisher.rating}
-                      gameCount={publisher.gameCount}
+                      rating={0} // Default value since it's not in the Company interface
+                      gameCount={0} // Default value since it's not in the Company interface
                     />
                   ))}
                 </div>
@@ -246,7 +265,7 @@ export default function PublishersPage() {
               )}
 
               {/* Pagination */}
-              {meta && meta.totalPages > 1 && (
+              {pagination && pagination.totalPages > 1 && (
                 <div className="flex justify-center mt-12">
                   <div className="flex items-center gap-2">
                     <Button
@@ -284,7 +303,7 @@ export default function PublishersPage() {
                       size="icon"
                       className="w-9 h-9 border-primary/20 hover:bg-primary/10"
                       onClick={() => goToPage(currentPage + 1)}
-                      disabled={meta && currentPage === meta.totalPages}
+                      disabled={pagination && currentPage === pagination.totalPages}
                     >
                       <ChevronRight className="h-4 w-4" />
                       <span className="sr-only">Next page</span>
@@ -303,13 +322,13 @@ export default function PublishersPage() {
             © 2025 GameReviewer. All rights reserved.
           </p>
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
-            <Link href="/terms" className="hover:text-primary transition-colors">
+            <Link to="/terms" className="hover:text-primary transition-colors">
               Terms
             </Link>
-            <Link href="/privacy" className="hover:text-primary transition-colors">
+            <Link to="/privacy" className="hover:text-primary transition-colors">
               Privacy
             </Link>
-            <Link href="/contact" className="hover:text-primary transition-colors">
+            <Link to="/contact" className="hover:text-primary transition-colors">
               Contact
             </Link>
           </div>

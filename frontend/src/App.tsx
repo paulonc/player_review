@@ -16,6 +16,7 @@ import NewGame from "./pages/Admin/NewGame";
 import Category from "./pages/Admin/AdminCategories";
 import NewCategory from "./pages/Admin/NewCategory";
 import Publishers from "./pages/Publishers";
+import Publisher from "./pages/Publisher";
 import NewPublisher from "./pages/Admin/NewPublishers";
 import UsersAdmin from "./pages/Admin/AdminUsers";
 import EditGame from "./pages/Admin/EditGame";
@@ -68,6 +69,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Publishers />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/publishers/:id"
+            element={
+              <ProtectedRoute>
+                <Publisher />
               </ProtectedRoute>
             }
           />
