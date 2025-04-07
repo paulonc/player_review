@@ -35,6 +35,29 @@ class ReviewRepository {
       where: { id },
     });
   }
+
+  async count(): Promise<number> {
+    return await prisma.review.count();
+  }
+
+  async findRecent(): Promise<{
+      game: string; review: Review; userName: string 
+}[]> {
+    const recentReviews = await prisma.review.findMany({
+      include: {
+        user: true,
+        game: true,
+      },
+      orderBy: { createdAt: 'desc' },
+      take: 5,
+    });
+
+    return recentReviews.map(review => ({
+      review,
+      userName: review.user.username,
+      game: review.game.title,
+    }));
+  }
 }
 
 export default new ReviewRepository();

@@ -32,8 +32,11 @@ model Review {
     id        String   @id @default(uuid()) @db.Uuid
     userId    String   @db.Uuid
     gameId    String   @db.Uuid
+    title     String
     rating    Int
     review    String?
+    hoursPlayed Int?
+    recommended Boolean?
     createdAt DateTime @default(now()) @map("created_at")
     game      Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
     user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)

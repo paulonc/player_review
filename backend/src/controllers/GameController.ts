@@ -23,7 +23,7 @@ class GameController {
   ): Promise<Response | void> {
     try {
       const game = await GameService.getGameById(req.params.id);
-      return res.status(200).json(game);
+      return res.status(200).json({ data: game });
     } catch (error) {
       logger.error('Error getting game', error);
       next(error);
@@ -38,9 +38,18 @@ class GameController {
     try {
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 10;
+      const companyId = req.query.companyId as string;
+      const categoryId = req.query.categoryId as string;
+      const search = req.query.search as string;
 
-      const games = await GameService.getAllGames(page, limit);
-      return res.status(200).json(games);
+      const { games, total } = await GameService.getAllGames(page, limit, { companyId, categoryId, search });
+      return res.status(200).json({
+        data: games,
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit)
+      });
     } catch (error) {
       logger.error('Error getting all games', error);
       next(error);
@@ -53,7 +62,8 @@ class GameController {
     next: NextFunction,
   ): Promise<Response | void> {
     try {
-      const topRatedGames = await GameService.getTopRatedGames();
+      const limit = parseInt(req.query.limit as string) || 10;
+      const topRatedGames = await GameService.getTopRatedGames(limit);
       return res.status(200).json(topRatedGames);
     } catch (error) {
       logger.error('Error getting top rated games', error);
@@ -104,6 +114,34 @@ class GameController {
       return res.status(200).json(updatedGame);
     } catch (error) {
       logger.error('Error updating release date', error);
+      next(error);
+    }
+  }
+
+  async getGameDetails(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response | void> {
+    try {
+      const gameDetails = await GameService.getGameDetails(req.params.id);
+      return res.status(200).json(gameDetails);
+    } catch (error) {
+      logger.error('Error getting game details', error);
+      next(error);
+    }
+  }
+
+  async getTopRatedGamesByCategory(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response | void> {
+    try {
+      const similarGames = await GameService.getTopRatedGamesByCategory(req.params.id);
+      return res.status(200).json(similarGames);
+    } catch (error) {
+      logger.error('Error getting top rated games by category', error);
       next(error);
     }
   }

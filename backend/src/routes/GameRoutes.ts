@@ -88,6 +88,57 @@ router.get('/:id', authenticate, GameController.getGame);
 
 /**
  * @swagger
+ * /games/{id}/details:
+ *   get:
+ *     summary: Get detailed game information
+ *     description: Returns detailed game information including average rating, review count, company name, and category name.
+ *     tags:
+ *       - Games
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The unique identifier of the game.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved game details.
+ *       404:
+ *         description: Game not found.
+ *       500:
+ *         description: Internal server error.
+ */
+router.get('/:id/details', authenticate, GameController.getGameDetails);
+
+
+/** 
+ * @swagger
+ * /games/{id}/similar:
+ *   get:
+ *     summary: Get similar games by category
+ *     description: Returns similar games based on the game's category.
+ *     tags:
+ *       - Games
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The unique identifier of the game.  
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved similar games.
+ *       404:
+ *         description: Game not found.
+ *       500:
+ *         description: Internal server error.
+ */
+router.get('/:id/similar', authenticate, GameController.getTopRatedGamesByCategory);
+
+/**
+ * @swagger
  * /games:
  *   post:
  *     summary: Create a new game

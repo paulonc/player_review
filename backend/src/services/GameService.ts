@@ -1,7 +1,7 @@
 import GameRepository from '../repositories/GameRepository';
 import CompanyService from './CompanyService';
 import { Game } from '../models/Game';
-import { NotFoundError, ValidationError } from '../errors/AppError';
+import { ConflictError, NotFoundError, ValidationError } from '../errors/AppError';
 import { z } from 'zod';
 import { TopRatedGame } from '../models/RatedGame';
 import CategoryService from './CategoryService';
@@ -40,21 +40,39 @@ class GameService {
     return game;
   }
 
-  async getAllGames(page: number, limit: number): Promise<Game[]> {
-    if (page < 1) throw new ValidationError('Page must be greater than 0');
-    if (limit < 1) throw new ValidationError('Limit must be greater than 0');
-
+  async getAllGames(page: number, limit: number, filters?: { companyId?: string; categoryId?: string; search?: string }) {
     const offset = (page - 1) * limit;
-
-    return await GameRepository.findAll(offset, limit);
+    const [games, total] = await Promise.all([
+      GameRepository.findAll(offset, limit, filters),
+      GameRepository.count(filters)
+    ]);
+    return { games, total };
   }
 
-  async getTopRatedGames(): Promise<TopRatedGame[]> {
-    const topRatedGames = await GameRepository.getTopRatedGames();
+  async getTopRatedGames(limit: number): Promise<TopRatedGame[]> {
+    const topRatedGames = await GameRepository.getTopRatedGames(limit);
     if (!topRatedGames || topRatedGames.length === 0) {
       throw new NotFoundError('No games with ratings found');
     }
     return topRatedGames;
+  }
+
+  async getGameDetails(id: string) {
+    if (!id) throw new ValidationError('Game ID is required');
+    const gameDetails = await GameRepository.getGameDetails(id);
+    if (!gameDetails) throw new NotFoundError('Game not found');
+    return gameDetails;
+  }
+
+  async getTopRatedGamesByCategory(gameId: string) {
+    if (!gameId) throw new ValidationError('Game ID is required');
+    const game = await GameRepository.findById(gameId);
+    if (!game) throw new NotFoundError('Game not found');
+    const similarGames = await GameRepository.getTopRatedGamesByCategory(gameId, game.categoryId);
+    if (!similarGames || similarGames.length === 0) {
+      throw new ConflictError('No similar games found');
+    }
+    return similarGames;
   }
 
   async updateGame(
