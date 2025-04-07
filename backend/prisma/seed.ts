@@ -41,14 +41,14 @@ async function main() {
             data: {
                 name: 'Bethesda Game Studios',
                 country: 'United States',
-                imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Bethesda_Softworks_logo.svg/500px-Bethesda_Softworks_logo.svg.png'
+                imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/2/22/Bethesda_Game_Studios_logo.svg'
             }
         }),
         prisma.company.create({
             data: {
                 name: 'Ubisoft',
                 country: 'France',
-                imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Ubisoft_Logo_2017.svg/500px-Ubisoft_Logo_2017.svg.png'
+                imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/7/78/Ubisoft_logo.svg'
             }
         })
     ])
@@ -62,7 +62,7 @@ async function main() {
                 releaseDate: new Date('2017-03-03'),
                 companyId: companies[0].id,
                 categoryId: categories[0].id,
-                imageUrl: 'https://assets.nintendo.com/image/upload/ar_16:9,b_auto:border,c_lpad/b_white/f_auto/q_auto/dpr_auto/c_scale,w_300/v1/ncom/en_US/games/switch/t/the-legend-of-zelda-breath-of-the-wild-switch/hero'
+                imageUrl: 'https://upload.wikimedia.org/wikipedia/pt/0/0f/Legend_of_Zelda_Breath_of_the_Wild_capa.png'
             }
         }),
         prisma.game.create({
@@ -82,7 +82,7 @@ async function main() {
                 releaseDate: new Date('2022-09-30'),
                 companyId: companies[2].id,
                 categoryId: categories[3].id,
-                imageUrl: 'https://image.api.playstation.com/vulcan/ap/rnd/202301/0312/yM0EFWwmqcM3tRt7fpwxE5J9.png'
+                imageUrl: 'https://upload.wikimedia.org/wikipedia/en/a/a6/FIFA_23_Cover.jpg'
             }
         }),
         prisma.game.create({
@@ -92,7 +92,7 @@ async function main() {
                 releaseDate: new Date('2011-11-11'),
                 companyId: companies[3].id,
                 categoryId: categories[1].id,
-                imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/2/28/The_Elder_Scrolls_V_Skyrim_logo.png'
+                imageUrl: 'https://upload.wikimedia.org/wikipedia/pt/a/aa/The_Elder_Scrolls_5_Skyrim_capa.png'
             }
         }),
         prisma.game.create({
@@ -102,7 +102,7 @@ async function main() {
                 releaseDate: new Date('2020-11-10'),
                 companyId: companies[4].id,
                 categoryId: categories[1].id,
-                imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Assassin%27s_Creed_Valhalla_logo.svg/1024px-Assassin%27s_Creed_Valhalla_logo.svg.png'
+                imageUrl: 'https://upload.wikimedia.org/wikipedia/pt/e/e9/Assassins_Creed_Valhalla_capa.png'
             }
         }),
         // Action Games
@@ -113,7 +113,7 @@ async function main() {
                 releaseDate: new Date('2019-03-08'),
                 companyId: companies[1].id,
                 categoryId: categories[0].id,
-                imageUrl: 'https://image.api.playstation.com/vulcan/ap/rnd/202207/1210/4xJ8XB3bi888QTLZYdl7Oi0s.png'
+                imageUrl: 'https://upload.wikimedia.org/wikipedia/pt/c/cb/Devil_May_Cry_5.jpg'
             }
         }),
         prisma.game.create({
@@ -134,7 +134,7 @@ async function main() {
                 releaseDate: new Date('2023-06-22'),
                 companyId: companies[1].id,
                 categoryId: categories[1].id,
-                imageUrl: 'https://image.api.playstation.com/vulcan/ap/rnd/202207/1210/4xJ8XB3bi888QTLZYdl7Oi0s.png'
+                imageUrl: 'https://upload.wikimedia.org/wikipedia/pt/f/f9/Final_Fantasy_16_capa.png'
             }
         }),
         prisma.game.create({
@@ -155,7 +155,7 @@ async function main() {
                 releaseDate: new Date('2022-09-09'),
                 companyId: companies[2].id,
                 categoryId: categories[3].id,
-                imageUrl: 'https://image.api.playstation.com/vulcan/ap/rnd/202207/1210/4xJ8XB3bi888QTLZYdl7Oi0s.png'
+                imageUrl: 'https://dw0jruhdg6fis.cloudfront.net/producao/32057613/G/nba_2k_23.jpg'
             }
         }),
         prisma.game.create({
@@ -165,7 +165,7 @@ async function main() {
                 releaseDate: new Date('2022-08-19'),
                 companyId: companies[2].id,
                 categoryId: categories[3].id,
-                imageUrl: 'https://image.api.playstation.com/vulcan/ap/rnd/202207/1210/4xJ8XB3bi888QTLZYdl7Oi0s.png'
+                imageUrl: 'https://image.api.playstation.com/vulcan/ap/rnd/202406/1011/8bf6908bc4a21488c7bfa3bbf75ceca8f4c5137bafc136ae.png'
             }
         }),
         // Strategy Games
@@ -176,7 +176,7 @@ async function main() {
                 releaseDate: new Date('2016-10-21'),
                 companyId: companies[2].id,
                 categoryId: categories[2].id,
-                imageUrl: 'https://image.api.playstation.com/vulcan/ap/rnd/202207/1210/4xJ8XB3bi888QTLZYdl7Oi0s.png'
+                imageUrl: 'https://upload.wikimedia.org/wikipedia/pt/3/3b/Civilization_VI_cover_art.jpg'
             }
         }),
         prisma.game.create({
@@ -186,7 +186,7 @@ async function main() {
                 releaseDate: new Date('2022-02-17'),
                 companyId: companies[4].id,
                 categoryId: categories[2].id,
-                imageUrl: 'https://image.api.playstation.com/vulcan/ap/rnd/202207/1210/4xJ8XB3bi888QTLZYdl7Oi0s.png'
+                imageUrl: 'https://cdn1.epicgames.com/dda64c2956b54f1ba3cd97f6aaee775f/offer/EGS_TotalWarWARHAMMERIII_CreativeAssembly_S6-1200x1600-bf935f14317eaf51f4906079a2888ced.jpg'
             }
         }),
         // Adventure Games
@@ -197,7 +197,7 @@ async function main() {
                 releaseDate: new Date('2016-05-10'),
                 companyId: companies[1].id,
                 categoryId: categories[4].id,
-                imageUrl: 'https://image.api.playstation.com/vulcan/ap/rnd/202207/1210/4xJ8XB3bi888QTLZYdl7Oi0s.png'
+                imageUrl: 'https://upload.wikimedia.org/wikipedia/pt/1/13/Uncharted_4_capa.png'
             }
         }),
         prisma.game.create({
@@ -207,7 +207,7 @@ async function main() {
                 releaseDate: new Date('2013-03-05'),
                 companyId: companies[4].id,
                 categoryId: categories[4].id,
-                imageUrl: 'https://image.api.playstation.com/vulcan/ap/rnd/202207/1210/4xJ8XB3bi888QTLZYdl7Oi0s.png'
+                imageUrl: 'https://image.api.playstation.com/cdn/UP0082/CUSA00107_00/jT7kkwSWEinafnaYWMZoReRr4LlmYmym.png?w=440&thumb=false'
             }
         }),
         // Puzzle Games
@@ -218,7 +218,7 @@ async function main() {
                 releaseDate: new Date('2011-04-19'),
                 companyId: companies[2].id,
                 categoryId: categories[5].id,
-                imageUrl: 'https://image.api.playstation.com/vulcan/ap/rnd/202207/1210/4xJ8XB3bi888QTLZYdl7Oi0s.png'
+                imageUrl: 'https://upload.wikimedia.org/wikipedia/pt/f/f9/Portal2cover.jpg'
             }
         }),
         prisma.game.create({
@@ -228,7 +228,7 @@ async function main() {
                 releaseDate: new Date('2016-01-26'),
                 companyId: companies[1].id,
                 categoryId: categories[5].id,
-                imageUrl: 'https://image.api.playstation.com/vulcan/ap/rnd/202207/1210/4xJ8XB3bi888QTLZYdl7Oi0s.png'
+                imageUrl: 'https://upload.wikimedia.org/wikipedia/en/f/f4/The_Witness_cover.jpg'
             }
         }),
         // Simulation Games
@@ -239,7 +239,7 @@ async function main() {
                 releaseDate: new Date('2014-09-02'),
                 companyId: companies[2].id,
                 categoryId: categories[6].id,
-                imageUrl: 'https://image.api.playstation.com/vulcan/ap/rnd/202207/1210/4xJ8XB3bi888QTLZYdl7Oi0s.png'
+                imageUrl: 'https://upload.wikimedia.org/wikipedia/pt/3/34/Nova_capa_de_The_Sims_4.png'
             }
         }),
         prisma.game.create({
@@ -249,7 +249,7 @@ async function main() {
                 releaseDate: new Date('2016-02-26'),
                 companyId: companies[0].id,
                 categoryId: categories[6].id,
-                imageUrl: 'https://image.api.playstation.com/vulcan/ap/rnd/202207/1210/4xJ8XB3bi888QTLZYdl7Oi0s.png'
+                imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTlJZWcZvRElJKrIrPeL4XQ0erDKodJKomIyg&s'
             }
         })
     ])
