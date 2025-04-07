@@ -9,7 +9,6 @@ import SimilarGames from "@/components/game/SimilarGames"
 import WriteReviewButton from "@/components/game/WriteReviewButton"
 import { useEffect, useState } from "react"
 import { gameService } from "@/services/gameService"
-import { reviewService } from "@/services/reviewService"
 import { Game, Review } from "@/types/api"
 
 interface GameDetails {

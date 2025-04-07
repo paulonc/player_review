@@ -17,7 +17,7 @@ import AdminLayout from "@/components/layouts/AdminLayout";
 import { gameService } from "@/services/gameService";
 import { categoryService } from "@/services/categoryService";
 import { companyService } from "@/services/companyService";
-import { Category, Company, Game } from "@/types/api";
+import { Category, Company } from "@/types/api";
 import { toast } from "sonner";
 
 export default function EditGame() {
