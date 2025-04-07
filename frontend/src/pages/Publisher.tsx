@@ -146,21 +146,21 @@ export default function CompanyPage() {
                 {companyDetails.games.length > 0 ? (
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {companyDetails.games.map((game) => (
-                      <Card key={game.id} className="overflow-hidden">
-                        <div className="aspect-video relative">
+                      <Card key={game.id} className="overflow-hidden flex flex-col h-full">
+                        <div className="w-full h-48 relative">
                           <img 
                             src={game.imageUrl || "/placeholder.svg"} 
                             alt={game.title} 
                             className="w-full h-full object-cover"
                           />
                         </div>
-                        <CardHeader className="p-4">
-                          <CardTitle className="text-lg">{game.title}</CardTitle>
-                          <CardDescription>
+                        <CardHeader className="p-4 flex-none">
+                          <CardTitle className="text-lg line-clamp-1">{game.title}</CardTitle>
+                          <CardDescription className="text-sm">
                             Released: {new Date(game.releaseDate).toLocaleDateString()}
                           </CardDescription>
                         </CardHeader>
-                        <CardFooter className="p-4 pt-0">
+                        <CardFooter className="p-4 pt-0 mt-auto">
                           <Link to={`/games/${game.id}`} className="w-full">
                             <Button variant="outline" className="w-full">
                               View Details
