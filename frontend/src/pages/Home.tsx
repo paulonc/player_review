@@ -55,7 +55,6 @@ export default function Home() {
         const topRated = topRatedResponse.data;
         setTopRatedGames(topRated.map(transformGameData));
         
-        // Fetch game counts for each publisher
         const publishersWithGameCounts = await Promise.all(
           publishersResponse.data.map(async (publisher) => {
             try {

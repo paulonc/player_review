@@ -109,7 +109,6 @@ export default function GamesPage() {
         setTotalPages(gamesResponse.totalPages)
         setCategories(categoriesResponse.data)
         
-        // Fetch rating information for each game
         const ratingsPromises = gamesResponse.data.map(game => 
           gameService.getGameDetails(game.id)
             .then(response => ({
@@ -142,7 +141,6 @@ export default function GamesPage() {
     fetchData()
   }, [currentPage, searchQuery, selectedCategories])
 
-  // Filter games based on search query and selected categories
   const filteredGames = games.filter((game) => {
     const matchesSearch = game.title.toLowerCase().includes(searchQuery.toLowerCase())
     const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(game.categoryId)
@@ -180,12 +178,13 @@ export default function GamesPage() {
     }
   }
 
-  // Manipuladores de eventos
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCurrentPage(1)
     setSearchQuery(e.target.value)
   }
 
   const toggleCategory = (category: string) => {
+    setCurrentPage(1)
     setSelectedCategories((prev) =>
       prev.includes(category) ? prev.filter((c) => c !== category) : [...prev, category],
     )
@@ -194,6 +193,7 @@ export default function GamesPage() {
   const clearFilters = () => {
     setSearchQuery("")
     setSelectedCategories([])
+    setCurrentPage(1)
   }
 
   return (
@@ -234,14 +234,12 @@ export default function GamesPage() {
             {searchQuery && <> matching "{searchQuery}"</>}
           </div>
 
-          {/* Error message */}
           {error && (
             <div className="text-red-500 text-center py-4">
               {error}
             </div>
           )}
 
-          {/* Lista de jogos */}
           {isLoading ? (
             <div className="flex justify-center items-center py-12">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
@@ -275,7 +273,6 @@ export default function GamesPage() {
             </div>
           )}
 
-          {/* Paginação */}
           {!isLoading && filteredGames.length > 0 && (
             <div className="flex justify-center mt-12">
               <div className="flex items-center gap-2">

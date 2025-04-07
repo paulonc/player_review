@@ -54,10 +54,9 @@ export default function GamePage() {
         const similarGamesResponse = await gameService.getTopRatedGamesByCategory(id);
         setSimilarGames(similarGamesResponse.data);
         
-        // Transform the reviews from the game details response
         const transformedReviews = response.data.game.reviews?.map((review: Review) => ({
-          username: "User", // This should be replaced with actual username from user data
-          avatar: "/placeholder.svg?height=40&width=40", // This should be replaced with actual user avatar
+          username: "User",
+          avatar: "/placeholder.svg?height=40&width=40",
           date: new Date(review.createdAt).toLocaleDateString(),
           rating: review.rating,
           content: review.review || ""

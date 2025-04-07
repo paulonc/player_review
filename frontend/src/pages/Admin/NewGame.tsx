@@ -31,7 +31,7 @@ export default function NewGame() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await categoryService.getCategories()
+        const response = await categoryService.getCategories(1, 100)
         setCategories(response.data)
       } catch (error) {
         toast.error("Failed to load categories")
@@ -45,7 +45,7 @@ export default function NewGame() {
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
-        const response = await companyService.getCompanies()
+        const response = await companyService.getCompanies(1, 100)
         setCompanies(response.data)
       } catch (error) {
         toast.error("Failed to load companies")

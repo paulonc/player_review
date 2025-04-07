@@ -99,7 +99,7 @@ export default function LoginPage() {
             className="w-full bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 transition-all duration-300 shadow-lg shadow-primary/20"
             disabled={isLoading}
           >
-            {isLoading ? "Entrando..." : "Entrar"}
+            {isLoading ? "Loading..." : "Login"}
           </Button>
         </form>
 
