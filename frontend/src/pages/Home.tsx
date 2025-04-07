@@ -1,12 +1,13 @@
-import Navbar from "@/components/Navbar";
-import HeroSection from "@/components/HeroSection";
-import Footer from "@/components/Footer";
+import Navbar from "@/Components/Navbar";
+import HeroSection from "@/Components/HeroSection";
+import Footer from "@/Components/Footer";
 import { useEffect, useState } from "react";
 import { gameService } from "@/services/gameService";
+import { companyService } from "@/services/companyService";
 import { useNavigate } from "react-router-dom";
-import PublisherSection from "@/components/PublisherSection";
-import TopRatedGamesSection from "@/components/TopRatedGamesSection";
-import { Game, TopRatedGame } from "@/types/api";
+import PublisherSection from "@/Components/PublisherSection";
+import TopRatedGamesSection from "@/Components/TopRatedGamesSection";
+import { Game, TopRatedGame, Company } from "@/types/api";
 
 interface GameListItem {
   id: string;
@@ -18,9 +19,14 @@ interface GameListItem {
   categoryName: string;
 }
 
+interface PublisherWithGameCount extends Company {
+  gameCount: number;
+}
+
 export default function Home() {
   const navigate = useNavigate();
   const [topRatedGames, setTopRatedGames] = useState<GameListItem[]>([]);
+  const [publishers, setPublishers] = useState<PublisherWithGameCount[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const transformGameData = (data: Game | TopRatedGame): GameListItem => {
@@ -39,23 +45,50 @@ export default function Home() {
   };
   
   useEffect(() => {
-    const fetchGames = async () => {
+    const fetchData = async () => {
       try {
-        const [topRatedResponse] = await Promise.all([
+        const [topRatedResponse, publishersResponse] = await Promise.all([
           gameService.getTopRatedGames(4),
+          companyService.getCompanies(1, 4)
         ]);
 
         const topRated = topRatedResponse.data;
         setTopRatedGames(topRated.map(transformGameData));
+        
+        // Fetch game counts for each publisher
+        const publishersWithGameCounts = await Promise.all(
+          publishersResponse.data.map(async (publisher) => {
+            try {
+              const gamesResponse = await gameService.getGames({
+                page: 1,
+                limit: 1,
+                companyId: publisher.id
+              });
+              
+              return {
+                ...publisher,
+                gameCount: gamesResponse.total
+              };
+            } catch (error) {
+              console.error(`Error fetching games for publisher ${publisher.id}:`, error);
+              return {
+                ...publisher,
+                gameCount: 0
+              };
+            }
+          })
+        );
+        
+        setPublishers(publishersWithGameCounts);
 
       } catch (error) {
-        console.error('Error fetching games:', error);
+        console.error('Error fetching data:', error);
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchGames();
+    fetchData();
   }, []);
 
   return (
@@ -69,9 +102,9 @@ export default function Home() {
           onViewAll={() => navigate('/games')}
         />
         <PublisherSection
-        publishers={[]}
-        isLoading={isLoading}
-        onViewAll={() => navigate('/publishers')}
+          publishers={publishers}
+          isLoading={isLoading}
+          onViewAll={() => navigate('/publishers')}
         />
       </main>
       <Footer />

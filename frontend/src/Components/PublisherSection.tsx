@@ -1,45 +1,40 @@
 import { Button } from "@/components/ui/button";
-import PublisherCard from "./PublisherCard";
-import SectionTitle from "./SectionTitle";
+import PublisherCard from "@/Components/PublisherCard";
+import SectionTitle from "@/Components/SectionTitle";
 import { Company } from "@/types/api";
 
-export default function PublisherSection({ onViewAll, publishers, isLoading }: { onViewAll: () => void, publishers: Company[], isLoading: boolean }) {
+interface PublisherWithGameCount extends Company {
+  gameCount: number;
+}
+
+export default function PublisherSection({ onViewAll, publishers, isLoading }: { onViewAll: () => void, publishers: PublisherWithGameCount[], isLoading: boolean }) {
   return (
     <section className="py-12">
       <SectionTitle title="Top Rated Publishers" colorClass="bg-primary" />
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        <PublisherCard
-          id="1"
-          name="Bandai Namco Entertainment"
-          logo="/placeholder.svg?height=100&width=100"
-          country="Japan"
-          rating={4.8}
-          gameCount={87}
-        />
-        <PublisherCard
-          id="2"
-          name="Sony Interactive Entertainment"
-          logo="/placeholder.svg?height=100&width=100"
-          country="United States"
-          rating={4.9}
-          gameCount={64}
-        />
-        <PublisherCard
-          id="3"
-          name="FromSoftware"
-          logo="/placeholder.svg?height=100&width=100"
-          country="Japan"
-          rating={4.9}
-          gameCount={12}
-        />
-        <PublisherCard
-          id="4"
-          name="CD Projekt Red"
-          logo="/placeholder.svg?height=100&width=100"
-          country="Poland"
-          rating={4.7}
-          gameCount={8}
-        />
+        {isLoading ? (
+          // Loading placeholders
+          Array(4).fill(0).map((_, index) => (
+            <div key={index} className="animate-pulse bg-muted/30 rounded-lg h-48"></div>
+          ))
+        ) : publishers.length > 0 ? (
+          // Render actual publisher data
+          publishers.map((publisher) => (
+            <PublisherCard
+              key={publisher.id}
+              id={publisher.id}
+              name={publisher.name}
+              logo={publisher.imageUrl || "/placeholder.svg?height=100&width=100"}
+              country={publisher.country}
+              gameCount={publisher.gameCount}
+            />
+          ))
+        ) : (
+          // No publishers found
+          <div className="col-span-full text-center py-8 text-muted-foreground">
+            No publishers found
+          </div>
+        )}
       </div>
       <div className="flex justify-center mt-8">
         <Button variant="outline" className="border-primary/20 hover:bg-primary/10 transition-all duration-300" onClick={onViewAll}>
