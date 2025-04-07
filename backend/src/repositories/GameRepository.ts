@@ -105,7 +105,8 @@ class GameRepository {
         description: game.description,
         releaseDate: game.releaseDate,
         imageUrl: game.imageUrl,
-        createdAt: game.createdAt
+        createdAt: game.createdAt,
+        reviews: game.reviews
       },
       avgRating: Number(avgRating.toFixed(2)),
       reviewCount: game.reviews.length,

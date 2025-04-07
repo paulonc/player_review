@@ -32,6 +32,7 @@ export interface Game {
   companyId: string;
   categoryId: string;
   createdAt: string;
+  reviews?: Review[];
 }
 
 export interface TopRatedGame {
@@ -49,10 +50,13 @@ export interface Category {
 
 export interface Review {
   id: string;
-  content: string;
+  title: string;
+  review: string | null;
   rating: number;
   userId: string;
   gameId: string;
+  hoursPlayed: number | null;
+  recommended: boolean | null;
   createdAt: string;
 }
 

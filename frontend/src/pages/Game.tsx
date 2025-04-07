@@ -9,7 +9,8 @@ import SimilarGames from "@/components/game/SimilarGames"
 import WriteReviewButton from "@/components/game/WriteReviewButton"
 import { useEffect, useState } from "react"
 import { gameService } from "@/services/gameService"
-import { Game } from "@/types/api"
+import { reviewService } from "@/services/reviewService"
+import { Game, Review } from "@/types/api"
 
 interface GameDetails {
   game: Game;
@@ -27,12 +28,22 @@ interface SimilarGame {
   reviewCount: number;
 }
 
+interface TransformedReview {
+  username: string;
+  avatar: string;
+  date: string;
+  rating: number;
+  content: string;
+}
+
 export default function GamePage() {
   const { id } = useParams();
   const [gameDetails, setGameDetails] = useState<GameDetails | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [similarGames, setSimilarGames] = useState<SimilarGame[]>([]);
+  const [reviews, setReviews] = useState<TransformedReview[]>([]);
+
   useEffect(() => {
     const fetchGameDetails = async () => {
       if (!id) return;
@@ -43,6 +54,17 @@ export default function GamePage() {
         setGameDetails(response.data);
         const similarGamesResponse = await gameService.getTopRatedGamesByCategory(id);
         setSimilarGames(similarGamesResponse.data);
+        
+        // Transform the reviews from the game details response
+        const transformedReviews = response.data.game.reviews?.map((review: Review) => ({
+          username: "User", // This should be replaced with actual username from user data
+          avatar: "/placeholder.svg?height=40&width=40", // This should be replaced with actual user avatar
+          date: new Date(review.createdAt).toLocaleDateString(),
+          rating: review.rating,
+          content: review.review || ""
+        })) || [];
+        
+        setReviews(transformedReviews);
       } catch (err) {
         setError('Failed to load game details');
         console.error('Error fetching game details:', err);
@@ -81,58 +103,6 @@ export default function GamePage() {
       </div>
     );
   }
-
-
-  const reviews = [
-    {
-      username: "GamerPro123",
-      avatar: "/placeholder.svg?height=40&width=40",
-      date: "March 15, 2023",
-      rating: 5,
-      content: "Elden Ring is a masterpiece. The open world design is breathtaking, and the combat is challenging but fair. The lore is deep and mysterious, typical of FromSoftware games. I've spent over 200 hours exploring the Lands Between and still finding new things.",
-      ratings: {
-        graphics: 5,
-        gameplay: 5,
-        story: 4,
-        sound: 5,
-        value: 5,
-      },
-      likes: 42,
-      comments: 8,
-    },
-    {
-      username: "RPGFan",
-      avatar: "/placeholder.svg?height=40&width=40",
-      date: "April 2, 2023",
-      rating: 4,
-      content: "Elden Ring expands on the Souls formula in exciting ways. The open world gives you freedom to approach challenges in different orders, which helps if you get stuck. The only downside is some performance issues on PC, but they've been mostly patched out.",
-      ratings: {
-        graphics: 4,
-        gameplay: 5,
-        story: 4,
-        sound: 4,
-        value: 5,
-      },
-      likes: 28,
-      comments: 3,
-    },
-    {
-      username: "CasualGamer",
-      avatar: "/placeholder.svg?height=40&width=40",
-      date: "May 10, 2023",
-      rating: 3,
-      content: "As someone new to FromSoftware games, I found Elden Ring extremely difficult. The lack of clear direction can be frustrating, and the boss fights are punishing. However, the world design and atmosphere are incredible, and there's a real sense of achievement when you finally overcome a challenge.",
-      ratings: {
-        graphics: 5,
-        gameplay: 3,
-        story: 3,
-        sound: 4,
-        value: 4,
-      },
-      likes: 15,
-      comments: 12,
-    }
-  ]
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-background/95">
