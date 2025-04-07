@@ -3,12 +3,25 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Search, ChevronLeft, ChevronRight, Loader2 } from "lucide-react"
-import PublisherCard from "@/components/PublisherCard"
 import { companyService } from "@/services/companyService"
 import { gameService } from "@/services/gameService"
 import Navbar from "@/components/Navbar"
 import { Company, Game } from "@/types/api"
 import Footer from "@/components/Footer"
+import PublisherCard from "@/components/PublisherCard"
+
+const SearchBar: React.FC<{ searchQuery: string; handleSearch: (e: React.ChangeEvent<HTMLInputElement>) => void; }> = ({ searchQuery, handleSearch }) => (
+  <div className="relative w-full md:w-[300px]">
+    <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+    <Input
+      type="search"
+      placeholder="Search publishers by name..."
+      className="pl-8 rounded-full bg-muted/50 border-muted focus-visible:ring-primary"
+      value={searchQuery}
+      onChange={handleSearch}
+    />
+  </div>
+);
 
 export default function PublishersPage() {
   const [searchQuery, setSearchQuery] = useState("")
@@ -35,8 +48,6 @@ export default function PublishersPage() {
 
     return () => clearTimeout(timer)
   }, [searchQuery])
-
-
 
   useEffect(() => {
     const fetchPublishers = async () => {
@@ -100,12 +111,6 @@ export default function PublishersPage() {
     setCurrentPage(1)
   }
 
-  const clearFilters = () => {
-    setSearchQuery("")
-    setDebouncedSearchQuery("")
-    setCurrentPage(1)
-  }
-
   const goToPage = (page: number) => {
     if (pagination && page >= 1 && page <= pagination.totalPages) {
       setCurrentPage(page)
@@ -140,6 +145,10 @@ export default function PublishersPage() {
     return pageNumbers
   }
 
+  const filteredPublishers = publishers.filter((publisher) =>
+    publisher.name.toLowerCase().includes(debouncedSearchQuery.toLowerCase())
+  );
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-background/95">
       <Navbar />
@@ -150,21 +159,12 @@ export default function PublishersPage() {
             <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-500">
               Publishers
             </h1>
-            <div className="relative w-full md:w-[300px]">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                type="search"
-                placeholder="Search publishers by name..."
-                className="pl-8 rounded-full bg-muted/50 border-muted focus-visible:ring-primary"
-                value={searchQuery}
-                onChange={handleSearch}
-              />
-            </div>
+            <SearchBar searchQuery={searchQuery} handleSearch={handleSearch} />
           </div>
 
           {pagination && !isLoading && (
             <div className="text-sm text-muted-foreground">
-              Showing {pagination.total} {pagination.total === 1 ? "publisher" : "publishers"}
+              Showing {filteredPublishers.length} {filteredPublishers.length === 1 ? "publisher" : "publishers"}
               {searchQuery && <> matching "{searchQuery}"</>}
             </div>
           )}
@@ -192,78 +192,62 @@ export default function PublishersPage() {
                   ))}
                 </div>
               ) : (
-                <div className="flex flex-col items-center justify-center py-12 text-center">
-                  <div className="bg-muted/30 p-4 rounded-full mb-4">
-                    <Search className="h-8 w-8 text-muted-foreground" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2">No publishers found</h3>
-                  <p className="text-muted-foreground max-w-md">
-                    We couldn't find any publishers matching your search criteria. Try adjusting your filters or search
-                    query.
-                  </p>
-                  <Button
-                    variant="outline"
-                    className="mt-4 border-primary/20 hover:bg-primary/10"
-                    onClick={clearFilters}
-                  >
-                    Clear Filters
-                  </Button>
-                </div>
-              )}
-
-              {pagination && pagination.totalPages > 1 && (
-                <div className="flex justify-center mt-12">
-                  <div className="flex items-center gap-2">
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      className="w-9 h-9 border-primary/20 hover:bg-primary/10"
-                      onClick={() => goToPage(currentPage - 1)}
-                      disabled={currentPage === 1}
-                    >
-                      <ChevronLeft className="h-4 w-4" />
-                      <span className="sr-only">Previous page</span>
-                    </Button>
-
-                    {getPageNumbers().map((page) => (
-                      <Button
-                        key={page}
-                        variant="outline"
-                        size="sm"
-                        className={`
-                          border-primary/20 
-                          ${
-                            currentPage === page
-                              ? "bg-primary/10 hover:bg-primary/20 text-primary"
-                              : "hover:bg-primary/10"
-                          }
-                        `}
-                        onClick={() => goToPage(page)}
-                      >
-                        {page}
-                      </Button>
-                    ))}
-
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      className="w-9 h-9 border-primary/20 hover:bg-primary/10"
-                      onClick={() => goToPage(currentPage + 1)}
-                      disabled={pagination && currentPage === pagination.totalPages}
-                    >
-                      <ChevronRight className="h-4 w-4" />
-                      <span className="sr-only">Next page</span>
-                    </Button>
-                  </div>
+                <div className="text-center text-muted-foreground">
+                  No publishers found
                 </div>
               )}
             </>
           )}
+
+          {pagination && pagination.totalPages > 1 && (
+            <div className="flex justify-center mt-12">
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="w-9 h-9 border-primary/20 hover:bg-primary/10"
+                  onClick={() => goToPage(currentPage - 1)}
+                  disabled={currentPage === 1}
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                  <span className="sr-only">Previous page</span>
+                </Button>
+
+                {getPageNumbers().map((page) => (
+                  <Button
+                    key={page}
+                    variant="outline"
+                    size="sm"
+                    className={
+                      `border-primary/20 ${
+                        currentPage === page
+                          ? "bg-primary/10 hover:bg-primary/20 text-primary"
+                          : "hover:bg-primary/10"
+                      }`
+                    }
+                    onClick={() => goToPage(page)}
+                  >
+                    {page}
+                  </Button>
+                ))}
+
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="w-9 h-9 border-primary/20 hover:bg-primary/10"
+                  onClick={() => goToPage(currentPage + 1)}
+                  disabled={pagination && currentPage === pagination.totalPages}
+                >
+                  <ChevronRight className="h-4 w-4" />
+                  <span className="sr-only">Next page</span>
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
       </main>
 
-    <Footer />
+      <Footer />
     </div>
   )
 }
-

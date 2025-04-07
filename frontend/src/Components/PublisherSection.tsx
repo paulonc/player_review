@@ -13,12 +13,10 @@ export default function PublisherSection({ onViewAll, publishers, isLoading }: {
       <SectionTitle title="Top Rated Publishers" colorClass="bg-primary" />
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {isLoading ? (
-          // Loading placeholders
           Array(4).fill(0).map((_, index) => (
             <div key={index} className="animate-pulse bg-muted/30 rounded-lg h-48"></div>
           ))
         ) : publishers.length > 0 ? (
-          // Render actual publisher data
           publishers.map((publisher) => (
             <PublisherCard
               key={publisher.id}
@@ -30,7 +28,6 @@ export default function PublisherSection({ onViewAll, publishers, isLoading }: {
             />
           ))
         ) : (
-          // No publishers found
           <div className="col-span-full text-center py-8 text-muted-foreground">
             No publishers found
           </div>
