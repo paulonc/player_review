@@ -1,61 +1,61 @@
-import { useState, useEffect } from "react"
-import { Link, useNavigate, useParams } from "react-router-dom"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Label } from "@/components/ui/label"
-import { ArrowLeft, Tag, Loader2 } from "lucide-react"
-import AdminLayout from "@/components/layouts/AdminLayout"
-import { categoryService } from "@/services/categoryService"
-import { toast } from "sonner"
+import { useState, useEffect } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { ArrowLeft, Tag, Loader2 } from "lucide-react";
+import AdminLayout from "@/components/layouts/AdminLayout";
+import { categoryService } from "@/services/categoryService";
+import { toast } from "sonner";
 
 export default function EditCategory() {
-  const { id } = useParams<{ id: string }>()
-  const navigate = useNavigate()
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
 
-  const [loading, setLoading] = useState(true)
-  const [saving, setSaving] = useState(false)
-  const [name, setName] = useState("")
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [name, setName] = useState("");
 
   useEffect(() => {
     const loadCategory = async () => {
       try {
-        const res = await categoryService.getCategory(id!)
-        setName(res.data.name)
+        const res = await categoryService.getCategory(id!);
+        setName(res.data.name);
       } catch (err) {
-        toast.error("Failed to load category")
-        console.error(err)
-        navigate("/admin/categories")
+        toast.error("Failed to load category");
+        console.error(err);
+        navigate("/admin/categories");
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
-    loadCategory()
-  }, [id, navigate])
+    };
+    loadCategory();
+  }, [id, navigate]);
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value)
-  }
+    setName(e.target.value);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     if (!name.trim()) {
-      toast.error("Category name is required")
-      return
+      toast.error("Category name is required");
+      return;
     }
 
-    setSaving(true)
+    setSaving(true);
     try {
-      await categoryService.updateCategory(id!, name.trim())
-      toast.success("Category updated successfully!")
-      navigate("/admin/categories")
+      await categoryService.updateCategory(id!, name.trim());
+      toast.success("Category updated successfully!");
+      navigate("/admin/categories");
     } catch (error) {
-      toast.error("Failed to update category")
-      console.error(error)
+      toast.error("Failed to update category");
+      console.error(error);
     } finally {
-      setSaving(false)
+      setSaving(false);
     }
-  }
+  };
 
   if (loading) {
     return (
@@ -65,7 +65,7 @@ export default function EditCategory() {
           <p className="text-muted-foreground">Carregando categoria...</p>
         </div>
       </AdminLayout>
-    )
+    );
   }
 
   return (
@@ -81,13 +81,23 @@ export default function EditCategory() {
             </Link>
             <h1 className="text-2xl font-bold">Edit Category</h1>
           </div>
-          <Button
-            type="submit"
-            disabled={saving}
-            className="bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90"
-          >
-            {saving ? "Saving..." : "Save Category"}
-          </Button>
+          <div className="flex justify-end gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              className="border-primary/20 hover:bg-primary/10"
+              onClick={() => navigate("/admin/categories")}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              disabled={saving}
+              className="bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90"
+            >
+              {saving ? "Saving..." : "Save Category"}
+            </Button>
+          </div>
         </div>
 
         <Card className="border-muted/60">
@@ -109,30 +119,13 @@ export default function EditCategory() {
                 required
               />
               <p className="text-sm text-muted-foreground mt-4">
-                This category will be available for selection when adding or editing games.
+                This category will be available for selection when adding or
+                editing games.
               </p>
             </div>
           </CardContent>
         </Card>
-
-        <div className="flex justify-end gap-2">
-          <Button
-            type="button"
-            variant="outline"
-            className="border-primary/20 hover:bg-primary/10"
-            onClick={() => navigate("/admin/categories")}
-          >
-            Cancel
-          </Button>
-          <Button
-            type="submit"
-            disabled={saving}
-            className="bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90"
-          >
-            {saving ? "Saving..." : "Save Category"}
-          </Button>
-        </div>
       </form>
     </AdminLayout>
-  )
+  );
 }

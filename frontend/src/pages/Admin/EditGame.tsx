@@ -124,13 +124,23 @@ export default function EditGame() {
             </Link>
             <h1 className="text-2xl font-bold">Edit Game</h1>
           </div>
-          <Button
-            type="submit"
-            disabled={saving}
-            className="bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90"
-          >
-            {saving ? "Saving..." : "Save Changes"}
-          </Button>
+          <div className="flex gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              className="border-primary/20 hover:bg-primary/10"
+              onClick={() => navigate("/admin/games")}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              disabled={saving}
+              className="bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90"
+            >
+              {saving ? "Saving..." : "Save Changes"}
+            </Button>
+          </div>
         </div>
 
         <Card className="border-muted/60">
