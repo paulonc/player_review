@@ -1,8 +1,6 @@
 import { Button } from "@/components/ui/button";
 import SectionTitle from "./SectionTitle";
-import FilterButtons from "./FilterButtons";
 import GameList from "./GameList";
-import CategoryFilter from "./CategoryFilter";
 
 interface GameListItem {
   id: string;
@@ -26,8 +24,6 @@ export default function TopRatedGamesSection({ games, isLoading, onViewAll }: To
       <SectionTitle title="Top Rated Games" colorClass="bg-primary" />
       <div className="flex items-center justify-between mb-6">
         <div className="flex gap-2 justify-end w-full">
-          <CategoryFilter />
-          <FilterButtons />
         </div>
       </div>  
       {isLoading ? (
