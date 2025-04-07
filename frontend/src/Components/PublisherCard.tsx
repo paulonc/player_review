@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { Globe } from "lucide-react"
 
 interface PublisherCardProps {
@@ -33,7 +32,6 @@ export default function PublisherCard({ id, name, logo, country, gameCount }: Pu
           <div className="flex items-center mt-2">
             <span className="text-muted-foreground text-sm">{gameCount} games</span>
           </div>
-          <Badge className="mt-3 bg-primary/10 text-primary hover:bg-primary/20 border-none">Top Publisher</Badge>
         </CardContent>
         <CardFooter className="p-4 pt-0 flex justify-between border-t border-muted/30 mt-2">
           <span className="text-sm text-muted-foreground group-hover:text-primary transition-colors">View details</span>

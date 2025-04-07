@@ -2,17 +2,15 @@ import type React from "react"
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
-import { Search, Filter, ChevronLeft, ChevronRight, Loader2, Globe } from "lucide-react"
+import { Search, ChevronLeft, ChevronRight, Loader2 } from "lucide-react"
 import PublisherCard from "@/components/PublisherCard"
 import { companyService } from "@/services/companyService"
 import { gameService } from "@/services/gameService"
 import Navbar from "@/components/Navbar"
-import { PaginatedResponse, Company, Game } from "@/types/api"
-import { Link } from "react-router-dom"
+import { Company, Game } from "@/types/api"
+import Footer from "@/components/Footer"
 
 export default function PublishersPage() {
-  // States to control UI and data
   const [searchQuery, setSearchQuery] = useState("")
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("")
 
@@ -66,7 +64,6 @@ export default function PublishersPage() {
     fetchPublishers()
   }, [currentPage, debouncedSearchQuery])
 
-  // Fetch games for each publisher
   useEffect(() => {
     const fetchPublisherGames = async () => {
       if (publishers.length === 0) return;
@@ -83,7 +80,6 @@ export default function PublishersPage() {
         
         const results = await Promise.all(gamesPromises);
         
-        // Create a map of publisher ID to games
         const gamesMap: Record<string, Game[]> = {};
         
         results.forEach(result => {
@@ -99,10 +95,9 @@ export default function PublishersPage() {
     fetchPublisherGames();
   }, [publishers]);
 
-  // Event handlers
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value)
-    setCurrentPage(1) // Reset to first page when search changes
+    setCurrentPage(1)
   }
 
   const clearFilters = () => {
@@ -118,7 +113,6 @@ export default function PublishersPage() {
     }
   }
 
-  // Generate array of pages for pagination
   const getPageNumbers = () => {
     if (!pagination) return []
 
@@ -127,16 +121,13 @@ export default function PublishersPage() {
     const totalPages = pagination.totalPages
 
     if (totalPages <= maxVisiblePages) {
-      // Show all pages if there are fewer than the maximum visible
       for (let i = 1; i <= totalPages; i++) {
         pageNumbers.push(i)
       }
     } else {
-      // Logic to show pages around the current one
       let startPage = Math.max(1, currentPage - 2)
       const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1)
 
-      // Adjust if near the end
       if (endPage - startPage < maxVisiblePages - 1) {
         startPage = Math.max(1, endPage - maxVisiblePages + 1)
       }
@@ -171,7 +162,6 @@ export default function PublishersPage() {
             </div>
           </div>
 
-          {/* Results and stats */}
           {pagination && !isLoading && (
             <div className="text-sm text-muted-foreground">
               Showing {pagination.total} {pagination.total === 1 ? "publisher" : "publishers"}
@@ -179,10 +169,8 @@ export default function PublishersPage() {
             </div>
           )}
 
-          {/* Error message */}
           {error && <div className="rounded-lg border border-red-500/20 bg-red-500/10 p-4 text-red-500">{error}</div>}
 
-          {/* Loading state */}
           {isLoading ? (
             <div className="flex flex-col items-center justify-center py-12">
               <Loader2 className="h-8 w-8 animate-spin text-primary mb-4" />
@@ -190,7 +178,6 @@ export default function PublishersPage() {
             </div>
           ) : (
             <>
-              {/* Publishers grid */}
               {publishers.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                   {publishers.map((publisher) => (
@@ -224,7 +211,6 @@ export default function PublishersPage() {
                 </div>
               )}
 
-              {/* Pagination */}
               {pagination && pagination.totalPages > 1 && (
                 <div className="flex justify-center mt-12">
                   <div className="flex items-center gap-2">
@@ -276,24 +262,7 @@ export default function PublishersPage() {
         </div>
       </main>
 
-      <footer className="border-t py-6 md:py-0 bg-muted/30 mt-12">
-        <div className="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
-          <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
-            © 2025 GameReviewer. All rights reserved.
-          </p>
-          <div className="flex items-center gap-4 text-sm text-muted-foreground">
-            <Link to="/terms" className="hover:text-primary transition-colors">
-              Terms
-            </Link>
-            <Link to="/privacy" className="hover:text-primary transition-colors">
-              Privacy
-            </Link>
-            <Link to="/contact" className="hover:text-primary transition-colors">
-              Contact
-            </Link>
-          </div>
-        </div>
-      </footer>
+    <Footer />
     </div>
   )
 }

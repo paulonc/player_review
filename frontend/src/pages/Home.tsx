@@ -1,12 +1,12 @@
-import Navbar from "@/Components/Navbar";
-import HeroSection from "@/Components/HeroSection";
-import Footer from "@/Components/Footer";
+import Navbar from "@/components/Navbar";
+import HeroSection from "@/components/HeroSection";
+import Footer from "@/components/Footer";
 import { useEffect, useState } from "react";
 import { gameService } from "@/services/gameService";
 import { companyService } from "@/services/companyService";
 import { useNavigate } from "react-router-dom";
-import PublisherSection from "@/Components/PublisherSection";
-import TopRatedGamesSection from "@/Components/TopRatedGamesSection";
+import PublisherSection from "@/components/PublisherSection";
+import TopRatedGamesSection from "@/components/TopRatedGamesSection";
 import { Game, TopRatedGame, Company } from "@/types/api";
 
 interface GameListItem {

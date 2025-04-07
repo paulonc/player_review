@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
-import PublisherCard from "@/Components/PublisherCard";
-import SectionTitle from "@/Components/SectionTitle";
+import PublisherCard from "@/components/PublisherCard";
+import SectionTitle from "@/components/SectionTitle";
 import { Company } from "@/types/api";
 
 interface PublisherWithGameCount extends Company {
