@@ -54,6 +54,7 @@ export interface Review {
   review: string | null;
   rating: number;
   userId: string;
+  username: string;
   gameId: string;
   hoursPlayed: number | null;
   recommended: boolean | null;

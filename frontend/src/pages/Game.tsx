@@ -55,7 +55,7 @@ export default function GamePage() {
         setSimilarGames(similarGamesResponse.data);
         
         const transformedReviews = response.data.game.reviews?.map((review: Review) => ({
-          username: "User",
+          username: review.username,
           avatar: "/placeholder.svg?height=40&width=40",
           date: new Date(review.createdAt).toLocaleDateString(),
           rating: review.rating,
