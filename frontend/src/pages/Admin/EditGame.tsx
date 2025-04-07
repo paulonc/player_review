@@ -47,7 +47,12 @@ export default function EditGame() {
         ]);
         setCategories(catsRes.data);
         setCompanies(compsRes.data);
-        const game: Game = gameRes.data;
+        const game = gameRes.data;
+        if (!game) {
+          toast.error("Game not found");
+          navigate("/admin/games");
+          return;
+        }
         setFormData({
           title: game.title,
           description: game.description,

@@ -23,7 +23,7 @@ class GameController {
   ): Promise<Response | void> {
     try {
       const game = await GameService.getGameById(req.params.id);
-      return res.status(200).json(game);
+      return res.status(200).json({ data: game });
     } catch (error) {
       logger.error('Error getting game', error);
       next(error);

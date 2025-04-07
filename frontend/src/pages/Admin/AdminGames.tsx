@@ -16,7 +16,7 @@ export default function GamesAdmin() {
       setLoading(true)
       try {
         const response = await gameService.getGames({ page: 1, limit: 100 })
-        setGames(response)
+        setGames(response.data)
       } catch (error) {
         console.error("Error fetching games:", error)
       } finally {
