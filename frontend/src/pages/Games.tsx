@@ -230,7 +230,7 @@ export default function GamesPage() {
                   id={game.id}
                   title={game.title}
                   image={game.imageUrl || "/placeholder.svg?height=300&width=400"}
-                  categoryName={game.categoryId}
+                  categoryName={categories.find(cat => cat.id === game.categoryId)?.name || game.categoryId}
                   avgRating={0} // These values will come from the API response
                   reviewCount={0}
                 />
