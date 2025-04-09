@@ -40,8 +40,8 @@ Sua contribuição é bem-vinda! Siga os passos abaixo para colaborar com o proj
 Para clonar e rodar o projeto localmente, execute os seguintes comandos:
 
 ```sh
-git clone https://github.com/seu-usuario/player-review.git
-cd player-review
+git clone https://github.com/paulonc/player_review.git
+cd player_review
 ```
 
 ## Contribuidores

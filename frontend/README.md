@@ -13,8 +13,8 @@ Este diretório contém o código fonte do frontend do projeto **Player Review**
 1. Clone o repositório e acesse o diretório do frontend:
 
    ```sh
-   git clone <url-do-repositorio>
-   cd frontend
+   git clone https://github.com/paulonc/player_review.git
+   cd player_review/frontend
    ```
 
 2. Instale as dependências do projeto:
