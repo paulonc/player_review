@@ -1,54 +1,57 @@
-# React + TypeScript + Vite
+# Frontend - Player Review
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este diretório contém o código fonte do frontend do projeto **Player Review**, desenvolvido utilizando **React** e **TypeScript**. O projeto é gerenciado com **Vite** para um desenvolvimento rápido e eficiente.
 
-Currently, two official plugins are available:
+## Configuração e Execução
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Pré-requisitos
 
-## Expanding the ESLint configuration
+- Node.js: Certifique-se de ter uma versão compatível instalada.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Instalação
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+1. Clone o repositório e acesse o diretório do frontend:
+
+   ```sh
+   git clone <url-do-repositorio>
+   cd frontend
+   ```
+
+2. Instale as dependências do projeto:
+
+   ```sh
+   npm install
+   ```
+
+### Executando o Projeto
+
+Para iniciar o servidor de desenvolvimento, utilize o comando:
+
+```sh
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+O projeto estará disponível em `http://localhost:5173` por padrão.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Estrutura de Pastas
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+- **src/**: Código fonte do frontend.
+  - **components/**: Componentes reutilizáveis da interface.
+  - **pages/**: Páginas principais do aplicativo.
+  - **services/**: Serviços para comunicação com a API.
+  - **assets/**: Imagens e outros arquivos estáticos.
+- **public/**: Arquivos públicos, como o `index.html`.
+
+## Contribuição
+
+Para contribuir com o desenvolvimento do backend, siga as instruções abaixo:
+
+1. Faça um fork deste repositório.
+2. Crie uma branch para sua feature: `git checkout -b minha-feature`.
+3. Realize os commits com suas alterações: `git commit -m 'Adicionando nova feature'`.
+4. Envie sua branch: `git push origin minha-feature`.
+5. Abra um Pull Request para revisão.
+
+## Contato
+
+Caso tenha dúvidas ou sugestões, sinta-se à vontade para entrar em contato ou abrir uma issue.

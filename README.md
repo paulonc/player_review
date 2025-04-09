@@ -1,104 +1,55 @@
-# Player Review
+<h1 align="center"> Player Review </h1>
 
-## Descrição
+<div align="center"> 
+    <img src="frontend/public/logo.png" width="600">
+</div>
 
-O **Player Review** é um sistema de avaliação de jogos que permite aos usuários atribuir notas de 0 a 5 estrelas, escrever resenhas e visualizar o ranking dos melhores jogos. Administradores podem gerenciar jogos e moderar avaliações.
+---
+
+O **Player Review** é uma plataforma interativa que permite aos usuários avaliar jogos, atribuindo notas de 0 a 5 estrelas, escrevendo resenhas detalhadas e acompanhando o ranking dos melhores títulos do mercado. Além disso, administradores têm a possibilidade de gerenciar jogos e moderar as avaliações.
+
+## Visão Geral do Projeto
+
+O sistema foi desenvolvido com o intuito de conectar entusiastas de jogos a uma comunidade vibrante, permitindo a troca de experiências e opiniões. Com uma interface amigável e recursos robustos, o Player Review facilita a descoberta de novos jogos e promove o reconhecimento de desenvolvedoras e editoras.
 
 ## Tecnologias Utilizadas
 
 - **Backend**: TypeScript, Express, PostgreSQL
-- **Frontend**: React
-- **API Documentation**: Swagger
+- **Frontend**: TypeScript, React, Vite, TailwindCSS, ShadCN
+- **Documentação da API**: Swagger
 
 ## Funcionalidades
 
-- Avaliação de jogos com notas e resenhas
-- Edição e remoção de avaliações pelo próprio usuário
-- Cadastro e gerenciamento de jogos
-- Cadastro e gerencimento de empresas de jogos
-- Ranking dos melhores jogos
-- Ranking das melhores empresas
+- **Avaliações Interativas:** Permite que os usuários atribuam notas e escrevam resenhas para jogos.
+- **Gestão de Conteúdo:** Usuários podem editar ou remover suas próprias avaliações.
+- **Cadastro e Gerenciamento:** Inclusão e gerenciamento de jogos e empresas desenvolvedoras.
+- **Rankings Dinâmicos:** Exibe os melhores jogos e empresas com base nas avaliações dos usuários.
 
-## Modelagem de Dados
+## Contribuição
 
-O sistema utiliza um banco de dados PostgreSQL estruturado da seguinte forma:
+Sua contribuição é bem-vinda! Siga os passos abaixo para colaborar com o projeto:
 
-### 🎮 **Tabela: Jogos (`games`)**
+1. Faça um fork do repositório.
+2. Crie uma branch para sua feature: `git checkout -b minha-feature`.
+3. Realize os commits com suas alterações: `git commit -m 'Adicionando nova feature'`.
+4. Envie sua branch para o repositório remoto: `git push origin minha-feature`.
+5. Abra um Pull Request para revisão.
 
-| Campo          | Tipo         | Descrição                     |
-| -------------- | ------------ | ----------------------------- |
-| `id`           | UUID (PK)    | Identificador único do jogo   |
-| `title`        | VARCHAR(255) | Nome do jogo                  |
-| `description`  | TEXT         | Descrição do jogo             |
-| `company_id`   | UUID (FK)    | Empresa responsável pelo jogo |
-| `release_date` | DATE         | Data de lançamento            |
-| `created_at`   | TIMESTAMP    | Data de criação do registro   |
+## Clonando o Repositório
 
-### 🏢 **Tabela: Empresas (`companies`)**
-
-| Campo        | Tipo         | Descrição                        |
-| ------------ | ------------ | -------------------------------- |
-| `id`         | UUID (PK)    | Identificador único              |
-| `name`       | VARCHAR(255) | Nome da desenvolvedora           |
-| `country`    | VARCHAR(255) | País de origem da desenvolvedora |
-| `created_at` | TIMESTAMP    | Data de criação do registro      |
-
-### ⭐ **Tabela: Avaliações (`reviews`)**
-
-| Campo        | Tipo          | Descrição                        |
-| ------------ | ------------- | -------------------------------- |
-| `id`         | UUID (PK)     | Identificador único da avaliação |
-| `user_id`    | UUID (FK)     | Usuário que fez a avaliação      |
-| `game_id`    | UUID (FK)     | Jogo avaliado                    |
-| `rating`     | INTEGER (0-5) | Nota atribuída ao jogo           |
-| `review`     | TEXT          | Texto da resenha                 |
-| `created_at` | TIMESTAMP     | Data da avaliação                |
-
-### 👤 **Tabela: Usuários (`users`)**
-
-| Campo        | Tipo         | Descrição                      |
-| ------------ | ------------ | ------------------------------ |
-| `id`         | UUID (PK)    | Identificador único do usuário |
-| `username`   | VARCHAR(255) | Nome de usuário                |
-| `email`      | VARCHAR(255) | E-mail do usuário              |
-| `password`   | TEXT         | Senha criptografada            |
-| `role`       | ENUM         | Permissão (`user` ou `admin`)  |
-| `created_at` | TIMESTAMP    | Data de criação do registro    |
-
-### Diagrama de Entidade-Relacionamento
-
-![Diagrama de Entidade-Relacionamento](./backend/docs/db.svg)
-
-### Diagrama de Arquitetura
-
-![Diagrama de Arquitetura](./backend/docs/arq.svg)
-
-### Clonando o Repositório
+Para clonar e rodar o projeto localmente, execute os seguintes comandos:
 
 ```sh
 git clone https://github.com/seu-usuario/player-review.git
 cd player-review
 ```
 
-### Executando o Projeto
-
-Para iniciar o projeto, utilize o comando abaixo:
-
-```sh
-make run
-```
-
-## Contribuição
-
-Sinta-se à vontade para contribuir com melhorias e novas funcionalidades. Para isso:
-
-1. Faça um fork do repositório
-2. Crie uma branch (`git checkout -b minha-feature`)
-3. Faça commit das suas alterações (`git commit -m 'Adicionando nova feature'`)
-4. Faça um push para a branch (`git push origin minha-feature`)
-5. Abra um Pull Request
-
 ## Contribuidores
 
-| [<img src="https://avatars.githubusercontent.com/u/94625698?v=4" width=115><br><sub>Paulo Victor</sub>](https://github.com/paulonc) | [<img src="https://avatars.githubusercontent.com/u/70920004?v=4" width=115><br><sub>Alfredo Andrade</sub>](https://github.com/AlfredoAndrade14) |
-| ----------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| [<img src="https://avatars.githubusercontent.com/u/94625698?v=4" width="115"><br><sub>Paulo Victor</sub>](https://github.com/paulonc) | [<img src="https://avatars.githubusercontent.com/u/70920004?v=4" width="115"><br><sub>Alfredo Andrade</sub>](https://github.com/AlfredoAndrade14) |
+| ---------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+
+## Estrutura do Repositório
+
+- **/backend**: Contém o código fonte do servidor, a API e a modelagem do banco de dados.
+- **/frontend**: Contém a interface do usuário desenvolvida com React.
